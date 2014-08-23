@@ -71,5 +71,9 @@ public class PhysicsManager {
 		b.setUserData(s);
 		return b;
 	}
+	
+	public Body createEdge(Vector2 pos1, Vector2 pos2) {
+		return null;
+	}
 
 }
