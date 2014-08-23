@@ -2,6 +2,8 @@ package com.ludum.map;
 
 
 
+import java.io.Console;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -32,7 +34,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 	        camera = new OrthographicCamera();
 	        camera.setToOrtho(false,w,h);
 	        camera.update();
-	        tiledMap = new TmxMapLoader().load("example.tmx");
+	        tiledMap = new TmxMapLoader().load("stupidMap.tmx");
+	        tiledMap.getLayers().get(0).setVisible(false);
 	        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	        Gdx.input.setInputProcessor(this);
 	    }
@@ -55,7 +58,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 	    @Override
 	    public boolean keyUp(int keycode) {
 	        if(keycode == Input.Keys.LEFT)
-	            camera.translate(-32,0);
+	             tiledMap.getLayers().toString();
 	        if(keycode == Input.Keys.RIGHT)
 	            camera.translate(32,0);
 	        if(keycode == Input.Keys.UP)

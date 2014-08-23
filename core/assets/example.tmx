@@ -88,6 +88,9 @@
 </data>
  </layer>
  <objectgroup name="Collision" width="20" height="20">
-  <object x="287" y="354" width="127" height="60"/>
+  <object x="2" y="356" width="634" height="57" visible="0"/>
+  <object x="344" y="198" width="88" height="156" visible="0"/>
+  <object gid="0" x="160" y="116" visible="0"/>
+  <object gid="0" x="202" y="162" visible="0"/>
  </objectgroup>
 </map>
