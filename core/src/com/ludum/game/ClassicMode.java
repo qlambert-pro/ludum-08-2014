@@ -36,7 +36,7 @@ public class ClassicMode extends ScreenAdapter {
 	}	
 
 	public void nextCharacter() {
-		//TODO recenter camera on current character
+		centerCamera();
 		characterControllers.add(characterControllers.remove(0));
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
 	}
