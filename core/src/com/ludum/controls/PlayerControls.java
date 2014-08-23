@@ -45,21 +45,23 @@ public class PlayerControls extends InputAdapter {
 		return false;
 	}
 
-	@Override
-	public boolean keyUp(int keycode) {
-		switch (keycode) {
-		case Keys.LEFT:
-			player.stopLeft();
-			return true;
+	
+	   @Override
+	   public boolean keyUp (int keycode) {
+		   switch(keycode) {
+		   case	Keys.LEFT:
+				player.stopLeft();
+				return true;
+				
+		   case Keys.UP:		
+				player.stopJump();				
+				return true;
+				
+		   case Keys.RIGHT:		
+				player.stopRight();				
+				return true;
+		   }
 
-		case Keys.UP:
-			player.stopJump();
-			return true;
-
-		case Keys.RIGHT:
-			player.stopRight();
-			return true;
-		}
-		return false;
-	}
+		   return false;
+	   }
 }

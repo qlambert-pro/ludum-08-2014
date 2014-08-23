@@ -2,28 +2,26 @@ package com.ludum.game;
 
 import com.ludum.map.Map;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.controls.PlayerControls;
 import com.ludum.entity.player.Player;
+import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;
 
 
 
 public class ClassicMode extends ScreenAdapter {
 	private Game game;
-	private Player player;
+	private List<Player> characters = new ArrayList<Player>();
 	private Map testMap;
 	private SpriteBatch spriteBatch;
 	private List<InputProcessor> characterControllers =
@@ -32,31 +30,38 @@ public class ClassicMode extends ScreenAdapter {
 	public ClassicMode(Game g) {
 		game = g;
 		spriteBatch = new SpriteBatch();
-		player = new Player(new Vector2(0,0),null,null);
-		characterControllers.add(new PlayerControls(player, this));
+		
+		characters.add(PlayerFactory.getFactory().getAlice(new Vector2(0, 0)));
+		characterControllers.add(new PlayerControls(characters.get(0), this));
+		
+		characters.add(PlayerFactory.getFactory().getBob(new Vector2(74, 0)));
+		characterControllers.add(new PlayerControls(characters.get(1), this));
+		
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
 		testMap=new Map();
 		testMap.create();
-
+		
+		
 	}
 	
 	
 	private void update(float dt) {
-		player.updatePhysics(dt);
+		for (Player p : characters)
+			p.updatePhysics(dt);
 		PhysicsManager.getInstance().update(dt);
-		player.update(dt);
+		for (Player p : characters)
+			p.update(dt);		
 	}
 
 	private void draw(float dt) {
-
-		
 
 		/* Render part */
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		testMap.render();
-		player.draw(spriteBatch);
+		for (Player p : characters)
+			p.draw(spriteBatch);
 
 		
 	}
@@ -74,8 +79,9 @@ public class ClassicMode extends ScreenAdapter {
 	}	
 
 	public void nextCharacter() {
-		centerCamera();
+		characters.add(characters.remove(0));
 		characterControllers.add(characterControllers.remove(0));
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
+		centerCamera();
 	}
 }
