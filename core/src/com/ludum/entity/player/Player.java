@@ -3,6 +3,7 @@ package com.ludum.entity.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -18,6 +19,8 @@ import com.ludum.physics.PhysicsDataStructure;
 import com.ludum.physics.PhysicsManager;
 import com.ludum.physics.PhysicsObject;
 import com.ludum.physics.PhysicsObjectType;
+import com.ludum.rendering.TextureManager;
+import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
 import com.ludum.entity.Entity;
 
@@ -28,36 +31,21 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private Skill s2;
 
 
-	private Animation walkAnimation;
-	private Texture walkSheet;
-	private TextureRegion[] walkFrames;
-	private SpriteBatch spriteBatch;
-	private TextureRegion currentFrame;
-	private static int FRAME_COLS = 4;
-	private static int FRAME_ROWS = 1;
-	private float stateTime = 0; 
+	
 	private PlayerState state;
 
 	private Body body;
 	private Vector2 physicsSize;
 	private Vector2 acc;
 	private ArrayList<PhysicsDataStructure> botContactList;
-
+	private float stateTime = 0;
+	private TextureRegion currentFrame;
+	private SpriteBatch spriteBatch;
+	
 	public Player(Vector2 p, Skill s1, Skill s2) {
 		this.s1 = s1;
 		this.s2 = s2;
-		walkSheet = new Texture("player.png");
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/FRAME_COLS, walkSheet.getHeight()/FRAME_ROWS);              // #10
-        walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-        int index = 0;
-        for (int i = 0; i < FRAME_ROWS; i++) {
-            for (int j = 0; j < FRAME_COLS; j++) {
-                walkFrames[index++] = tmp[i][j];
-            }
-        }
-        walkAnimation = new Animation(0.1f, walkFrames);
-        currentFrame = walkFrames[0];
-		spriteBatch = new SpriteBatch();
+		
 		pos = p.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
@@ -68,6 +56,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 				ConfigManager.playerPhysSizeY);
 		state = PlayerState.JUMPING;
 		init(pos);
+		spriteBatch = new SpriteBatch();
 	}
 
 	public void init(Vector2 p) {
@@ -160,7 +149,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
 		stateTime += dt;
-		currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+		currentFrame = TextureManager.getInstance().getTextureRegion(TextureType.PlayerRun, stateTime);
 	}
 
 	public Vector2 getPosition() {
