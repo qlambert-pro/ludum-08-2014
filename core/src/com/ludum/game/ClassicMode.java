@@ -28,6 +28,7 @@ public class ClassicMode extends ScreenAdapter {
 			new ArrayList<InputProcessor>();
 	
 	public ClassicMode(Game g) {
+		//Gdx.audio.newMusic();
 		game = g;
 		spriteBatch = new SpriteBatch();
 		
