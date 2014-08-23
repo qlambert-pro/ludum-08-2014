@@ -71,17 +71,20 @@ public class ClassicMode extends ScreenAdapter {
 	}
 
 	@Override
-	public void render(float dt) {
-		
+	public void render(float dt) {		
 		update(dt);
-		draw(dt);
-		
+		draw(dt);		
 	}	
 
-	public void nextCharacter() {
-		characters.add(characters.remove(0));
+	public void nextCharacter() {		
+		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
 		characterControllers.add(characterControllers.remove(0));
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
 		centerCamera();
+	}
+	
+	public void swapWorld() {
+		//TODO change the relevant bloc's physic and rendering
+		System.out.println("Calling swapWorld");
 	}
 }
