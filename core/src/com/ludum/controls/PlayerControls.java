@@ -44,6 +44,7 @@ public class PlayerControls extends InputAdapter {
 
 		return false;
 	}
+
 	
 	   @Override
 	   public boolean keyUp (int keycode) {
