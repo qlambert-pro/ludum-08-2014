@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.ludum.configuration.ConfigManager;
 import com.ludum.physics.PhysicsDataStructure;
 import com.ludum.physics.PhysicsManager;
 import com.ludum.physics.PhysicsObject;
@@ -30,12 +32,15 @@ public class Map extends ApplicationAdapter {
 	
 	private static final String LIGHT_COLLISION_LAYER_NAME = "lightWorld";
 	private static final String DARK_COLLISION_LAYER_NAME = "darkWorld";
+	private static final String SPAWN1_LAYER_NAME = "spawn1";
+	private static final String SPAWN2_LAYER_NAME = "spawn2";
 
 	private TiledMap tiledMap;
 	private OrthographicCamera camera;
 	private TiledMapRenderer tiledMapRenderer;
 	private Collection<Edge> brightEdges;
 	private Collection<Edge> darkEdges;
+	private List<Vector2> spawnList;
 	
 	enum WorldType {
 		LIGHT, DARK;
@@ -56,6 +61,10 @@ public class Map extends ApplicationAdapter {
 		darkEdges = new LinkedList<Edge>();
 		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), Map.WorldType.LIGHT);
 		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), Map.WorldType.DARK);
+	
+		spawnList = new ArrayList<Vector2>();
+		initSpawn(SPAWN1_LAYER_NAME);
+		initSpawn(SPAWN2_LAYER_NAME);
 	}
 
 	@Override
@@ -77,7 +86,6 @@ public class Map extends ApplicationAdapter {
 		} else {
 			getLayer(layerDark).setVisible(true);
 			getLayer(layerWhite).setVisible(false);
-
 		}
 	}
 
@@ -86,14 +94,35 @@ public class Map extends ApplicationAdapter {
 
 	}
 
-	public void addCollisionEdges(TiledMapTileLayer layer,
+	public Vector2 getSpawn(int id) {
+		return spawnList.get(id);
+	}
+	
+	private void initSpawn(String layerName) {
+		TiledMapTileLayer layer = getLayer(layerName);
+		int width = layer.getWidth();
+		int height = layer.getHeight();
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (layer.getCell(x, y) != null) {
+					Vector2 spawn =  new Vector2(x * ConfigManager.minBlockSize,
+												 y * ConfigManager.minBlockSize);
+					spawnList.add(spawn);
+				}
+			}
+		}
+	}
+	
+	private void addCollisionEdges(TiledMapTileLayer layer,
 			Map.WorldType type) {
 		int width = layer.getWidth();
 		int height = layer.getHeight();
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				extendCell(x, y, layer, type);
+				if (layer.getCell(x, y) != null)
+					extendCell(x, y, layer, type);
 			}
 		}
 	}

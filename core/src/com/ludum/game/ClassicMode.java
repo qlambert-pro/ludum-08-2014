@@ -31,18 +31,17 @@ public class ClassicMode extends ScreenAdapter {
 		//Gdx.audio.newMusic();
 		game = g;
 		spriteBatch = new SpriteBatch();
-		
-		characters.add(PlayerFactory.getFactory().getAlice(new Vector2(0, 0)));
-		characterControllers.add(new PlayerControls(characters.get(0), this));
-		
-		characters.add(PlayerFactory.getFactory().getBob(new Vector2(74, 0)));
-		characterControllers.add(new PlayerControls(characters.get(1), this));
-		
-		((LudumGame) game).setInputProcessor(characterControllers.get(0));
+
 		testMap=new Map();
 		testMap.create();
 		
+		characters.add(PlayerFactory.getFactory().getAlice(testMap.getSpawn(0)));
+		characterControllers.add(new PlayerControls(characters.get(0), this));
 		
+		characters.add(PlayerFactory.getFactory().getBob(testMap.getSpawn(1)));
+		characterControllers.add(new PlayerControls(characters.get(1), this));
+		
+		((LudumGame) game).setInputProcessor(characterControllers.get(0));
 	}
 	
 	

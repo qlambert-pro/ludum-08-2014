@@ -30,7 +30,7 @@ public class PhysicsManager {
 	}
 
 	public PhysicsManager() {
-		world = new World(new Vector2(0, 0 /*-ConfigManager.gravity*/), true);
+		world = new World(new Vector2(0, -ConfigManager.gravity), true);
 		world.setContactListener(new PhysicsContactListener());
 		updateCount = 0;
 	}
@@ -75,7 +75,7 @@ public class PhysicsManager {
 	
 	public Body createEdge(Vector2 pos1, Vector2 pos2, PhysicsDataStructure s) {
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.position.set(WORLD_TO_BOX * pos1.x, WORLD_TO_BOX * pos1.y);
+		bodyDef.position.set(pos1.x, pos1.y);
 		Body b =  world.createBody(bodyDef);
 		EdgeShape edge = new EdgeShape();
 		Vector2 p1 = new Vector2(0,0);
