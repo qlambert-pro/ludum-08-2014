@@ -1,9 +1,5 @@
 package com.ludum.entity.player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.entity.Drawable;
+import com.ludum.entity.Entity;
 import com.ludum.physics.PhysicsDataStructure;
 import com.ludum.physics.PhysicsManager;
 import com.ludum.physics.PhysicsObject;
@@ -22,7 +19,6 @@ import com.ludum.physics.PhysicsObjectType;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
-import com.ludum.entity.Entity;
 
 
 public class Player extends Entity implements Drawable, PhysicsObject {
