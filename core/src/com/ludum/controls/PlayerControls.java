@@ -60,6 +60,7 @@ public class PlayerControls extends InputAdapter {
 				player.stopRight();				
 				return true;
 		   }
-		return false;
+
+		   return false;
 	   }
 }
