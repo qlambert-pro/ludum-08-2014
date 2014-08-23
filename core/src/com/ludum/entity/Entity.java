@@ -3,8 +3,8 @@ package com.ludum.entity;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
-	private Vector2 pos;
-	private Vector2 size;
+	protected Vector2 pos;
+	protected Vector2 size;
 	
 	public void setPosition(float posX, float posY){
 		this.pos.x = posX;
