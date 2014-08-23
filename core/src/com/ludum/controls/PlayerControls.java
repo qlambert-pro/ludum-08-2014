@@ -9,9 +9,14 @@ public class PlayerControls extends InputAdapter {
 	private Player player;
 	private ClassicMode mode;
 
+	public PlayerControls(Player p, ClassicMode m) {
+		player = p;
+		mode = m;
+	}
+
 	@Override
-	public boolean keyDown (int keycode) {
-		switch(keycode) {
+	public boolean keyDown(int keycode) {
+		switch (keycode) {
 		case Keys.LEFT:
 			player.moveLeft();
 			return true;

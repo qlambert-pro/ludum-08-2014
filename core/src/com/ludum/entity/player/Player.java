@@ -1,8 +1,13 @@
 package com.ludum.entity.player;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -16,11 +21,21 @@ import com.ludum.physics.PhysicsObjectType;
 import com.ludum.skill.Skill;
 import com.ludum.entity.Entity;
 
+
 public class Player extends Entity implements Drawable, PhysicsObject {
 
 	private Skill s1;
 	private Skill s2;
 
+
+	private Animation walkAnimation;
+	private Texture walkSheet;
+	private TextureRegion[] walkFrames;
+	private SpriteBatch spriteBatch;
+	private TextureRegion currentFrame;
+	private static int FRAME_COLS = 4;
+	private static int FRAME_ROWS = 1;
+	private float stateTime = 0; 
 	private PlayerState state;
 
 	private Body body;
@@ -31,6 +46,18 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public Player(Vector2 p, Skill s1, Skill s2) {
 		this.s1 = s1;
 		this.s2 = s2;
+		walkSheet = new Texture("player.png");
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/FRAME_COLS, walkSheet.getHeight()/FRAME_ROWS);              // #10
+        walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+            for (int j = 0; j < FRAME_COLS; j++) {
+                walkFrames[index++] = tmp[i][j];
+            }
+        }
+        walkAnimation = new Animation(0.1f, walkFrames);
+        currentFrame = walkFrames[0];
+		spriteBatch = new SpriteBatch();
 		pos = p.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
@@ -40,6 +67,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		physicsSize = new Vector2(ConfigManager.playerPhysSizeX,
 				ConfigManager.playerPhysSizeY);
 		state = PlayerState.JUMPING;
+		init(pos);
 	}
 
 	public void init(Vector2 p) {
@@ -61,14 +89,26 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public void moveRight() {
 		acc.x += 1;
 	}
-
+	
+	public void stopRight() {
+		acc.x -= 1;
+	}
+	
 	public void moveLeft() {
 		acc.y -= 1;
+	}
+	
+	public void stopLeft() {
+		acc.y += 1;
 	}
 
 	public void jump() {
 		if (botContactList.isEmpty())
 			acc.y += 1;
+	}
+	
+	public void stopJump() {
+		
 	}
 
 	public void useSkill1() {
@@ -113,12 +153,14 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			state = PlayerState.STANDING;
 		}
 
-		acc.setZero();
+		//acc.setZero();
 	}
 
 	public void update(float dt) {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
+		stateTime += dt;
+		currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 	}
 
 	public Vector2 getPosition() {
@@ -127,6 +169,10 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void draw(Batch batch) {
+
+		spriteBatch.begin();
+		spriteBatch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerPhysSizeY);
+		spriteBatch.end();
 
 	}
 
@@ -172,6 +218,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			break;
 		default:
 			break;
-		}	
+		}
 	}
 }
