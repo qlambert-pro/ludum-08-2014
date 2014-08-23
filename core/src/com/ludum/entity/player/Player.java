@@ -95,11 +95,11 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	}
 	
 	public void moveLeft() {
-		acc.y -= 1;
+		acc.x -= 1;
 	}
 	
 	public void stopLeft() {
-		acc.y += 1;
+		acc.x += 1;
 	}
 
 	public void jump() {
