@@ -30,8 +30,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private Skill s1;
 	private Skill s2;
 
-
-	
 	private PlayerState state;
 
 	private Body body;
@@ -181,7 +179,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case BLOCK:
+		case EDGE:
 			checkBotContact(struct, contact);
 			break;
 		case PLAYER:
@@ -195,7 +193,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case BLOCK:
+		case EDGE:
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}

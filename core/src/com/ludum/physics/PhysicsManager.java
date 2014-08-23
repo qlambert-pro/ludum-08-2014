@@ -3,6 +3,7 @@ package com.ludum.physics;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -72,8 +73,25 @@ public class PhysicsManager {
 		return b;
 	}
 	
-	public Body createEdge(Vector2 pos1, Vector2 pos2) {
-		return null;
+	public Body createEdge(Vector2 pos1, Vector2 pos2, PhysicsDataStructure s) {
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.position.set(WORLD_TO_BOX * pos1.x, WORLD_TO_BOX * pos1.y);
+		Body b =  world.createBody(bodyDef);
+		EdgeShape edge = new EdgeShape();
+		Vector2 p1 = new Vector2(0,0);
+		Vector2 p2 = new Vector2(pos2.x-pos1.x,pos2.y-pos1.y);
+		
+		edge.set(p1, p2);
+		
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = edge;
+		fixtureDef.friction = 0;
+		fixtureDef.density = 0;
+		fixtureDef.restitution = 0.0f;
+		
+		b.createFixture(fixtureDef);    
+		b.setUserData(s);
+		return b;
 	}
 
 }
