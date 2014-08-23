@@ -20,13 +20,13 @@ public class ClassicMode extends ScreenAdapter {
 	}
 
 	private void draw(float dt) {
-		
+		testMap.render();
 		
 	}
 	
 	@Override
 	public void render(float dt) {
-		testMap.render();
+		
 		update(dt);
 		draw(dt);
 		
