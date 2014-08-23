@@ -8,10 +8,10 @@
  </tileset>
  <layer name="bg" width="10" height="6">
   <data encoding="base64" compression="zlib">
-   eJyLZWBgCAHiGCCORaJj0fggNaFQPggzQXEIDv2hUAxTF4MmV08kZqIyBgCl0A5M
+   eJyLZWBgCAHiGCCORaJj0fggNaFQfgyUj4zR9YdCMbI8shxILBqK0c1CxtFUxgD0XxTo
   </data>
  </layer>
- <layer name="foregroung" width="10" height="6">
+ <layer name="foregroungWhite" width="10" height="6">
   <data encoding="base64" compression="zlib">
    eJxjYCAPsEMxueqEkTA7HTEAVdQBEw==
   </data>
@@ -20,12 +20,16 @@
   <object x="9" y="97" width="309" height="91"/>
   <object x="128" y="31" width="63" height="67"/>
  </objectgroup>
- <layer name="foregroundDark" width="10" height="6" visible="0">
+ <layer name="foregroundDark" width="10" height="6">
   <data encoding="base64" compression="zlib">
    eJxjYCAP1EMxMWqwqasfIAwAJtsRXg==
   </data>
  </layer>
- <objectgroup name="coliDark" width="10" height="6" visible="0">
+ <objectgroup name="coliDark" width="10" height="6">
   <object x="97" y="65" width="31" height="31"/>
+ </objectgroup>
+ <objectgroup name="coliNormal" width="10" height="6">
+  <object x="29" y="30" width="33" height="31"/>
+  <object x="223" y="31" width="63" height="35"/>
  </objectgroup>
 </map>
