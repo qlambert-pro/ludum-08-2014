@@ -29,7 +29,7 @@ public class PhysicsManager {
 	}
 
 	public PhysicsManager() {
-		world = new World(new Vector2(0, ConfigManager.gravity), true);
+		world = new World(new Vector2(0, 0 /*-ConfigManager.gravity*/), true);
 		world.setContactListener(new PhysicsContactListener());
 		updateCount = 0;
 	}

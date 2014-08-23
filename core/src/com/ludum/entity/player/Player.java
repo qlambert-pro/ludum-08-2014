@@ -89,14 +89,26 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public void moveRight() {
 		acc.x += 1;
 	}
-
+	
+	public void stopRight() {
+		acc.x -= 1;
+	}
+	
 	public void moveLeft() {
 		acc.y -= 1;
+	}
+	
+	public void stopLeft() {
+		acc.y += 1;
 	}
 
 	public void jump() {
 		if (botContactList.isEmpty())
 			acc.y += 1;
+	}
+	
+	public void stopJump() {
+		
 	}
 
 	public void useSkill1() {
@@ -141,7 +153,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			state = PlayerState.STANDING;
 		}
 
-		acc.setZero();
+		//acc.setZero();
 	}
 
 	public void update(float dt) {
@@ -159,9 +171,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public void draw(Batch batch) {
 
 		spriteBatch.begin();
-		spriteBatch.draw(currentFrame,0,0);
+		spriteBatch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerPhysSizeY);
 		spriteBatch.end();
-
 
 	}
 
