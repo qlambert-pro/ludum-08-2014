@@ -2,7 +2,11 @@ package com.ludum.physics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.ludum.configuration.ConfigManager;
 
@@ -18,14 +22,14 @@ public class PhysicsManager {
 	private World world;
 	private float updateCount;
 
-	static PhysicsManager getInstance() {
+	public static PhysicsManager getInstance() {
 		if (singleton == null)
 			singleton = new PhysicsManager();
 		return singleton;
 	}
 
 	public PhysicsManager() {
-		world = new World(new Vector2(0, ConfigManager.gravity), true);
+		world = new World(new Vector2(0, 0 /*-ConfigManager.gravity*/), true);
 		world.setContactListener(new PhysicsContactListener());
 		updateCount = 0;
 	}
@@ -44,6 +48,28 @@ public class PhysicsManager {
 		world.getBodies(bodies);
 		for (Body b : bodies)
 			world.destroyBody(b);
+	}
+	
+	public Body createDynamicRectangle(Vector2 pos, Vector2 size, PhysicsDataStructure s)
+	{
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.position.set(WORLD_TO_BOX * pos.x, WORLD_TO_BOX * pos.y);
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.fixedRotation = true;
+		Body b = world.createBody(bodyDef);
+		
+		PolygonShape box = new PolygonShape();
+		box.setAsBox(WORLD_TO_BOX * size.x/2, WORLD_TO_BOX * size.y/2);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = box;
+		
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
+		
+		b.createFixture(fixtureDef);	    
+		b.setUserData(s);
+		return b;
 	}
 
 }
