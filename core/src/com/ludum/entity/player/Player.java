@@ -26,8 +26,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private Skill s1;
 	private Skill s2;
 
-
-	
 	private PlayerState state;
 
 	private Body body;
@@ -93,7 +91,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	}
 	
 	public void stopJump() {
-		
+		acc.y -= 1;
 	}
 
 	public void useSkill1() {
@@ -122,13 +120,18 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		body.applyLinearImpulse(new Vector2(impulseX, 0),
 				body.getWorldCenter(), true);
 
-		if (acc.y != 0) {
+		if (acc.y > 0) {
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
 					body.getWorldCenter(), true);
 		}
+		else if (acc.y < 0) {
+			if(speed.y > 0)
+				body.setLinearVelocity(speed.x, 0);
+		}
+		acc.y = 0;
 
 		if (botContactList.isEmpty()) {
 			state = PlayerState.JUMPING;
@@ -137,8 +140,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		} else {
 			state = PlayerState.STANDING;
 		}
-
-		//acc.setZero();
 	}
 
 	public void update(float dt) {
@@ -177,7 +178,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case BLOCK:
+		case EDGE:
 			checkBotContact(struct, contact);
 			break;
 		case PLAYER:
@@ -191,7 +192,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case BLOCK:
+		case EDGE:
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
