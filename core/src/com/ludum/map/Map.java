@@ -57,8 +57,8 @@ public class Map extends ApplicationAdapter {
 
 
 	public void changeWorld(){
-		String layerDark="foregroundDarK";
-		String layerWhite="foregroundWhite";
+		String layerDark="foregroundDark";
+		String layerWhite="foregroungWhite";
 		if(getLayers(layerDark).isVisible()){
 			getLayers(layerDark).setVisible(false);
 			getLayers(layerWhite).setVisible(true);
