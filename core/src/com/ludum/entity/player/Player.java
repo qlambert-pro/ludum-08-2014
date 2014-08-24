@@ -3,7 +3,6 @@ package com.ludum.entity.player;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -23,16 +22,25 @@ import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
 
 public abstract class Player extends Entity implements Drawable, PhysicsObject {
-
+	
+	protected enum PlayerJumpState {
+		NONE,
+		JUMP,
+		STOPJUMP
+	}
+	
 	protected Skill s1;
 	protected Skill s2;
 
 	protected WorldState worldState;
 	protected PlayerState state;
-
+	
 	protected Body body;
 	protected Vector2 physicsSize;
-	protected Vector2 acc;
+	protected boolean moveRight;
+	protected boolean moveLeft;
+	protected PlayerJumpState jumpState;
+	
 	protected ArrayList<PhysicsDataStructure> botContactList;
 	protected float stateTime = 0;
 	protected TextureRegion currentFrame;
@@ -54,11 +62,13 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
 
-		acc = new Vector2(0, 0);
 		size = new Vector2(ConfigManager.playerSizeX, ConfigManager.playerSizeY);
 		physicsSize = new Vector2(ConfigManager.playerPhysSizeX,
 				ConfigManager.playerPhysSizeY);
 		state = PlayerState.FALLING;
+		jumpState = PlayerJumpState.NONE;
+		moveRight = false;
+		moveLeft = false;
 		init(pos);
 	}
 
@@ -78,28 +88,34 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		body.setLinearVelocity(0, 0);
 	}
 
+	public void stop() {
+		moveRight = false;
+		moveLeft = false;
+		jumpState = PlayerJumpState.NONE;
+	}
+	
 	public void moveRight() {
-		acc.x += 1;
+		moveRight = true;
 	}
 
 	public void stopRight() {
-		acc.x -= 1;
+		moveRight = false;
 	}
 
 	public void moveLeft() {
-		acc.x -= 1;
+		moveLeft = true;
 	}
 
 	public void stopLeft() {
-		acc.x += 1;
+		moveLeft = false;
 	}
 
 	public void jump() {		
-		acc.y += 1;
+		jumpState = PlayerJumpState.JUMP;
 	}
 
 	public void stopJump() {
-		acc.y -= 1;
+		jumpState = PlayerJumpState.STOPJUMP;
 	}
 
 	public void useSkill1() {
@@ -124,10 +140,10 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected void updateRunning(float horizontalSpeed, float dt) {
 		float nextSpeedX;
-		if (acc.x > 0) {
+		if (moveRight && !moveLeft) {
 			nextSpeedX = Math.min(horizontalSpeed + ConfigManager.moveSpeed
 					* dt / ConfigManager.accTime, ConfigManager.moveSpeed);
-		} else if (acc.x < 0) {
+		} else if (!moveRight && moveLeft) {
 			nextSpeedX = Math.max(horizontalSpeed - ConfigManager.moveSpeed
 					* dt / ConfigManager.accTime, -ConfigManager.moveSpeed);
 		} else {
@@ -140,19 +156,19 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	protected void updateJumping(Vector2 speed, float dt) {
-		if (acc.y > 0 && !botContactList.isEmpty()) {
+		if (jumpState == PlayerJumpState.JUMP && !botContactList.isEmpty()) {
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
 					body.getWorldCenter(), true);
-		} else if (acc.y < 0) {
+		} else if (jumpState == PlayerJumpState.STOPJUMP) {
 			if (speed.y > 0) {
 				body.setLinearVelocity(speed.x, 0);
 			}
 		}
 
-		acc.y = 0;
+		jumpState = PlayerJumpState.NONE;
 	}
 
 	protected void updateState() {
@@ -162,7 +178,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			state = PlayerState.JUMPING;
 		} else if (speed.y < 0) {
 			state = PlayerState.FALLING;
-		} else if (acc.x != 0) {
+		} else if (moveRight ^ moveLeft) {
 			state = PlayerState.RUNNING;
 		} else {
 			state = PlayerState.STANDING;

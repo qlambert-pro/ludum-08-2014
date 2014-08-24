@@ -108,6 +108,8 @@ public class ClassicMode extends ScreenAdapter {
 	}
 
 	public void nextCharacter() {
+		characters.get(currentCharacterIndex).stop();
+		
 		game.removeInputProcessor(characterControllers
 				.get(currentCharacterIndex));
 
