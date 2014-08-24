@@ -3,6 +3,7 @@ package com.ludum.entity.player;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
+import com.ludum.entity.player.Player.PlayerJumpState;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
 
@@ -36,20 +37,20 @@ public class Swan extends Player{
 	@Override
 	protected void updateJumping(Vector2 speed, float dt) {
 		//if (!botContactList.isEmpty())
-		if (acc.y > 0 && nbJump < 2) {
+		if (jumpState == PlayerJumpState.JUMP && nbJump < 2) {
 			nbJump++;
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
 					body.getWorldCenter(), true);			
-		} else if (acc.y < 0) {
+		} else if (jumpState == PlayerJumpState.STOPJUMP) {
 			if (speed.y > 0) {
 				body.setLinearVelocity(speed.x, 0);			
 			}
 		} 
 		
-		acc.y = 0;
+		jumpState = PlayerJumpState.NONE;
 	}
 	
 	
@@ -64,7 +65,7 @@ public class Swan extends Player{
 				state = PlayerState.JUMPING;
 		} else if (botContactList.isEmpty()) {
 			state = PlayerState.FALLING;
-		} else if (speed.x != 0) {
+		} else if (moveRight ^ moveLeft) {
 			state = PlayerState.RUNNING;
 			nbJump = 0;
 		} else {
