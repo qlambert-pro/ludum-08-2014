@@ -23,25 +23,23 @@ import com.ludum.skill.Skill;
 import com.ludum.sound.SoundManager;
 
 public abstract class Player extends Entity implements Drawable, PhysicsObject {
-	
+
 	protected enum PlayerJumpState {
-		NONE,
-		JUMP,
-		STOPJUMP
+		NONE, JUMP, STOPJUMP
 	}
-	
+
 	protected Skill s1;
 	protected Skill s2;
 
 	protected WorldState worldState;
 	protected PlayerState state;
-	
+
 	protected Body body;
 	protected Vector2 physicsSize;
 	protected boolean moveRight;
 	protected boolean moveLeft;
 	protected PlayerJumpState jumpState;
-	
+
 	protected ArrayList<PhysicsDataStructure> botContactList;
 	protected float stateTime = 0;
 	protected TextureRegion currentFrame;
@@ -91,7 +89,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		moveLeft = false;
 		jumpState = PlayerJumpState.NONE;
 	}
-	
+
 	public void moveRight() {
 		moveRight = true;
 	}
@@ -108,7 +106,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		moveLeft = false;
 	}
 
-	public void jump() {		
+	public void jump() {
 		jumpState = PlayerJumpState.JUMP;
 	}
 
@@ -235,8 +233,12 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
 		case LIGHTEDGE:
+			if (worldState.getState() == WorldType.LIGHT)
+				checkBotContact(struct, contact);
+			break;
 		case DARKEDGE:
-			checkBotContact(struct, contact);
+			if (worldState.getState() == WorldType.DARK)
+				checkBotContact(struct, contact);
 			break;
 		case PLAYER:
 			checkBotContact(struct, contact);

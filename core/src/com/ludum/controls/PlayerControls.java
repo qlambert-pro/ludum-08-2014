@@ -32,6 +32,10 @@ public class PlayerControls extends InputAdapter {
 		case Keys.SPACE:
 			mode.nextCharacter();
 			return true;
+			
+		case Keys.S:
+			mode.swapWorld();
+			return true;
 
 		case Keys.D:
 			player.useSkill1();
