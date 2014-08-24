@@ -37,10 +37,10 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private TextureRegion portrait;
 	private SpriteBatch spriteBatch;
 	
-	public Player(Vector2 p, Skill s1, Skill s2) {
+	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port) {
 		this.s1 = s1;
 		this.s2 = s2;
-		
+		portrait = port;
 		pos = p.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
@@ -53,7 +53,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		init(pos);
 		spriteBatch = new SpriteBatch();
 
-		portrait = TextureManager.getInstance().getTextureRegion(TextureType.PlayerRun, stateTime);
+		
 	}
 
 	public void init(Vector2 p) {

@@ -1,14 +1,17 @@
 package com.ludum.entity.player;
 
 import com.badlogic.gdx.math.Vector2;
+import com.ludum.rendering.TextureManager;
 
 public class PlayerFactory {
 	private static PlayerFactory factory = null;
 	
-	private Player alice  = null;
-	private Player bob    = null;
+	private Player swan  = null;
+	private Player jupiter    = null;
+	/*
 	private Player cecile = null;
 	private Player damien = null;
+	*/
 	
 	private PlayerFactory() {
 		
@@ -21,23 +24,29 @@ public class PlayerFactory {
 		return factory;		
 	}
 	
-	public Player getAlice(Vector2 pos) {
-		if (alice == null)
-			alice = new Player(pos, null, null);
+	public Player getSwan(Vector2 pos) {
+		if (swan == null)
+			swan = new Player(pos,
+							  null,
+							  null,
+							  TextureManager.getInstance().getSwanPortraitTextureRegion());
 		else
-			alice.reset(pos);
-		return alice;
+			swan.reset(pos);
+		return swan;
 	}
 	
-	public Player getBob(Vector2 pos) {
-		if (bob == null)
-			bob = new Player(pos, null, null);
+	public Player getJupiter(Vector2 pos) {
+		if (jupiter == null)
+			jupiter = new Player(pos,
+					  			 null,
+					  			 null,
+					  			 TextureManager.getInstance().getJupiterPortraitTextureRegion());
 		else
-			bob.reset(pos);
-		return bob;
+			jupiter.reset(pos);
+		return jupiter;
 	}
 	
-	public Player getCecile(Vector2 pos) {
+/*	public Player getCecile(Vector2 pos) {
 		if (cecile == null)
 			cecile = new Player(pos, null, null);
 		else
@@ -51,5 +60,5 @@ public class PlayerFactory {
 		else
 			damien.reset(pos);
 		return damien;
-	}
+	}*/
 }

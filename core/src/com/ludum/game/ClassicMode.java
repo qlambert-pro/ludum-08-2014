@@ -36,17 +36,27 @@ public class ClassicMode extends ScreenAdapter {
 		spriteBatch = new SpriteBatch();
 
 		testMap=new Map();
-		testMap.create();
+		testMap.create();		
 		
-		characters.add(PlayerFactory.getFactory().getAlice(testMap.getSpawn(0)));
-		characterControllers.add(new PlayerControls(characters.get(0), this));
-		
-		characters.add(PlayerFactory.getFactory().getBob(testMap.getSpawn(1)));
-		characterControllers.add(new PlayerControls(characters.get(1), this));
+		addSwan();
+		addJupiter();			
 		
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
 	}
 	
+	private void addSwan() {
+		characters.add(PlayerFactory.getFactory().getSwan(
+				testMap.getSpawn(characters.size())));
+		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
+				 				 this));
+	}
+	
+	private void addJupiter() {
+		characters.add(PlayerFactory.getFactory().getJupiter(
+				testMap.getSpawn(characters.size())));
+		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
+				 				 this));
+	}
 	
 	private void update(float dt) {
 		for (Player p : characters)
