@@ -20,6 +20,7 @@ import com.ludum.entity.player.Player;
 import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;
 import com.ludum.rendering.CharacterCenteredCamera;
+import com.ludum.sound.SoundManager;
 
 public class ClassicMode extends ScreenAdapter {
 	private LudumGame game;
@@ -55,6 +56,9 @@ public class ClassicMode extends ScreenAdapter {
 		game.addInputProcessor(characterControllers.get(currentCharacterIndex));
 
 		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
+		
+		
+		SoundManager.getInstance().startBackGroundMusic();
 	}
 
 	private void addSwan() {
