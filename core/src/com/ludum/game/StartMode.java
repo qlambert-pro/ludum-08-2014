@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.ludum.sound.SoundManager;
 
 public class StartMode extends ScreenAdapter {
 	private LudumGame game;
@@ -58,6 +59,7 @@ public class StartMode extends ScreenAdapter {
 		});
 
 		stage.addActor(classicMode);
+		SoundManager.getInstance();
 	}
 
 	@Override
