@@ -23,25 +23,26 @@ import com.ludum.skill.Skill;
 import com.ludum.sound.SoundManager;
 
 public abstract class Player extends Entity implements Drawable, PhysicsObject {
-	
+
 	protected enum PlayerJumpState {
-		NONE,
-		JUMP,
-		STOPJUMP
+		NONE, JUMP, STOPJUMP
 	}
-	
+
+	protected Vector2 spawn;
+	protected Vector2 mapSize;
+
 	protected Skill s1;
 	protected Skill s2;
 
 	protected WorldState worldState;
 	protected PlayerState state;
-	
+
 	protected Body body;
 	protected Vector2 physicsSize;
 	protected boolean moveRight;
 	protected boolean moveLeft;
 	protected PlayerJumpState jumpState;
-	
+
 	protected ArrayList<PhysicsDataStructure> botContactList;
 	protected float stateTime = 0;
 	protected TextureRegion currentFrame;
@@ -52,11 +53,14 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected TextureType textureType;
 
-	public Player(Vector2 p, TextureRegion port, WorldState s) {
+	public Player(Vector2 spawn, Vector2 mapSize, TextureRegion port,
+			WorldState s) {
 		portrait = port;
 		this.worldState = s;
 		endContact = 0;
-		pos = p.cpy();
+		pos = spawn.cpy();
+		this.spawn = spawn.cpy();
+		this.mapSize = mapSize.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
 
@@ -78,10 +82,10 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		pos.set(p);
 	}
 
-	public void reset(Vector2 p) {
-		pos.set(p);
-		body.setTransform((p.x + size.x / 2) * PhysicsManager.WORLD_TO_BOX,
-				(p.y + size.y / 2) * PhysicsManager.WORLD_TO_BOX,
+	public void respawn() {
+		pos.set(spawn);
+		body.setTransform((spawn.x + size.x / 2) * PhysicsManager.WORLD_TO_BOX,
+				(spawn.y + size.y / 2) * PhysicsManager.WORLD_TO_BOX,
 				body.getAngle());
 		body.setLinearVelocity(0, 0);
 	}
@@ -91,7 +95,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		moveLeft = false;
 		jumpState = PlayerJumpState.NONE;
 	}
-	
+
 	public void moveRight() {
 		moveRight = true;
 	}
@@ -108,7 +112,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		moveLeft = false;
 	}
 
-	public void jump() {		
+	public void jump() {
 		jumpState = PlayerJumpState.JUMP;
 	}
 
@@ -127,13 +131,25 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void updatePhysics(float dt) {
-
 		Vector2 speed = body.getLinearVelocity();
 
 		updateRunning(speed.x, dt);
 		updateJumping(speed, dt);
 		updateState();
+		
+		checkDeath();
+	}
 
+	public void checkDeath() {
+		/* check if the player is outside limit */
+		if ((pos.x < -ConfigManager.outsideLimit * ConfigManager.minBlockSize)
+				|| (pos.y < -ConfigManager.outsideLimit
+						* ConfigManager.minBlockSize)
+				|| (pos.x > mapSize.x + ConfigManager.outsideLimit
+						* ConfigManager.minBlockSize)
+				|| (pos.y > mapSize.y + ConfigManager.outsideLimit
+						* ConfigManager.minBlockSize))
+			respawn();
 	}
 
 	protected void updateRunning(float horizontalSpeed, float dt) {
@@ -235,8 +251,12 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
 		case LIGHTEDGE:
+			if (worldState.getState() == WorldType.LIGHT)
+				checkBotContact(struct, contact);
+			break;
 		case DARKEDGE:
-			checkBotContact(struct, contact);
+			if (worldState.getState() == WorldType.DARK)
+				checkBotContact(struct, contact);
 			break;
 		case PLAYER:
 			checkBotContact(struct, contact);

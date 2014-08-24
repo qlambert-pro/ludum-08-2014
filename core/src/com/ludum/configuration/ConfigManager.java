@@ -20,6 +20,10 @@ public class ConfigManager {
 
 	public static float physicsStepSize = 1f/60f;
 	
+	/* Limit settings */
+	
+	public static int outsideLimit = 10;
+	
 	/* Camera settings */
 	public static float camWidth = 32;
 	public static float camHeight = 18;
