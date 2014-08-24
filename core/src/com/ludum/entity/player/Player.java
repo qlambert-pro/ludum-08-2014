@@ -41,6 +41,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	
 	private int endContact;
 	
+	private TextureType textureType;
 	
 	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
 		this.s1 = s1;
@@ -152,8 +153,14 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
 		stateTime += dt;
-		currentFrame = TextureManager.getInstance().getTextureRegion(
-				TextureType.PlayerRun, stateTime);
+		if(state == PlayerState.JUMPING){
+			textureType = TextureType.SwanJump;
+		}else if(state == PlayerState.RUNNING){
+			textureType = TextureType.SwanRun;
+		}else if(state == PlayerState.STANDING){
+			textureType = TextureType.SwanIdle;
+		}
+		currentFrame = TextureManager.getInstance().getTextureRegion(textureType, stateTime);
 	}
 
 	public Vector2 getPosition() {

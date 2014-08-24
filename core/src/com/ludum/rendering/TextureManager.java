@@ -4,17 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class TextureManager {	
-	private static int FRAME_COLS = 4;
-	private static int FRAME_ROWS = 1;
+public class TextureManager {
 	private static int PORTRAITS_COLS = 2;
 	private static int PORTRAITS_ROWS = 1;
-	
-	
 	private Animation animation[] = new Animation[TextureType.values().length];
 	private Texture walkSheet;
 	private Texture portraitSheet;
-	private TextureRegion[] frames;
+	private TextureRegion[][] frames = new TextureRegion[TextureType.values().length][];
 	private TextureRegion[] portraits;
 	private static TextureManager singleton;
 	
@@ -25,10 +21,13 @@ public class TextureManager {
 	}
 	
 	private TextureManager(){
-		init(TextureType.PlayerRun, walkSheet, frames, animation);
-		initPortraits(TextureType.PlayerPortraits, portraitSheet, portraits);
+		System.out.println(TextureType.values().length);
+		init(TextureType.SwanIdle, walkSheet, frames, animation);
+		init(TextureType.SwanJump, walkSheet, frames, animation);
+		init(TextureType.SwanRun, walkSheet, frames, animation);
+		initPortraits(TextureType.Portraits, portraitSheet, portraits);
 		
-		portraitSheet = new Texture(TextureType.PlayerPortraits.getFileName());
+		portraitSheet = new Texture(TextureType.Portraits.getFileName());
 		TextureRegion[][] tmp = TextureRegion.split(portraitSheet,
 				portraitSheet.getWidth()/PORTRAITS_COLS,
 				portraitSheet.getHeight()/PORTRAITS_ROWS);
@@ -47,22 +46,20 @@ public class TextureManager {
 
 	}
 	
-	private static final void init(TextureType type, Texture walkSheet, TextureRegion[] frames, Animation animation[]){
+	private static final void init(TextureType type, Texture walkSheet, TextureRegion[][] frames, Animation animation[]){
 		walkSheet = new Texture(type.getFileName());
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/FRAME_COLS, walkSheet.getHeight()/FRAME_ROWS);              // #10
-        frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-        int index = 0;
-        for (int i = 0; i < FRAME_ROWS; i++) {
-            for (int j = 0; j < FRAME_COLS; j++) {
-                frames[index++] = tmp[i][j];
-            }
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/type.nbFrame(), walkSheet.getHeight());
+		System.out.println(">" + tmp[0].length);
+        frames[type.ordinal()] = new TextureRegion[type.nbFrame()];
+        for (int i = 0; i < type.nbFrame(); i++) {
+        	System.out.println(type.ordinal());
+        	frames[type.ordinal()][i] = tmp[0][i];
         }
-        animation[0] = new Animation(0.1f, frames);
+        animation[type.ordinal()] = new Animation(0.1f, frames[type.ordinal()]);
 	}
 	
 	public TextureRegion getTextureRegion(TextureType type, float stateTime){
-		return animation[type.getRow()*(FRAME_ROWS-1) + type.getCol()].getKeyFrame(stateTime,true);
-		
+		return animation[type.ordinal()].getKeyFrame(stateTime,true);
 	}
 	
 	
@@ -72,6 +69,10 @@ public class TextureManager {
 
 	public TextureRegion getJupiterPortraitTextureRegion() {
 		return portraits[1];
+	}
+	
+	public TextureRegion getEnd() {
+		return portraits[0];
 	}
 	
 }

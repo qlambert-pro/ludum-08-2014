@@ -1,34 +1,24 @@
 package com.ludum.rendering;
 
 public enum TextureType {
-	PlayerJump(0, 0, 4, "player.png"),
-	PlayerIdle(4, 0, 4, "player.png"),
-	PlayerRun(8, 0, 4, "player.png"),
-	PlayerPortraits(0, 0, 2, "playerPortraits.png");
+	
+	SwanJump(1, "sprite_jump_swan.png"),
+	SwanIdle(4, "sprite_idle_swan.png"),
+	SwanRun(6, "sprite_run_swan.png"),
+	Portraits(2, "playerPortraits.png");
 
-	private int rowBeginIndex;
-	private int colBeginIndex;
-	private int nbTexture;
+	private int nbFrame;
 	private String fileName;
 
-	private TextureType(int rowBeginIndex, int colBeginIndex, int nbFrame,
+	private TextureType(int nbFrame,
 			String fileName) {
-		this.rowBeginIndex = rowBeginIndex;
-		this.colBeginIndex = colBeginIndex;
-		nbTexture = nbFrame;
+		this.nbFrame = nbFrame;
 		this.fileName = fileName;
 	}
 
-	public int getRow() {
-		return rowBeginIndex;
-	}
 
-	public int getCol() {
-		return colBeginIndex;
-	}
-
-	public int nbTexture() {
-		return nbTexture;
+	public int nbFrame() {
+		return nbFrame;
 	}
 
 	public String getFileName() {
