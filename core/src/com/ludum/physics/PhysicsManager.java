@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.ludum.configuration.ConfigManager;
-import com.ludum.map.WorldType;
 
 public class PhysicsManager {
 	/* Physics parameter */

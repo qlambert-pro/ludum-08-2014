@@ -1,19 +1,18 @@
 package com.ludum.game;
 
 import com.ludum.map.Map;
+import com.ludum.map.MapLoader;
 import com.ludum.map.WorldState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
 import com.ludum.configuration.ConfigManager;
 import com.ludum.controls.PlayerControls;
 import com.ludum.entity.player.Player;
@@ -25,6 +24,7 @@ public class ClassicMode extends ScreenAdapter {
 	private LudumGame game;
 
 	private WorldState state;
+	private MapLoader mapLoader;
 
 	private SpriteBatch worldBatch;
 	private SpriteBatch uiBatch;
@@ -39,36 +39,13 @@ public class ClassicMode extends ScreenAdapter {
 	public ClassicMode(LudumGame g) {
 		// Gdx.audio.newMusic();
 		game = g;
+		currentCharacterIndex = -1;
 		worldBatch = new SpriteBatch();
 		uiBatch = new SpriteBatch();
-
 		state = new WorldState();
 
-		map = new Map("testMap.tmx", state);
-		map.load();
-
-		addSwan();
-		addJupiter();
-
-		currentCharacterIndex = 0;
-		
-		game.addInputProcessor(characterControllers.get(currentCharacterIndex));
-
-		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
-	}
-
-	private void addSwan() {
-		characters.add(PlayerFactory.getFactory().getSwan(
-				map.getSpawn(characters.size()), state));
-		characterControllers.add(new PlayerControls(characters.get(characters
-				.size() - 1), this));
-	}
-
-	private void addJupiter() {
-		characters.add(PlayerFactory.getFactory().getJupiter(
-				map.getSpawn(characters.size()), state));
-		characterControllers.add(new PlayerControls(characters.get(characters
-				.size() - 1), this));
+		mapLoader = MapLoader.getLoader();
+		loadLevel();
 	}
 
 	private void update(float dt) {
@@ -118,23 +95,53 @@ public class ClassicMode extends ScreenAdapter {
 				end = false;
 		}
 		if (end) {
-			System.out.println("You Win!!!!!!!!!!!!!!!!!!!!!");
-			game.startCreditMode();
+			if (mapLoader.isLastMap())
+				game.startCreditMode();
+			else {
+				loadLevel();
+			}
 		}
-
 	}
 
 	public void nextCharacter() {
+		game.removeInputProcessor(characterControllers
+				.get(currentCharacterIndex));
+
 		currentCharacterIndex = (currentCharacterIndex + 1) % characters.size();
-		game.removeInputProcessor(characterControllers.get(0));
-		characterControllers.add(characterControllers.remove(0));
-		game.addInputProcessor(characterControllers.get(0));
-		
-		cam.changeCharacter(characters.get(currentCharacterIndex));		
+
+		game.addInputProcessor(characterControllers.get(currentCharacterIndex));
+		cam.changeCharacter(characters.get(currentCharacterIndex));
 	}
 
 	public void swapWorld() {
 		state.swapWorld();
 		map.changeWorld();
+	}
+
+	public void loadLevel() {
+		/* Clear last map */
+		if (currentCharacterIndex > 0)
+			game.removeInputProcessor(characterControllers
+					.get(currentCharacterIndex));
+		PhysicsManager.getInstance().clear();
+		characterControllers.clear();
+		characters.clear();
+
+		/* Load new map */
+		map = mapLoader.getNextMap(state);
+		List<Vector2> spawnList = map.getSpawns();
+
+		/* Spawn Player */
+		PlayerFactory playerFactory = PlayerFactory.getFactory();
+		for (int i = 0; i < spawnList.size(); i++) {
+			Player p = playerFactory.getPlayer(spawnList.get(i), state, i);
+			characters.add(p);
+			characterControllers.add(new PlayerControls(p, this));
+		}
+		currentCharacterIndex = 0;
+
+		/* Settup input and camera */
+		game.addInputProcessor(characterControllers.get(currentCharacterIndex));
+		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
 	}
 }
