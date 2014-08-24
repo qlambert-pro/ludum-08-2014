@@ -19,7 +19,7 @@ public class Jupiter extends Player{
 		}else if(state == PlayerState.RUNNING){
 			textureType = TextureType.SwanRun;
 		}else if(state == PlayerState.STANDING){
-			textureType = TextureType.SwanIdle;
+			textureType = TextureType.JupiterIdle;
 		}
 		super.update(dt);
 	}

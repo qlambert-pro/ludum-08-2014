@@ -20,6 +20,12 @@ public class Swan extends Player{
 			textureType = TextureType.SwanRun;
 		}else if(state == PlayerState.STANDING){
 			textureType = TextureType.SwanIdle;
+		}else if(state == PlayerState.DOUBLEJUMPING){
+			textureType = TextureType.SwanHightJump;
+		}else if(state == PlayerState.WALLGRABING){
+			textureType = TextureType.SwanWallClimbing;
+		}else if(state == PlayerState.ATTACKING){
+			textureType = TextureType.SwanHightJump;
 		}
 		super.update(dt);
 	}
