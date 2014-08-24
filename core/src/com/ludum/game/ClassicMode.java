@@ -126,7 +126,7 @@ public class ClassicMode extends ScreenAdapter {
 
 	public void loadLevel() {
 		/* Clear last map */
-		if (currentCharacterIndex > 0)
+		if (currentCharacterIndex >= 0)
 			game.removeInputProcessor(characterControllers
 					.get(currentCharacterIndex));
 		PhysicsManager.getInstance().clear();
