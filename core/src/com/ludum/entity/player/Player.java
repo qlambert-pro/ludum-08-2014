@@ -20,6 +20,7 @@ import com.ludum.physics.PhysicsObjectType;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
+import com.ludum.sound.SoundManager;
 
 public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	
@@ -154,6 +155,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected void updateJumping(Vector2 speed, float dt) {
 		if (jumpState == PlayerJumpState.JUMP && !botContactList.isEmpty()) {
+			SoundManager.getInstance().jump();
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
