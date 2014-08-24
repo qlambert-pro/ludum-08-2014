@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.controls.PlayerControls;
+import com.ludum.controls.SwanControls;
 import com.ludum.entity.player.Player;
 import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;

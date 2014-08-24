@@ -22,28 +22,29 @@ import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
 
-public class Player extends Entity implements Drawable, PhysicsObject {
+public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
-	private Skill s1;
-	private Skill s2;
+	protected Skill s1;
+	protected Skill s2;
 
-	private WorldState worldState;
-	private PlayerState state;
+	protected WorldState worldState;
+	protected PlayerState state;
 
-	private Body body;
-	private Vector2 physicsSize;
-	private Vector2 acc;
-	private ArrayList<PhysicsDataStructure> botContactList;
-	private float stateTime = 0;
-	private TextureRegion currentFrame;
+	protected Body body;
+	protected Vector2 physicsSize;
+	protected Vector2 acc;
+	protected ArrayList<PhysicsDataStructure> botContactList;
+	protected float stateTime = 0;
+	protected TextureRegion currentFrame;
 
-	private TextureRegion portrait;
-	
-	private int endContact;
-	
-	private TextureType textureType;
-	
-	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
+	protected TextureRegion portrait;
+
+	protected int endContact;
+
+	protected TextureType textureType;
+
+	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port,
+			WorldState s) {
 		this.s1 = s1;
 		this.s2 = s2;
 		portrait = port;
@@ -57,7 +58,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		size = new Vector2(ConfigManager.playerSizeX, ConfigManager.playerSizeY);
 		physicsSize = new Vector2(ConfigManager.playerPhysSizeX,
 				ConfigManager.playerPhysSizeY);
-		state = PlayerState.JUMPING;
+		state = PlayerState.FALLING;
 		init(pos);
 	}
 
@@ -103,31 +104,43 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void useSkill1() {
-		s1.use();
+		if (s1 != null)
+			s1.use();
 	}
 
 	public void useSkill2() {
-		s2.use();
+		if (s2 != null)
+			s2.use();
 	}
 
 	public void updatePhysics(float dt) {
+
 		Vector2 speed = body.getLinearVelocity();
 
+		updateRunning(speed.x, dt);
+		updateJumping(speed, dt);
+		updateState();
+
+	}
+
+	protected void updateRunning(float horizontalSpeed, float dt) {
 		float nextSpeedX;
 		if (acc.x > 0) {
-			nextSpeedX = Math.min(speed.x + ConfigManager.moveSpeed * dt
-					/ ConfigManager.accTime, ConfigManager.moveSpeed);
+			nextSpeedX = Math.min(horizontalSpeed + ConfigManager.moveSpeed
+					* dt / ConfigManager.accTime, ConfigManager.moveSpeed);
 		} else if (acc.x < 0) {
-			nextSpeedX = Math.max(speed.x - ConfigManager.moveSpeed * dt
-					/ ConfigManager.accTime, -ConfigManager.moveSpeed);
+			nextSpeedX = Math.max(horizontalSpeed - ConfigManager.moveSpeed
+					* dt / ConfigManager.accTime, -ConfigManager.moveSpeed);
 		} else {
-			nextSpeedX = ConfigManager.friction * speed.x;
+			nextSpeedX = ConfigManager.friction * horizontalSpeed;
 		}
-		float speedChangeX = nextSpeedX - speed.x;
+		float speedChangeX = nextSpeedX - horizontalSpeed;
 		float impulseX = body.getMass() * speedChangeX;
 		body.applyLinearImpulse(new Vector2(impulseX, 0),
 				body.getWorldCenter(), true);
+	}
 
+	protected void updateJumping(Vector2 speed, float dt) {
 		if (acc.y > 0) {
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
@@ -135,13 +148,21 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			body.applyLinearImpulse(new Vector2(0, impulseY),
 					body.getWorldCenter(), true);
 		} else if (acc.y < 0) {
-			if (speed.y > 0)
+			if (speed.y > 0) {
 				body.setLinearVelocity(speed.x, 0);
+			}
 		}
-		acc.y = 0;
 
-		if (botContactList.isEmpty()) {
+		acc.y = 0;
+	}
+
+	protected void updateState() {
+		Vector2 speed = body.getLinearVelocity();
+
+		if (speed.y > 0) {
 			state = PlayerState.JUMPING;
+		} else if (speed.y < 0) {
+			state = PlayerState.FALLING;
 		} else if (acc.x != 0) {
 			state = PlayerState.RUNNING;
 		} else {
@@ -153,22 +174,16 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
 		stateTime += dt;
-		if(state == PlayerState.JUMPING){
-			textureType = TextureType.SwanJump;
-		}else if(state == PlayerState.RUNNING){
-			textureType = TextureType.SwanRun;
-		}else if(state == PlayerState.STANDING){
-			textureType = TextureType.SwanIdle;
-		}
-		currentFrame = TextureManager.getInstance().getTextureRegion(textureType, stateTime);
+		currentFrame = TextureManager.getInstance().getTextureRegion(
+				textureType, stateTime);
 	}
 
 	public Vector2 getPosition() {
 		return pos;
 	}
-	
+
 	public boolean isAtEnd() {
-		return endContact>0;
+		return endContact > 0;
 	}
 
 	@Override
@@ -177,18 +192,16 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 				ConfigManager.playerSizeY);
 	}
 
-
 	public void drawUI(Batch spriteBatch, Vector2 pos, boolean isSelected) {
 		spriteBatch.begin();
-		spriteBatch.draw(portrait,pos.x,pos.y,
-				ConfigManager.portraitSizeX,ConfigManager.portraitSizeY);
+		spriteBatch.draw(portrait, pos.x, pos.y, ConfigManager.portraitSizeX,
+				ConfigManager.portraitSizeY);
 		if (isSelected)
-			spriteBatch.draw(portrait, pos.x + ConfigManager.portraitSizeX/2 -5,
-					pos.y + ConfigManager.portraitSizeY, 5, 5);
+			spriteBatch.draw(portrait, pos.x + ConfigManager.portraitSizeX / 2
+					- 5, pos.y + ConfigManager.portraitSizeY, 5, 5);
 
 		spriteBatch.end();
 	}
-
 
 	private void checkBotContact(PhysicsDataStructure struct, Contact contact) {
 		WorldManifold manifold = contact.getWorldManifold();
@@ -248,11 +261,11 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public void PreContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
 		case LIGHTEDGE:
-			if(worldState.getState() == WorldType.DARK)
+			if (worldState.getState() == WorldType.DARK)
 				contact.setEnabled(false);
 			break;
 		case DARKEDGE:
-			if(worldState.getState() == WorldType.LIGHT)
+			if (worldState.getState() == WorldType.LIGHT)
 				contact.setEnabled(false);
 			break;
 		default:

@@ -9,5 +9,6 @@ public enum PlayerState {
 	DOUBLEJUMPING,
 	WALLGRABING,
 	FREEZING,
-	DASHING
+	DASHING,
+	ATTACKING
 }

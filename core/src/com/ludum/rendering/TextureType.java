@@ -5,6 +5,12 @@ public enum TextureType {
 	SwanJump(1, "sprite_jump_swan.png"),
 	SwanIdle(4, "sprite_idle_swan.png"),
 	SwanRun(6, "sprite_run_swan.png"),
+	SwanHightJump(1, "sprite_high_jump_swan.png"),
+	SwanWallClimbing(1, "sprite_wall_climbing_swan.png"),
+	SwanAttack(5, "sprite_attack_swan.png"),
+	JupiterJump(1, "sprite_jump_swan.png"),
+	JupiterIdle(6, "sprite_idle_jupiter.png"),
+	JupiterRun(6, "sprite_run_swan.png"),
 	Portraits(2, "playerPortraits.png");
 
 	private int nbFrame;

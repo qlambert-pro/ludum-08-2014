@@ -21,10 +21,17 @@ public class TextureManager {
 	}
 	
 	private TextureManager(){
-		System.out.println(TextureType.values().length);
 		init(TextureType.SwanIdle, walkSheet, frames, animation);
 		init(TextureType.SwanJump, walkSheet, frames, animation);
 		init(TextureType.SwanRun, walkSheet, frames, animation);
+		init(TextureType.SwanHightJump, walkSheet, frames, animation);
+		init(TextureType.SwanWallClimbing, walkSheet, frames, animation);
+		init(TextureType.SwanHightJump, walkSheet, frames, animation);
+		
+		
+		init(TextureType.JupiterIdle, walkSheet, frames, animation);
+		init(TextureType.JupiterJump, walkSheet, frames, animation);
+		init(TextureType.JupiterRun, walkSheet, frames, animation);
 		initPortraits(TextureType.Portraits, portraitSheet, portraits);
 		
 		portraitSheet = new Texture(TextureType.Portraits.getFileName());
@@ -49,10 +56,8 @@ public class TextureManager {
 	private static final void init(TextureType type, Texture walkSheet, TextureRegion[][] frames, Animation animation[]){
 		walkSheet = new Texture(type.getFileName());
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/type.nbFrame(), walkSheet.getHeight());
-		System.out.println(">" + tmp[0].length);
         frames[type.ordinal()] = new TextureRegion[type.nbFrame()];
         for (int i = 0; i < type.nbFrame(); i++) {
-        	System.out.println(type.ordinal());
         	frames[type.ordinal()][i] = tmp[0][i];
         }
         animation[type.ordinal()] = new Animation(0.1f, frames[type.ordinal()]);

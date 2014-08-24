@@ -19,15 +19,14 @@ public class PlayerFactory {
 	}
 
 	public Player getSwan(Vector2 pos, WorldState state) {
-		Player swan = new Player(pos, null, null, TextureManager.getInstance()
+		Player swan = new Swan(pos, null, null, TextureManager.getInstance()
 				.getSwanPortraitTextureRegion(), state);
 		return swan;
 	}
 
 	public Player getJupiter(Vector2 pos, WorldState state) {
-		Player jupiter = new Player(pos, null, null, TextureManager
+		Player jupiter = new Jupiter(pos, null, null, TextureManager
 				.getInstance().getJupiterPortraitTextureRegion(), state);
-
 		return jupiter;
 	}
 	
