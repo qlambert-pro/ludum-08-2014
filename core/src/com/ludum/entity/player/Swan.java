@@ -6,6 +6,7 @@ import com.ludum.configuration.ConfigManager;
 import com.ludum.entity.player.Player.PlayerJumpState;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
+import com.ludum.sound.SoundManager;
 
 
 public class Swan extends Player{
@@ -38,6 +39,7 @@ public class Swan extends Player{
 	protected void updateJumping(Vector2 speed, float dt) {
 		//if (!botContactList.isEmpty())
 		if (jumpState == PlayerJumpState.JUMP && nbJump < 2) {
+			SoundManager.getInstance().jump();
 			nbJump++;
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
