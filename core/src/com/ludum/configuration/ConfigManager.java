@@ -19,4 +19,8 @@ public class ConfigManager {
 	public static float portraitSizeY = 32;
 
 	public static float physicsStepSize = 1f/60f;
+	
+	/* Camera settings */
+	public static float camWidth = 32;
+	public static float camHeight = 18;
 }

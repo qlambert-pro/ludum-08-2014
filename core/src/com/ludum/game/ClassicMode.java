@@ -12,48 +12,59 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+
 import com.ludum.configuration.ConfigManager;
 import com.ludum.controls.PlayerControls;
 import com.ludum.entity.player.Player;
 import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;
-
-
+import com.ludum.rendering.CharacterCenteredCamera;
 
 public class ClassicMode extends ScreenAdapter {
 	private Game game;
-	private List<Player> characters = new ArrayList<Player>();
-	private Map testMap;
-	private SpriteBatch spriteBatch;
+	private SpriteBatch worldBatch;
+	private SpriteBatch uiBatch;
+
 
 	private int currentCharacterIndex = 0;
+	private List<Player> characters = new ArrayList<Player>();
 	private List<InputProcessor> characterControllers =
 			new ArrayList<InputProcessor>();
-	
-	public ClassicMode(Game g) {
-		//Gdx.audio.newMusic();
-		game = g;
-		spriteBatch = new SpriteBatch();
+	private Map map;
+	private CharacterCenteredCamera cam;
 
-		testMap=new Map();
-		testMap.create();		
-		
+	
+
+	public ClassicMode(Game g) {
+		// Gdx.audio.newMusic();
+		game = g;
+		worldBatch = new SpriteBatch();			
+		uiBatch    = new SpriteBatch();
+
+		map = new Map();
+		map.load();
+
 		addSwan();
-		addJupiter();			
+		addJupiter();
 		
-		((LudumGame) game).setInputProcessor(characterControllers.get(0));
+		currentCharacterIndex = 0;
+
+		
+		((LudumGame) game).setInputProcessor(characterControllers.get(currentCharacterIndex));
+
+		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
 	}
 	
 	private void addSwan() {
 		characters.add(PlayerFactory.getFactory().getSwan(
-				testMap.getSpawn(characters.size())));
+				map.getSpawn(characters.size())));
 		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
 				 				 this));
 	}
 	
 	private void addJupiter() {
 		characters.add(PlayerFactory.getFactory().getJupiter(
-				testMap.getSpawn(characters.size())));
+				map.getSpawn(characters.size())));
 		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
 				 				 this));
 	}
@@ -63,18 +74,24 @@ public class ClassicMode extends ScreenAdapter {
 			p.updatePhysics(dt);
 		PhysicsManager.getInstance().update(dt);
 		for (Player p : characters)
-			p.update(dt);		
+			p.update(dt);
+		cam.follow();
 	}
 
 	private void draw(float dt) {
-
 		/* Render part */
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.3f, 0.5f, 0.8f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		map.render(cam);
 		
-		testMap.render();
+		worldBatch.setProjectionMatrix(cam.combined);
+
+		worldBatch.begin();
 		for (Player p : characters)
-			p.draw(spriteBatch);
+		{
+			p.draw(worldBatch);
+		}
+		worldBatch.end();
 
 		drawUI();
 	}
@@ -82,19 +99,15 @@ public class ClassicMode extends ScreenAdapter {
 	private void drawUI() {
 		int i = 0;
 		for (Player p : characters) {
-			p.drawUI(spriteBatch,
+			p.drawUI(uiBatch,
 					 new Vector2(i*ConfigManager.portraitSizeX, 0),
 					 p == characters.get(currentCharacterIndex));
 			i++;
 		}
 	}
 	
-	private void centerCamera() {
-		//TODO center camera on currently controlled player
-	}
-
 	@Override
-	public void render(float dt) {		
+	public void render(float dt) {
 		update(dt);
 		draw(dt);		
 	}	
@@ -104,11 +117,12 @@ public class ClassicMode extends ScreenAdapter {
 		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
 		characterControllers.add(characterControllers.remove(0));
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
-		centerCamera();
+		
+		cam.changeCharacter(characters.get(currentCharacterIndex));		
 	}
-	
+
 	public void swapWorld() {
-		//TODO change the relevant bloc's physic and rendering
+		// TODO change the relevant bloc's physic and rendering
 		System.out.println("Calling swapWorld");
 	}
 }

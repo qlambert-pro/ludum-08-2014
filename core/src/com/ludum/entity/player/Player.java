@@ -34,8 +34,9 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private ArrayList<PhysicsDataStructure> botContactList;
 	private float stateTime = 0;
 	private TextureRegion currentFrame;
+
 	private TextureRegion portrait;
-	private SpriteBatch spriteBatch;
+
 	
 	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port) {
 		this.s1 = s1;
@@ -51,9 +52,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 				ConfigManager.playerPhysSizeY);
 		state = PlayerState.JUMPING;
 		init(pos);
-		spriteBatch = new SpriteBatch();
-
-		
 	}
 
 	public void init(Vector2 p) {
@@ -89,7 +87,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void jump() {
-		if (botContactList.isEmpty())
+		if(!botContactList.isEmpty())
 			acc.y += 1;
 	}
 	
@@ -158,14 +156,11 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void draw(Batch batch) {
-
-		spriteBatch.begin();
-		spriteBatch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerPhysSizeY);
-		spriteBatch.end();
-
+		batch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerSizeY);
 	}
 
-	public void drawUI(Batch batch, Vector2 pos, boolean isSelected) {
+
+	public void drawUI(Batch spriteBatch, Vector2 pos, boolean isSelected) {
 		spriteBatch.begin();
 		spriteBatch.draw(portrait,pos.x,pos.y,
 				ConfigManager.portraitSizeX,ConfigManager.portraitSizeY);
@@ -176,16 +171,18 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		spriteBatch.end();
 	}
 
-	private void checkBotContact(PhysicsDataStructure b, Contact contact) {
+
+	private void checkBotContact(PhysicsDataStructure struct, Contact contact) {
 		WorldManifold manifold = contact.getWorldManifold();
 		Vector2 normal = manifold.getNormal();
-		if (contact.getFixtureA().getBody().getUserData().equals(b)) {
+		if (!contact.getFixtureA().getBody().getUserData().equals(struct)) {
 			normal.scl(-1);
 		}
 
 		Vector2 bot = new Vector2(0, 1);
+		
 		if (bot.isCollinear(normal)) {
-			botContactList.add(b);
+			botContactList.add(struct);
 		}
 	}
 

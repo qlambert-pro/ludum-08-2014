@@ -2,33 +2,20 @@ package com.ludum.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.ludum.configuration.ConfigManager;
-import com.ludum.physics.PhysicsDataStructure;
-import com.ludum.physics.PhysicsManager;
-import com.ludum.physics.PhysicsObject;
-import com.ludum.physics.PhysicsObjectType;
 
-public class Map extends ApplicationAdapter {
+public class Map {
 	
 	private static final String LIGHT_COLLISION_LAYER_NAME = "lightWorld";
 	private static final String DARK_COLLISION_LAYER_NAME = "darkWorld";
@@ -36,7 +23,6 @@ public class Map extends ApplicationAdapter {
 	private static final String SPAWN2_LAYER_NAME = "spawn2";
 
 	private TiledMap tiledMap;
-	private OrthographicCamera camera;
 	private TiledMapRenderer tiledMapRenderer;
 	private Collection<Edge> brightEdges;
 	private Collection<Edge> darkEdges;
@@ -46,14 +32,7 @@ public class Map extends ApplicationAdapter {
 		LIGHT, DARK;
 	}
 
-	@Override
-	public void create() {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, w, h);
-		camera.update();
+	public void load() {
 		tiledMap = new TmxMapLoader().load("testMap.tmx");
 		// changeWorld();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
@@ -67,25 +46,18 @@ public class Map extends ApplicationAdapter {
 		initSpawn(SPAWN2_LAYER_NAME);
 	}
 
-	@Override
-	public void render() {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		camera.update();
-		tiledMapRenderer.setView(camera);
+	public void render(OrthographicCamera cam) {
+		tiledMapRenderer.setView(cam);
 		tiledMapRenderer.render();
 	}
 
 	public void changeWorld() {
-		String layerDark = "foregroundDark";
-		String layerWhite = "foregroungWhite";
-		if (getLayer(layerDark).isVisible()) {
-			getLayer(layerDark).setVisible(false);
-			getLayer(layerWhite).setVisible(true);
+		if (getLayer(LIGHT_COLLISION_LAYER_NAME).isVisible()) {
+			getLayer(LIGHT_COLLISION_LAYER_NAME).setVisible(false);
+			getLayer(DARK_COLLISION_LAYER_NAME).setVisible(true);
 		} else {
-			getLayer(layerDark).setVisible(true);
-			getLayer(layerWhite).setVisible(false);
+			getLayer(LIGHT_COLLISION_LAYER_NAME).setVisible(true);
+			getLayer(DARK_COLLISION_LAYER_NAME).setVisible(false);
 		}
 	}
 
