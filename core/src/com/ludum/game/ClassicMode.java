@@ -139,7 +139,7 @@ public class ClassicMode extends ScreenAdapter {
 		/* Spawn Player */
 		PlayerFactory playerFactory = PlayerFactory.getFactory();
 		for (int i = 0; i < spawnList.size(); i++) {
-			Player p = playerFactory.getPlayer(spawnList.get(i), state, i);
+			Player p = playerFactory.getPlayer(spawnList.get(i), map.getSize(), state, i);
 			characters.add(p);
 			characterControllers.add(new PlayerControls(p, this));
 		}

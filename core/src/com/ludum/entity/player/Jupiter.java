@@ -9,8 +9,8 @@ import com.ludum.skill.SoloDash;
 
 public class Jupiter extends Player{
 
-	public Jupiter(Vector2 p, TextureRegion port, WorldState s) {
-		super(p, port, s);
+	public Jupiter(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
+		super(spawn, mapSize, port, s);
 		s1 = new SoloDash(body);
 		s2 = new FriendlyDash(body);
 	}

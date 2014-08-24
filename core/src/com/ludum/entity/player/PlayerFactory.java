@@ -19,23 +19,23 @@ public class PlayerFactory {
 		return factory;
 	}
 
-	public Player getSwan(Vector2 pos, WorldState state) {
-		Player swan = new Swan(pos, TextureManager.getInstance()
+	public Player getSwan(Vector2 spawn, Vector2 mapSize, WorldState state) {
+		Player swan = new Swan(spawn, mapSize, TextureManager.getInstance()
 				.getSwanPortraitTextureRegion(), state);
 		return swan;
 	}
 
-	public Player getJupiter(Vector2 pos, WorldState state) {
-		Player jupiter = new Jupiter(pos, TextureManager
+	public Player getJupiter(Vector2 spawn, Vector2 mapSize, WorldState state) {
+		Player jupiter = new Jupiter(spawn, mapSize, TextureManager
 				.getInstance().getJupiterPortraitTextureRegion(), state);
 		return jupiter;
 	}
 	
-	public Player getPlayer(Vector2 pos, WorldState state, int id) {
+	public Player getPlayer(Vector2 spawn, Vector2 mapSize,  WorldState state, int id) {
 		if(id == 0) 
-			return getSwan(pos, state);
+			return getSwan(spawn, mapSize, state);
 		else if(id == 1)
-			return getJupiter(pos, state);
+			return getJupiter(spawn, mapSize, state);
 		else
 			return null;
 	}

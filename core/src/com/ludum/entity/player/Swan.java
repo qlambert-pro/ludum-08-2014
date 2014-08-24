@@ -10,8 +10,8 @@ import com.ludum.sound.SoundManager;
 
 public class Swan extends Player{
 	int nbJump = 0;
-	public Swan(Vector2 p, TextureRegion port, WorldState s) {
-		super(p, port, s);
+	public Swan(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
+		super(spawn, mapSize, port, s);
 	}
 	
 	@Override

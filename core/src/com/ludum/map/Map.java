@@ -31,6 +31,7 @@ public class Map {
 	private Collection<Edge> brightEdges;
 	private Collection<Edge> darkEdges;
 	private List<Vector2> spawnList;
+	private Vector2 size;
 
 	public Map(String file, WorldState s) {
 		mapName = file;
@@ -42,10 +43,14 @@ public class Map {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		brightEdges = new LinkedList<Edge>();
 		darkEdges = new LinkedList<Edge>();
-		
+
+		size = new Vector2(
+				getLayer(LIGHT_COLLISION_LAYER_NAME).getTileWidth()*ConfigManager.minBlockSize, getLayer(
+						LIGHT_COLLISION_LAYER_NAME).getTileHeight()*ConfigManager.minBlockSize);
+
 		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), WorldType.LIGHT);
 		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
-		addTriggerZones(getLayer(END_LAYER_NAME),PhysicsObjectType.END);
+		addTriggerZones(getLayer(END_LAYER_NAME), PhysicsObjectType.END);
 
 		spawnList = new ArrayList<Vector2>();
 		initSpawn(SPAWN1_LAYER_NAME);
@@ -74,6 +79,10 @@ public class Map {
 		return spawnList;
 	}
 
+	public Vector2 getSize() {
+		return size;
+	}
+	
 	private void initSpawn(String layerName) {
 		TiledMapTileLayer layer = getLayer(layerName);
 		int width = layer.getWidth();
@@ -145,9 +154,10 @@ public class Map {
 		}
 	}
 
-	private void createTrigger(int x, int y, int i, int j, PhysicsObjectType type) {
-		Vector2 pos = new Vector2(x,y);
-		Vector2 size = new Vector2(i,j);
+	private void createTrigger(int x, int y, int i, int j,
+			PhysicsObjectType type) {
+		Vector2 pos = new Vector2(x, y);
+		Vector2 size = new Vector2(i, j);
 		Trigger trigger = new Trigger(pos, size, type);
 	}
 
