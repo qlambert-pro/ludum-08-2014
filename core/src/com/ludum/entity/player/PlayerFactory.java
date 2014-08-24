@@ -2,14 +2,13 @@ package com.ludum.entity.player;
 
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.map.WorldState;
+import com.ludum.rendering.TextureManager;
 
 public class PlayerFactory {
 	private static PlayerFactory factory = null;
 	
-	private Player alice  = null;
-	private Player bob    = null;
-	private Player cecile = null;
-	private Player damien = null;
+	private Player swan  = null;
+	private Player jupiter    = null;
 	
 	private PlayerFactory() {
 		
@@ -22,35 +21,27 @@ public class PlayerFactory {
 		return factory;		
 	}
 	
-	public Player getAlice(Vector2 pos, WorldState state) {
-		if (alice == null)
-			alice = new Player(pos, null, null, state);
+	public Player getSwan(Vector2 pos, WorldState state) {
+		if (swan == null)
+			swan = new Player(pos,
+							  null,
+							  null,
+							  TextureManager.getInstance().getSwanPortraitTextureRegion(),
+							  state);
 		else
-			alice.reset(pos);
-		return alice;
+			swan.reset(pos);
+		return swan;
 	}
 	
-	public Player getBob(Vector2 pos, WorldState state) {
-		if (bob == null)
-			bob = new Player(pos, null, null, state);
+	public Player getJupiter(Vector2 pos, WorldState state) {
+		if (jupiter == null)
+			jupiter = new Player(pos,
+					  			 null,
+					  			 null,
+					  			 TextureManager.getInstance().getJupiterPortraitTextureRegion(),
+					  			 state);
 		else
-			bob.reset(pos);
-		return bob;
-	}
-	
-	public Player getCecile(Vector2 pos, WorldState state) {
-		if (cecile == null)
-			cecile = new Player(pos, null, null, state);
-		else
-			cecile.reset(pos);
-		return cecile;
-	}
-	
-	public Player getDamien(Vector2 pos, WorldState state) {
-		if (damien == null)
-			damien = new Player(pos, null, null, state);
-		else
-			damien.reset(pos);
-		return damien;
+			jupiter.reset(pos);
+		return jupiter;
 	}
 }

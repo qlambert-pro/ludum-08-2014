@@ -3,6 +3,7 @@ package com.ludum.entity.player;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -36,11 +37,14 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private float stateTime = 0;
 	private TextureRegion currentFrame;
 
-	public Player(Vector2 p, Skill s1, Skill s2, WorldState s) {
+	private TextureRegion portrait;
+	
+	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
 		this.s1 = s1;
 		this.s2 = s2;
+		portrait = port;
 		this.worldState = s;
-
+		
 		pos = p.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
@@ -158,6 +162,19 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		batch.draw(currentFrame, pos.x, pos.y, ConfigManager.playerSizeX,
 				ConfigManager.playerSizeY);
 	}
+
+
+	public void drawUI(Batch spriteBatch, Vector2 pos, boolean isSelected) {
+		spriteBatch.begin();
+		spriteBatch.draw(portrait,pos.x,pos.y,
+				ConfigManager.portraitSizeX,ConfigManager.portraitSizeY);
+		if (isSelected)
+			spriteBatch.draw(portrait, pos.x + ConfigManager.portraitSizeX/2 -5,
+					pos.y + ConfigManager.portraitSizeY, 5, 5);
+
+		spriteBatch.end();
+	}
+
 
 	private void checkBotContact(PhysicsDataStructure struct, Contact contact) {
 		WorldManifold manifold = contact.getWorldManifold();
