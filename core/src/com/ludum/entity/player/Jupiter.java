@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
-import com.ludum.skill.Skill;
+import com.ludum.skill.FriendlyDash;
+import com.ludum.skill.SoloDash;
 
 public class Jupiter extends Player{
 
-	public Jupiter(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
-		super(p, s1, s2, port, s);
+	public Jupiter(Vector2 p, TextureRegion port, WorldState s) {
+		super(p, port, s);
+		s1 = new SoloDash(body);
+		s2 = new FriendlyDash(body);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
 
+
 public class PlayerFactory {
 	private static PlayerFactory factory = null;
 	
@@ -19,13 +20,13 @@ public class PlayerFactory {
 	}
 
 	public Player getSwan(Vector2 pos, WorldState state) {
-		Player swan = new Swan(pos, null, null, TextureManager.getInstance()
+		Player swan = new Swan(pos, TextureManager.getInstance()
 				.getSwanPortraitTextureRegion(), state);
 		return swan;
 	}
 
 	public Player getJupiter(Vector2 pos, WorldState state) {
-		Player jupiter = new Jupiter(pos, null, null, TextureManager
+		Player jupiter = new Jupiter(pos, TextureManager
 				.getInstance().getJupiterPortraitTextureRegion(), state);
 		return jupiter;
 	}

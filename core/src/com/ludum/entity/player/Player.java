@@ -43,10 +43,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected TextureType textureType;
 
-	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port,
-			WorldState s) {
-		this.s1 = s1;
-		this.s2 = s2;
+	public Player(Vector2 p, TextureRegion port, WorldState s) {
 		portrait = port;
 		this.worldState = s;
 		endContact = 0;

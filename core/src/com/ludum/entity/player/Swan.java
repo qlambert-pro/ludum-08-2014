@@ -5,12 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
-import com.ludum.skill.Skill;
+
 
 public class Swan extends Player{
 	int nbJump = 0;
-	public Swan(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
-		super(p, s1, s2, port, s);
+	public Swan(Vector2 p, TextureRegion port, WorldState s) {
+		super(p, port, s);
 	}
 	
 	@Override
@@ -64,7 +64,7 @@ public class Swan extends Player{
 				state = PlayerState.JUMPING;
 		} else if (botContactList.isEmpty()) {
 			state = PlayerState.FALLING;
-		} else if (acc.x != 0) {
+		} else if (speed.x != 0) {
 			state = PlayerState.RUNNING;
 			nbJump = 0;
 		} else {

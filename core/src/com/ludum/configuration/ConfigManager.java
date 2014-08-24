@@ -23,4 +23,7 @@ public class ConfigManager {
 	/* Camera settings */
 	public static float camWidth = 32;
 	public static float camHeight = 18;
+	
+	/*Jupiter Dash*/
+	public static float dashX = 2000;
 }
