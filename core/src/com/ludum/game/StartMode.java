@@ -15,9 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
-
 public class StartMode extends ScreenAdapter {
-	private Game game;
+	private LudumGame game;
 	private TextButton classicMode;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
@@ -26,11 +25,11 @@ public class StartMode extends ScreenAdapter {
 	private TextureAtlas buttonsAtlas;
 	private Skin buttonSkin;
 
-	public StartMode(Game g) {
+	public StartMode(LudumGame g) {
 		game = g;
 
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(),
-										Gdx.graphics.getHeight());
+				Gdx.graphics.getHeight());
 
 		batch = new SpriteBatch();
 
@@ -51,25 +50,24 @@ public class StartMode extends ScreenAdapter {
 		classicMode.setHeight(50);
 		classicMode.setWidth(200);
 		classicMode.addListener(new InputListener() {
-			public boolean touchDown( InputEvent event,
-									  float x, float y,
-									  int pointer, int button) {
-				((LudumGame) game).startClassicMode();
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				game.startClassicMode();
 				return true;
 			}
 		});
-		
+
 		stage.addActor(classicMode);
 	}
-	
+
 	@Override
 	public void show() {
-		((LudumGame) game).addInputProcessor(stage);
+		game.addInputProcessor(stage);
 	}
-	
+
 	@Override
 	public void hide() {
-		((LudumGame) game).removeInputProcessor(stage);
+		game.removeInputProcessor(stage);
 	}
 
 	@Override

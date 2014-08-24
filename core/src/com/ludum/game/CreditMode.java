@@ -1,6 +1,5 @@
 package com.ludum.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,12 +8,10 @@ import com.ludum.rendering.TextureManager;
 
 public class CreditMode extends ScreenAdapter {
 	private SpriteBatch batch;
-/*	private EditorCamera cam;*/
 	private float timeCount;	
 	
-	public CreditMode(Game g) {
+	public CreditMode(LudumGame g) {
 		batch = new SpriteBatch();
-		/*cam = new EditorCamera();*/
 		timeCount = 0; 
 	}
 	

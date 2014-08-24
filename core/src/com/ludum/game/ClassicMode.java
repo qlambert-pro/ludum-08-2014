@@ -22,7 +22,7 @@ import com.ludum.physics.PhysicsManager;
 import com.ludum.rendering.CharacterCenteredCamera;
 
 public class ClassicMode extends ScreenAdapter {
-	private Game game;
+	private LudumGame game;
 
 	private WorldState state;
 
@@ -36,7 +36,7 @@ public class ClassicMode extends ScreenAdapter {
 	private Map map;
 	private CharacterCenteredCamera cam;
 
-	public ClassicMode(Game g) {
+	public ClassicMode(LudumGame g) {
 		// Gdx.audio.newMusic();
 		game = g;
 		worldBatch = new SpriteBatch();
@@ -52,7 +52,7 @@ public class ClassicMode extends ScreenAdapter {
 
 		currentCharacterIndex = 0;
 		
-		((LudumGame) game).addInputProcessor(characterControllers.get(currentCharacterIndex));
+		game.addInputProcessor(characterControllers.get(currentCharacterIndex));
 
 		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
 	}
@@ -119,15 +119,16 @@ public class ClassicMode extends ScreenAdapter {
 		}
 		if (end) {
 			System.out.println("You Win!!!!!!!!!!!!!!!!!!!!!");
+			game.startCreditMode();
 		}
 
 	}
 
 	public void nextCharacter() {
 		currentCharacterIndex = (currentCharacterIndex + 1) % characters.size();
-		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
+		game.removeInputProcessor(characterControllers.get(0));
 		characterControllers.add(characterControllers.remove(0));
-		((LudumGame) game).addInputProcessor(characterControllers.get(0));
+		game.addInputProcessor(characterControllers.get(0));
 		
 		cam.changeCharacter(characters.get(currentCharacterIndex));		
 	}
