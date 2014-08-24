@@ -34,6 +34,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private ArrayList<PhysicsDataStructure> botContactList;
 	private float stateTime = 0;
 	private TextureRegion currentFrame;
+	private TextureRegion portrait;
 	private SpriteBatch spriteBatch;
 	
 	public Player(Vector2 p, Skill s1, Skill s2) {
@@ -51,6 +52,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		state = PlayerState.JUMPING;
 		init(pos);
 		spriteBatch = new SpriteBatch();
+
+		portrait = TextureManager.getInstance().getTextureRegion(TextureType.PlayerRun, stateTime);
 	}
 
 	public void init(Vector2 p) {
@@ -160,6 +163,17 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		spriteBatch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerPhysSizeY);
 		spriteBatch.end();
 
+	}
+
+	public void drawUI(Batch batch, Vector2 pos, boolean isSelected) {
+		spriteBatch.begin();
+		spriteBatch.draw(portrait,pos.x,pos.y,
+				ConfigManager.portraitSizeX,ConfigManager.portraitSizeY);
+		if (isSelected)
+			spriteBatch.draw(portrait, pos.x + ConfigManager.portraitSizeX/2 -5,
+					pos.y + ConfigManager.portraitSizeY, 5, 5);
+
+		spriteBatch.end();
 	}
 
 	private void checkBotContact(PhysicsDataStructure b, Contact contact) {

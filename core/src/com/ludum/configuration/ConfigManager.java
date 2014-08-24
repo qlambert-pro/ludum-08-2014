@@ -15,5 +15,8 @@ public class ConfigManager {
 	public static float playerPhysSizeX = 64;
 	public static float playerPhysSizeY = 64;
 	
+	public static float portraitSizeX = 32;
+	public static float portraitSizeY = 32;
+
 	public static float physicsStepSize = 1f/60f;
 }
