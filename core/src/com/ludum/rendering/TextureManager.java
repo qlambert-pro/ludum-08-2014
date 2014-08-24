@@ -30,7 +30,7 @@ public class TextureManager {
 		
 		
 		init(TextureType.JupiterIdle, walkSheet, frames, animation);
-		init(TextureType.JupiterJump, walkSheet, frames, animation);
+		init(TextureType.JupiterJumpFall, walkSheet, frames, animation);
 		init(TextureType.JupiterRun, walkSheet, frames, animation);
 		initPortraits(TextureType.Portraits, portraitSheet, portraits);
 		
