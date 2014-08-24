@@ -57,7 +57,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		size = new Vector2(ConfigManager.playerSizeX, ConfigManager.playerSizeY);
 		physicsSize = new Vector2(ConfigManager.playerPhysSizeX,
 				ConfigManager.playerPhysSizeY);
-		state = PlayerState.JUMPING;
+		state = PlayerState.FALLING;
 		init(pos);
 	}
 
@@ -111,44 +111,66 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void updatePhysics(float dt) {
-		Vector2 speed = body.getLinearVelocity();
 
+			Vector2 speed = body.getLinearVelocity();
+
+
+			updateRunning(speed.x, dt);
+			updateJumping(speed, dt);
+			updateState();		
+
+	}
+	
+	protected void updateRunning(float horizontalSpeed, float dt) {
 		float nextSpeedX;
 		if (acc.x > 0) {
-			nextSpeedX = Math.min(speed.x + ConfigManager.moveSpeed * dt
+			nextSpeedX = Math.min(horizontalSpeed + ConfigManager.moveSpeed * dt
 					/ ConfigManager.accTime, ConfigManager.moveSpeed);
 		} else if (acc.x < 0) {
-			nextSpeedX = Math.max(speed.x - ConfigManager.moveSpeed * dt
+			nextSpeedX = Math.max(horizontalSpeed - ConfigManager.moveSpeed * dt
 					/ ConfigManager.accTime, -ConfigManager.moveSpeed);
 		} else {
-			nextSpeedX = ConfigManager.friction * speed.x;
+			nextSpeedX = ConfigManager.friction * horizontalSpeed;
 		}
-		float speedChangeX = nextSpeedX - speed.x;
+		float speedChangeX = nextSpeedX - horizontalSpeed;
 		float impulseX = body.getMass() * speedChangeX;
 		body.applyLinearImpulse(new Vector2(impulseX, 0),
 				body.getWorldCenter(), true);
+	}
 
+	
+	protected void updateJumping(Vector2 speed, float dt) {
 		if (acc.y > 0) {
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
-					body.getWorldCenter(), true);
+					body.getWorldCenter(), true);			
 		} else if (acc.y < 0) {
-			if (speed.y > 0)
-				body.setLinearVelocity(speed.x, 0);
-		}
-		acc.y = 0;
+			if (speed.y > 0) {
+				body.setLinearVelocity(speed.x, 0);			
+			}
+		} 
 
-		if (botContactList.isEmpty()) {
+		
+		acc.y = 0;
+	}
+	
+	protected void updateState() {
+		Vector2 speed = body.getLinearVelocity();
+		
+		if (speed.y > 0) {
 			state = PlayerState.JUMPING;
+		} else if (speed.y < 0) {
+			state = PlayerState.FALLING;
 		} else if (acc.x != 0) {
 			state = PlayerState.RUNNING;
 		} else {
 			state = PlayerState.STANDING;
 		}
 	}
-
+	
+	
 	public void update(float dt) {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);

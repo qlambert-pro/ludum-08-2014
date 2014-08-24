@@ -13,9 +13,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
 import com.ludum.configuration.ConfigManager;
 import com.ludum.controls.PlayerControls;
+import com.ludum.controls.SwanControls;
 import com.ludum.entity.player.Player;
 import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;
@@ -59,9 +59,9 @@ public class ClassicMode extends ScreenAdapter {
 
 	private void addSwan() {
 		characters.add(PlayerFactory.getFactory().getSwan(
-				map.getSpawn(characters.size()), state));
-		characterControllers.add(new PlayerControls(characters.get(characters
-				.size() - 1), this));
+				map.getSpawn(characters.size()),state));
+		characterControllers.add(new SwanControls(characters.get(characters.size()-1),
+				 				 this));
 	}
 
 	private void addJupiter() {
