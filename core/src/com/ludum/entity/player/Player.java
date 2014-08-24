@@ -3,7 +3,6 @@ package com.ludum.entity.player;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,7 +33,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private ArrayList<PhysicsDataStructure> botContactList;
 	private float stateTime = 0;
 	private TextureRegion currentFrame;
-	private SpriteBatch spriteBatch;
 	
 	public Player(Vector2 p, Skill s1, Skill s2) {
 		this.s1 = s1;
@@ -50,7 +48,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 				ConfigManager.playerPhysSizeY);
 		state = PlayerState.JUMPING;
 		init(pos);
-		spriteBatch = new SpriteBatch();
 	}
 
 	public void init(Vector2 p) {
@@ -155,11 +152,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void draw(Batch batch) {
-
-		spriteBatch.begin();
-		spriteBatch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerPhysSizeY);
-		spriteBatch.end();
-
+		batch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerSizeY);
 	}
 
 	private void checkBotContact(PhysicsDataStructure b, Contact contact) {

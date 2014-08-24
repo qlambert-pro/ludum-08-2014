@@ -11,80 +11,84 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.ludum.controls.PlayerControls;
 import com.ludum.entity.player.Player;
 import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;
-
-
+import com.ludum.rendering.CharacterCenteredCamera;
 
 public class ClassicMode extends ScreenAdapter {
 	private Game game;
-	private List<Player> characters = new ArrayList<Player>();
-	private Map testMap;
 	private SpriteBatch spriteBatch;
-	private List<InputProcessor> characterControllers =
-			new ArrayList<InputProcessor>();
+	private Map map;
+	private CharacterCenteredCamera cam;
+	private List<Player> characters = new ArrayList<Player>();
+	private List<InputProcessor> characterControllers = new ArrayList<InputProcessor>();
+	private int currentPlayer;
 	
 	public ClassicMode(Game g) {
-		//Gdx.audio.newMusic();
+		// Gdx.audio.newMusic();
 		game = g;
 		spriteBatch = new SpriteBatch();
 
-		testMap=new Map();
-		testMap.create();
-		
-		characters.add(PlayerFactory.getFactory().getAlice(testMap.getSpawn(0)));
+		map = new Map();
+		map.load();
+
+		characters
+				.add(PlayerFactory.getFactory().getAlice(map.getSpawn(0)));
 		characterControllers.add(new PlayerControls(characters.get(0), this));
-		
-		characters.add(PlayerFactory.getFactory().getBob(testMap.getSpawn(1)));
+
+		characters.add(PlayerFactory.getFactory().getBob(map.getSpawn(1)));
 		characterControllers.add(new PlayerControls(characters.get(1), this));
+
+		currentPlayer = 0;
 		
-		((LudumGame) game).setInputProcessor(characterControllers.get(0));
+		((LudumGame) game).setInputProcessor(characterControllers.get(currentPlayer));
+
+		cam = new CharacterCenteredCamera(characters.get(currentPlayer));
 	}
-	
-	
+
 	private void update(float dt) {
 		for (Player p : characters)
 			p.updatePhysics(dt);
 		PhysicsManager.getInstance().update(dt);
 		for (Player p : characters)
-			p.update(dt);		
+			p.update(dt);
+		cam.follow();
 	}
 
 	private void draw(float dt) {
-
 		/* Render part */
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		map.render(cam);
 		
-		testMap.render();
-		for (Player p : characters)
-			p.draw(spriteBatch);
+		spriteBatch.setProjectionMatrix(cam.combined);
 
-		
-	}
-	
-	private void centerCamera() {
-		//TODO center camera on currently controlled player
+		spriteBatch.begin();
+		for (Player p : characters)
+		{
+			p.draw(spriteBatch);
+		}
+		spriteBatch.end();
 	}
 
 	@Override
-	public void render(float dt) {		
+	public void render(float dt) {
 		update(dt);
-		draw(dt);		
-	}	
-
-	public void nextCharacter() {		
-		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
-		characterControllers.add(characterControllers.remove(0));
-		((LudumGame) game).setInputProcessor(characterControllers.get(0));
-		centerCamera();
+		draw(dt);
 	}
-	
+
+	public void nextCharacter() {
+
+		((LudumGame) game).removeInputProcessor(characterControllers.get(currentPlayer));
+		currentPlayer = (currentPlayer + 1) % characterControllers.size();
+		((LudumGame) game).setInputProcessor(characterControllers.get(currentPlayer));
+		cam.changeCharacter(characters.get(currentPlayer));
+	}
+
 	public void swapWorld() {
-		//TODO change the relevant bloc's physic and rendering
+		// TODO change the relevant bloc's physic and rendering
 		System.out.println("Calling swapWorld");
 	}
 }
