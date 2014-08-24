@@ -32,8 +32,13 @@ public class PhysicsContactListener implements ContactListener {
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
-		
+		PhysicsDataStructure a = (PhysicsDataStructure) contact.getFixtureA()
+				.getBody().getUserData();
+		PhysicsDataStructure b = (PhysicsDataStructure) contact.getFixtureB()
+				.getBody().getUserData();
+
+		a.obj.PreContactHandler(b, contact);
+		b.obj.PreContactHandler(a, contact);	
 	}
 
 	@Override

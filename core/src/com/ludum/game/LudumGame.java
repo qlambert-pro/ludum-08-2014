@@ -1,6 +1,9 @@
 package com.ludum.game;
 
 import com.badlogic.gdx.Game;
+import com.ludum.game.ClassicMode;
+import com.ludum.game.StartMode;
+import com.ludum.game.CreditMode;
 import com.ludum.entity.player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -10,7 +13,11 @@ import com.badlogic.gdx.Input.Keys;
 
 
 public class LudumGame extends Game {
-	private ClassicMode classicMode;
+	private StartMode startMode = null;
+	private ClassicMode classicMode = null;
+	private CreditMode creditMode = null;
+	
+	private InputProcessor inGameControl;
 	private InputMultiplexer inputs = new InputMultiplexer();
 	
 	@Override
@@ -18,10 +25,12 @@ public class LudumGame extends Game {
 		
 		
 		classicMode = new ClassicMode(this);
-		setScreen(classicMode);
+		creditMode = new CreditMode(this);
+		startMode = new StartMode(this);
 		
-		inputs.addProcessor(
-				new InputAdapter() {					
+		setScreen(startMode);
+		
+		inGameControl = new InputAdapter() {					
 					@Override
 					public boolean keyDown(int keycode) {
 						switch (keycode) {
@@ -31,12 +40,22 @@ public class LudumGame extends Game {
 						}
 						return false;
 					}
-				});
+				}; 		
 		
 		Gdx.input.setInputProcessor(inputs);
 	}
+	
+	public void startClassicMode() {
+		inputs.addProcessor(inGameControl);
+		setScreen(classicMode);
+	}
 
-	public void setInputProcessor(InputProcessor ip) {
+	public void startCreditMode() {
+		inputs.removeProcessor(inGameControl);
+		setScreen(creditMode);
+	}
+	
+	public void addInputProcessor(InputProcessor ip) {
 		inputs.addProcessor(ip);
 	}
 

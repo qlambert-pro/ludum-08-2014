@@ -3,5 +3,11 @@ package com.ludum.entity.player;
 public enum PlayerState {
 	STANDING,
 	RUNNING,
-	JUMPING
+	JUMPING,
+	DYING,
+	FALLING,
+	DOUBLEJUMPING,
+	WALLGRABING,
+	FREEZING,
+	DASHING
 }

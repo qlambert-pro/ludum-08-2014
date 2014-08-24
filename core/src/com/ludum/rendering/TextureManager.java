@@ -71,4 +71,8 @@ public class TextureManager {
 		return portraits[1];
 	}
 	
+	public TextureRegion getEnd() {
+		return portraits[0];
+	}
+	
 }

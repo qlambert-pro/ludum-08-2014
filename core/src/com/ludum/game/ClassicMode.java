@@ -1,6 +1,7 @@
 package com.ludum.game;
 
 import com.ludum.map.Map;
+import com.ludum.map.WorldState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,17 @@ import com.ludum.rendering.CharacterCenteredCamera;
 
 public class ClassicMode extends ScreenAdapter {
 	private Game game;
+	
+	private WorldState state;
+
 	private SpriteBatch worldBatch;
 	private SpriteBatch uiBatch;
-
 
 	private int currentCharacterIndex = 0;
 	private List<Player> characters = new ArrayList<Player>();
 	private List<InputProcessor> characterControllers =
 			new ArrayList<InputProcessor>();
+
 	private Map map;
 	private CharacterCenteredCamera cam;
 
@@ -41,30 +45,31 @@ public class ClassicMode extends ScreenAdapter {
 		worldBatch = new SpriteBatch();			
 		uiBatch    = new SpriteBatch();
 
-		map = new Map();
+		state = new WorldState();
+		
+		map = new Map("testMap.tmx",state);
 		map.load();
 
 		addSwan();
 		addJupiter();
 		
 		currentCharacterIndex = 0;
-
 		
-		((LudumGame) game).setInputProcessor(characterControllers.get(currentCharacterIndex));
+		((LudumGame) game).addInputProcessor(characterControllers.get(currentCharacterIndex));
 
 		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
 	}
 	
 	private void addSwan() {
 		characters.add(PlayerFactory.getFactory().getSwan(
-				map.getSpawn(characters.size())));
+				map.getSpawn(characters.size()),state));
 		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
 				 				 this));
 	}
 	
 	private void addJupiter() {
 		characters.add(PlayerFactory.getFactory().getJupiter(
-				map.getSpawn(characters.size())));
+				map.getSpawn(characters.size()),state));
 		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
 				 				 this));
 	}
@@ -116,13 +121,13 @@ public class ClassicMode extends ScreenAdapter {
 		currentCharacterIndex = (currentCharacterIndex + 1) % characters.size();
 		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
 		characterControllers.add(characterControllers.remove(0));
-		((LudumGame) game).setInputProcessor(characterControllers.get(0));
+		((LudumGame) game).addInputProcessor(characterControllers.get(0));
 		
 		cam.changeCharacter(characters.get(currentCharacterIndex));		
 	}
 
 	public void swapWorld() {
-		// TODO change the relevant bloc's physic and rendering
-		System.out.println("Calling swapWorld");
+		state.swapWorld();
+		map.changeWorld();
 	}
 }
