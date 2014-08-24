@@ -42,6 +42,7 @@ public class Map {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		brightEdges = new LinkedList<Edge>();
 		darkEdges = new LinkedList<Edge>();
+		
 		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), WorldType.LIGHT);
 		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
 		addTriggerZones(getLayer(END_LAYER_NAME),PhysicsObjectType.END);
@@ -69,8 +70,8 @@ public class Map {
 
 	}
 
-	public Vector2 getSpawn(int id) {
-		return spawnList.get(id);
+	public List<Vector2> getSpawns() {
+		return spawnList;
 	}
 
 	private void initSpawn(String layerName) {

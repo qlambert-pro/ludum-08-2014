@@ -7,41 +7,35 @@ import com.ludum.rendering.TextureManager;
 public class PlayerFactory {
 	private static PlayerFactory factory = null;
 	
-	private Player swan  = null;
-	private Player jupiter    = null;
-	
 	private PlayerFactory() {
-		
+
 	}
-	
+
 	static public PlayerFactory getFactory() {
 		if (factory == null)
 			factory = new PlayerFactory();
-		
-		return factory;		
+
+		return factory;
 	}
-	
+
 	public Player getSwan(Vector2 pos, WorldState state) {
-		if (swan == null)
-			swan = new Swan(pos,
-							  null,
-							  null,
-							  TextureManager.getInstance().getSwanPortraitTextureRegion(),
-							  state);
-		else
-			swan.reset(pos);
+		Player swan = new Swan(pos, null, null, TextureManager.getInstance()
+				.getSwanPortraitTextureRegion(), state);
 		return swan;
 	}
-	
+
 	public Player getJupiter(Vector2 pos, WorldState state) {
-		if (jupiter == null)
-			jupiter = new Jupiter(pos,
-					  			 null,
-					  			 null,
-					  			 TextureManager.getInstance().getJupiterPortraitTextureRegion(),
-					  			 state);
-		else
-			jupiter.reset(pos);
+		Player jupiter = new Jupiter(pos, null, null, TextureManager
+				.getInstance().getJupiterPortraitTextureRegion(), state);
 		return jupiter;
+	}
+	
+	public Player getPlayer(Vector2 pos, WorldState state, int id) {
+		if(id == 0) 
+			return getSwan(pos, state);
+		else if(id == 1)
+			return getJupiter(pos, state);
+		else
+			return null;
 	}
 }
