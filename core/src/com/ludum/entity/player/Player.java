@@ -94,9 +94,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		acc.x += 1;
 	}
 
-	public void jump() {
-		if (!botContactList.isEmpty())
-			acc.y += 1;
+	public void jump() {		
+		acc.y += 1;
 	}
 
 	public void stopJump() {
@@ -141,7 +140,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	protected void updateJumping(Vector2 speed, float dt) {
-		if (acc.y > 0) {
+		if (acc.y > 0 && !botContactList.isEmpty()) {
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
