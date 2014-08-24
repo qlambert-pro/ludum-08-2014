@@ -83,7 +83,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void jump() {
-		if (botContactList.isEmpty())
+		if(!botContactList.isEmpty())
 			acc.y += 1;
 	}
 	
@@ -155,16 +155,17 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		batch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerSizeY);
 	}
 
-	private void checkBotContact(PhysicsDataStructure b, Contact contact) {
+	private void checkBotContact(PhysicsDataStructure struct, Contact contact) {
 		WorldManifold manifold = contact.getWorldManifold();
 		Vector2 normal = manifold.getNormal();
-		if (contact.getFixtureA().getBody().getUserData().equals(b)) {
+		if (!contact.getFixtureA().getBody().getUserData().equals(struct)) {
 			normal.scl(-1);
 		}
 
 		Vector2 bot = new Vector2(0, 1);
+		
 		if (bot.isCollinear(normal)) {
-			botContactList.add(b);
+			botContactList.add(struct);
 		}
 	}
 
