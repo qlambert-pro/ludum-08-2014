@@ -98,4 +98,21 @@ public class PhysicsManager {
 		return b;
 	}
 
+	public Body createTrigger(Vector2 pos, Vector2 size,
+			PhysicsDataStructure pds) {
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.position.set(pos.x, pos.y);
+		Body b = world.createBody(bodyDef);
+		
+		PolygonShape box = new PolygonShape();
+		box.setAsBox(size.x/2, size.y/2);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = box;
+		fixtureDef.isSensor = true;
+		
+		b.createFixture(fixtureDef);	    
+		b.setUserData(pds);
+		return b;
+	}
 }

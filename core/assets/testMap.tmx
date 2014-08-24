@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="25" height="10" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="40" height="10" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileSet" tilewidth="32" tileheight="32">
   <image source="tileSet.png" width="256" height="256"/>
  </tileset>
- <layer name="lightWorld" width="25" height="10">
+ <layer name="lightWorld" width="40" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBi6gIUOdvAMcjsYgZgZic+LJg/ji1BgBycQc1Ogn1g7uBhQ/QIC6P4hBFiBmA0JsyPJCQKxEBALk+nGoQwAWs8A2g==
+   eJxjYBiZgGWgHUAA8Ay0AwiAgXIfIxAzI/F50eRhfBH6OAcDcAIx9wDZTQwAuY+LATUMQQA9HJEBKxCzkYDZCbgB3Txk9YJALATEwoS9MgoGAQAA5n4BKA==
   </data>
  </layer>
- <layer name="darkWorld" width="25" height="10">
+ <layer name="darkWorld" width="40" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYCAPsAIxGxJmJ9McSgALHezgGeR2MAIxMxHqRCiwgxOIuSnQT6wdXAyYfuEl0Rx86VIQiIWAWJhMNw5lAACSzwDe
+   eJxjYCAPsAIxGxJmJ9OcgQIsA+0AAoBnoB1AAAyU+xiBmJkIdSK0dggOwAnE3ANkNzEA5D4uBsww5MWjBz2vE8KEygJ8ZYcgEAsBsTBhr4yCQQAAQE0BLA==
   </data>
  </layer>
- <layer name="spawn1" width="25" height="10">
+ <layer name="spawn1" width="40" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFgx1wDLQDRsGQBwAWCAAJ
+   eJxjYBgFo2BwAY6BdsAoGAWjgCgAACOgAAk=
   </data>
  </layer>
- <layer name="spawn2" width="25" height="10">
+ <layer name="spawn2" width="40" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFQw1wDLQDRsGQAwAViAAJ
+   eJxjYBgFo2BwA46BdsAoGAWjACsAACMgAAk=
+  </data>
+ </layer>
+ <layer name="end" width="40" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFQx1IArEUEEsPtENwAEUgVgJi5YF2CA4w2N2nCcRaQKw90A4ZBaMADQAAeisBmQ==
   </data>
  </layer>
 </map>

@@ -23,7 +23,7 @@ import com.ludum.rendering.CharacterCenteredCamera;
 
 public class ClassicMode extends ScreenAdapter {
 	private Game game;
-	
+
 	private WorldState state;
 
 	private SpriteBatch worldBatch;
@@ -31,49 +31,47 @@ public class ClassicMode extends ScreenAdapter {
 
 	private int currentCharacterIndex = 0;
 	private List<Player> characters = new ArrayList<Player>();
-	private List<InputProcessor> characterControllers =
-			new ArrayList<InputProcessor>();
+	private List<InputProcessor> characterControllers = new ArrayList<InputProcessor>();
 
 	private Map map;
 	private CharacterCenteredCamera cam;
 
-	
-
 	public ClassicMode(Game g) {
 		// Gdx.audio.newMusic();
 		game = g;
-		worldBatch = new SpriteBatch();			
-		uiBatch    = new SpriteBatch();
+		worldBatch = new SpriteBatch();
+		uiBatch = new SpriteBatch();
 
 		state = new WorldState();
-		
-		map = new Map("testMap.tmx",state);
+
+		map = new Map("testMap.tmx", state);
 		map.load();
 
 		addSwan();
 		addJupiter();
-		
+
 		currentCharacterIndex = 0;
-		
-		((LudumGame) game).setInputProcessor(characterControllers.get(currentCharacterIndex));
+
+		((LudumGame) game).setInputProcessor(characterControllers
+				.get(currentCharacterIndex));
 
 		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
 	}
-	
+
 	private void addSwan() {
 		characters.add(PlayerFactory.getFactory().getSwan(
-				map.getSpawn(characters.size()),state));
-		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
-				 				 this));
+				map.getSpawn(characters.size()), state));
+		characterControllers.add(new PlayerControls(characters.get(characters
+				.size() - 1), this));
 	}
-	
+
 	private void addJupiter() {
 		characters.add(PlayerFactory.getFactory().getJupiter(
-				map.getSpawn(characters.size()),state));
-		characterControllers.add(new PlayerControls(characters.get(characters.size()-1),
-				 				 this));
+				map.getSpawn(characters.size()), state));
+		characterControllers.add(new PlayerControls(characters.get(characters
+				.size() - 1), this));
 	}
-	
+
 	private void update(float dt) {
 		for (Player p : characters)
 			p.updatePhysics(dt);
@@ -88,12 +86,11 @@ public class ClassicMode extends ScreenAdapter {
 		Gdx.gl.glClearColor(0.3f, 0.5f, 0.8f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		map.render(cam);
-		
+
 		worldBatch.setProjectionMatrix(cam.combined);
 
 		worldBatch.begin();
-		for (Player p : characters)
-		{
+		for (Player p : characters) {
 			p.draw(worldBatch);
 		}
 		worldBatch.end();
@@ -104,26 +101,36 @@ public class ClassicMode extends ScreenAdapter {
 	private void drawUI() {
 		int i = 0;
 		for (Player p : characters) {
-			p.drawUI(uiBatch,
-					 new Vector2(i*ConfigManager.portraitSizeX, 0),
-					 p == characters.get(currentCharacterIndex));
+			p.drawUI(uiBatch, new Vector2(i * ConfigManager.portraitSizeX, 0),
+					p == characters.get(currentCharacterIndex));
 			i++;
 		}
 	}
-	
+
 	@Override
 	public void render(float dt) {
 		update(dt);
-		draw(dt);		
-	}	
+		draw(dt);
 
-	public void nextCharacter() {		
+		/* Check end condition */
+		boolean end = true;
+		for (Player p : characters) {
+			if (!p.isAtEnd())
+				end = false;
+		}
+		if (end) {
+			System.out.println("You Win!!!!!!!!!!!!!!!!!!!!!");
+		}
+
+	}
+
+	public void nextCharacter() {
 		currentCharacterIndex = (currentCharacterIndex + 1) % characters.size();
 		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
 		characterControllers.add(characterControllers.remove(0));
 		((LudumGame) game).setInputProcessor(characterControllers.get(0));
-		
-		cam.changeCharacter(characters.get(currentCharacterIndex));		
+
+		cam.changeCharacter(characters.get(currentCharacterIndex));
 	}
 
 	public void swapWorld() {

@@ -39,12 +39,15 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 
 	private TextureRegion portrait;
 	
+	private int endContact;
+	
+	
 	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
 		this.s1 = s1;
 		this.s2 = s2;
 		portrait = port;
 		this.worldState = s;
-		
+		endContact = 0;
 		pos = p.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
@@ -156,6 +159,10 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public Vector2 getPosition() {
 		return pos;
 	}
+	
+	public boolean isAtEnd() {
+		return endContact>0;
+	}
 
 	@Override
 	public void draw(Batch batch) {
@@ -200,6 +207,9 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		case PLAYER:
 			checkBotContact(struct, contact);
 			break;
+		case END:
+			endContact++;
+			break;
 		default:
 			break;
 		}
@@ -218,6 +228,9 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
+			break;
+		case END:
+			endContact--;
 			break;
 		default:
 			break;

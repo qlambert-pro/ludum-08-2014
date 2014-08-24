@@ -8,28 +8,28 @@ import com.ludum.physics.PhysicsManager;
 import com.ludum.physics.PhysicsObject;
 import com.ludum.physics.PhysicsObjectType;
 
-public class Edge implements PhysicsObject {
+public class Trigger implements PhysicsObject {
 
 	private Body body;
-
-	public Edge(Vector2 beg, Vector2 end, PhysicsObjectType type) {
+	
+	public Trigger(Vector2 pos, Vector2 size, PhysicsObjectType type) {
 		PhysicsDataStructure pds = new PhysicsDataStructure(this, type);
-		body = PhysicsManager.getInstance().createEdge(beg, end, pds);
+		body = PhysicsManager.getInstance().createTrigger(pos, size, pds);
 	}
 
 	@Override
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
-		// :D
+		// :D	
 	}
 
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
-		// :D
+		// :D	
 	}
 
 	@Override
 	public void PreContactHandler(PhysicsDataStructure b, Contact contact) {
-		// :D	
+		// :D
 	}
-
+	
 }
