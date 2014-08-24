@@ -1,6 +1,7 @@
 package com.ludum.game;
 
 import com.ludum.map.Map;
+import com.ludum.map.WorldState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.ludum.rendering.CharacterCenteredCamera;
 public class ClassicMode extends ScreenAdapter {
 	private Game game;
 	private SpriteBatch spriteBatch;
+	private WorldState state;
 	private Map map;
 	private CharacterCenteredCamera cam;
 	private List<Player> characters = new ArrayList<Player>();
@@ -31,14 +33,16 @@ public class ClassicMode extends ScreenAdapter {
 		game = g;
 		spriteBatch = new SpriteBatch();
 
-		map = new Map();
+		state = new WorldState();
+		
+		map = new Map("testMap.tmx",state);
 		map.load();
 
 		characters
-				.add(PlayerFactory.getFactory().getAlice(map.getSpawn(0)));
+				.add(PlayerFactory.getFactory().getAlice(map.getSpawn(0),state));
 		characterControllers.add(new PlayerControls(characters.get(0), this));
 
-		characters.add(PlayerFactory.getFactory().getBob(map.getSpawn(1)));
+		characters.add(PlayerFactory.getFactory().getBob(map.getSpawn(1),state));
 		characterControllers.add(new PlayerControls(characters.get(1), this));
 
 		currentPlayer = 0;
@@ -88,7 +92,7 @@ public class ClassicMode extends ScreenAdapter {
 	}
 
 	public void swapWorld() {
-		// TODO change the relevant bloc's physic and rendering
-		System.out.println("Calling swapWorld");
+		state.swapWorld();
+		map.changeWorld();
 	}
 }

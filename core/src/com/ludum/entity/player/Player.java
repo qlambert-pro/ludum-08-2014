@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.entity.Drawable;
 import com.ludum.entity.Entity;
+import com.ludum.map.WorldState;
+import com.ludum.map.WorldType;
 import com.ludum.physics.PhysicsDataStructure;
 import com.ludum.physics.PhysicsManager;
 import com.ludum.physics.PhysicsObject;
@@ -19,12 +21,12 @@ import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
 
-
 public class Player extends Entity implements Drawable, PhysicsObject {
 
 	private Skill s1;
 	private Skill s2;
 
+	private WorldState worldState;
 	private PlayerState state;
 
 	private Body body;
@@ -33,11 +35,12 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	private ArrayList<PhysicsDataStructure> botContactList;
 	private float stateTime = 0;
 	private TextureRegion currentFrame;
-	
-	public Player(Vector2 p, Skill s1, Skill s2) {
+
+	public Player(Vector2 p, Skill s1, Skill s2, WorldState s) {
 		this.s1 = s1;
 		this.s2 = s2;
-		
+		this.worldState = s;
+
 		pos = p.cpy();
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
@@ -69,24 +72,24 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	public void moveRight() {
 		acc.x += 1;
 	}
-	
+
 	public void stopRight() {
 		acc.x -= 1;
 	}
-	
+
 	public void moveLeft() {
 		acc.x -= 1;
 	}
-	
+
 	public void stopLeft() {
 		acc.x += 1;
 	}
 
 	public void jump() {
-		if(!botContactList.isEmpty())
+		if (!botContactList.isEmpty())
 			acc.y += 1;
 	}
-	
+
 	public void stopJump() {
 		acc.y -= 1;
 	}
@@ -123,9 +126,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
 					body.getWorldCenter(), true);
-		}
-		else if (acc.y < 0) {
-			if(speed.y > 0)
+		} else if (acc.y < 0) {
+			if (speed.y > 0)
 				body.setLinearVelocity(speed.x, 0);
 		}
 		acc.y = 0;
@@ -143,7 +145,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
 		stateTime += dt;
-		currentFrame = TextureManager.getInstance().getTextureRegion(TextureType.PlayerRun, stateTime);
+		currentFrame = TextureManager.getInstance().getTextureRegion(
+				TextureType.PlayerRun, stateTime);
 	}
 
 	public Vector2 getPosition() {
@@ -152,7 +155,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void draw(Batch batch) {
-		batch.draw(currentFrame,pos.x,pos.y,ConfigManager.playerSizeX,ConfigManager.playerSizeY);
+		batch.draw(currentFrame, pos.x, pos.y, ConfigManager.playerSizeX,
+				ConfigManager.playerSizeY);
 	}
 
 	private void checkBotContact(PhysicsDataStructure struct, Contact contact) {
@@ -163,7 +167,7 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		}
 
 		Vector2 bot = new Vector2(0, 1);
-		
+
 		if (bot.isCollinear(normal)) {
 			botContactList.add(struct);
 		}
@@ -172,7 +176,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case EDGE:
+		case LIGHTEDGE:
+		case DARKEDGE:
 			checkBotContact(struct, contact);
 			break;
 		case PLAYER:
@@ -186,7 +191,8 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case EDGE:
+		case LIGHTEDGE:
+		case DARKEDGE:
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
@@ -195,6 +201,22 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void PreContactHandler(PhysicsDataStructure struct, Contact contact) {
+		switch (struct.type) {
+		case LIGHTEDGE:
+			if(worldState.getState() == WorldType.DARK)
+				contact.setEnabled(false);
+			break;
+		case DARKEDGE:
+			if(worldState.getState() == WorldType.LIGHT)
+				contact.setEnabled(false);
 			break;
 		default:
 			break;

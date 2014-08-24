@@ -21,29 +21,32 @@ public class Map {
 	private static final String DARK_COLLISION_LAYER_NAME = "darkWorld";
 	private static final String SPAWN1_LAYER_NAME = "spawn1";
 	private static final String SPAWN2_LAYER_NAME = "spawn2";
-
+	
+	private String mapName;
+	private WorldState state;
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	private Collection<Edge> brightEdges;
 	private Collection<Edge> darkEdges;
 	private List<Vector2> spawnList;
-	
-	enum WorldType {
-		LIGHT, DARK;
-	}
 
+	public Map(String file, WorldState s) {
+		mapName = file;
+		state = s;
+	}
+	
 	public void load() {
-		tiledMap = new TmxMapLoader().load("testMap.tmx");
-		// changeWorld();
+		tiledMap = new TmxMapLoader().load(mapName);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		brightEdges = new LinkedList<Edge>();
 		darkEdges = new LinkedList<Edge>();
-		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), Map.WorldType.LIGHT);
-		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), Map.WorldType.DARK);
+		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), WorldType.LIGHT);
+		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
 	
 		spawnList = new ArrayList<Vector2>();
 		initSpawn(SPAWN1_LAYER_NAME);
 		initSpawn(SPAWN2_LAYER_NAME);
+		changeWorld();
 	}
 
 	public void render(OrthographicCamera cam) {
@@ -52,13 +55,8 @@ public class Map {
 	}
 
 	public void changeWorld() {
-		if (getLayer(LIGHT_COLLISION_LAYER_NAME).isVisible()) {
-			getLayer(LIGHT_COLLISION_LAYER_NAME).setVisible(false);
-			getLayer(DARK_COLLISION_LAYER_NAME).setVisible(true);
-		} else {
-			getLayer(LIGHT_COLLISION_LAYER_NAME).setVisible(true);
-			getLayer(DARK_COLLISION_LAYER_NAME).setVisible(false);
-		}
+		getLayer(LIGHT_COLLISION_LAYER_NAME).setVisible(state.getState() == WorldType.LIGHT);
+		getLayer(DARK_COLLISION_LAYER_NAME).setVisible(state.getState() == WorldType.DARK);
 	}
 
 	private TiledMapTileLayer getLayer(String layerName) {
@@ -87,7 +85,7 @@ public class Map {
 	}
 	
 	private void addCollisionEdges(TiledMapTileLayer layer,
-			Map.WorldType type) {
+			WorldType type) {
 		int width = layer.getWidth();
 		int height = layer.getHeight();
 
@@ -100,7 +98,7 @@ public class Map {
 	}
 
 	private void extendCell(int x, int y, TiledMapTileLayer layer,
-			Map.WorldType type) {
+			WorldType type) {
 		// Left
 		if (shouldIAddEdge(x - 1, y, layer))
 			createEdge(x, y, x, y + 1, type);
@@ -119,11 +117,11 @@ public class Map {
 	}
 	
 	private void createEdge(int x1, int y1, int x2, int y2,
-			Map.WorldType type) {
+			WorldType type) {
 		Vector2 beg = new Vector2(x1, y1);
 		Vector2 end = new Vector2(x2, y2);
-		Edge edge = new Edge(beg, end);
-		if (type == Map.WorldType.LIGHT) {
+		Edge edge = new Edge(beg, end, type);
+		if (type == WorldType.LIGHT) {
 			brightEdges.add(edge);	
 		} else {
 			darkEdges.add(edge);
