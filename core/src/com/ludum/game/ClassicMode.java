@@ -55,7 +55,7 @@ public class ClassicMode extends ScreenAdapter {
 		
 		currentCharacterIndex = 0;
 		
-		((LudumGame) game).setInputProcessor(characterControllers.get(currentCharacterIndex));
+		((LudumGame) game).addInputProcessor(characterControllers.get(currentCharacterIndex));
 
 		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
 	}
@@ -121,7 +121,7 @@ public class ClassicMode extends ScreenAdapter {
 		currentCharacterIndex = (currentCharacterIndex + 1) % characters.size();
 		((LudumGame) game).removeInputProcessor(characterControllers.get(0));
 		characterControllers.add(characterControllers.remove(0));
-		((LudumGame) game).setInputProcessor(characterControllers.get(0));
+		((LudumGame) game).addInputProcessor(characterControllers.get(0));
 		
 		cam.changeCharacter(characters.get(currentCharacterIndex));		
 	}
