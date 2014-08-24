@@ -23,7 +23,7 @@ public class PlayerFactory {
 	
 	public Player getSwan(Vector2 pos, WorldState state) {
 		if (swan == null)
-			swan = new Player(pos,
+			swan = new Swan(pos,
 							  null,
 							  null,
 							  TextureManager.getInstance().getSwanPortraitTextureRegion(),
@@ -35,7 +35,7 @@ public class PlayerFactory {
 	
 	public Player getJupiter(Vector2 pos, WorldState state) {
 		if (jupiter == null)
-			jupiter = new Player(pos,
+			jupiter = new Jupiter(pos,
 					  			 null,
 					  			 null,
 					  			 TextureManager.getInstance().getJupiterPortraitTextureRegion(),

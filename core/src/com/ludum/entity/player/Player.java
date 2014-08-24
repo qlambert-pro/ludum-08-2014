@@ -22,26 +22,26 @@ import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Skill;
 
-public class Player extends Entity implements Drawable, PhysicsObject {
+public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
-	private Skill s1;
-	private Skill s2;
+	protected Skill s1;
+	protected Skill s2;
 
-	private WorldState worldState;
-	private PlayerState state;
+	protected WorldState worldState;
+	protected PlayerState state;
 
-	private Body body;
-	private Vector2 physicsSize;
-	private Vector2 acc;
-	private ArrayList<PhysicsDataStructure> botContactList;
-	private float stateTime = 0;
-	private TextureRegion currentFrame;
+	protected Body body;
+	protected Vector2 physicsSize;
+	protected Vector2 acc;
+	protected ArrayList<PhysicsDataStructure> botContactList;
+	protected float stateTime = 0;
+	protected TextureRegion currentFrame;
 
-	private TextureRegion portrait;
+	protected TextureRegion portrait;
 	
-	private int endContact;
+	protected int endContact;
 	
-	private TextureType textureType;
+	protected TextureType textureType;
 	
 	public Player(Vector2 p, Skill s1, Skill s2, TextureRegion port, WorldState s) {
 		this.s1 = s1;
@@ -175,13 +175,6 @@ public class Player extends Entity implements Drawable, PhysicsObject {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
 		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
 		stateTime += dt;
-		if(state == PlayerState.JUMPING){
-			textureType = TextureType.SwanJump;
-		}else if(state == PlayerState.RUNNING){
-			textureType = TextureType.SwanRun;
-		}else if(state == PlayerState.STANDING){
-			textureType = TextureType.SwanIdle;
-		}
 		currentFrame = TextureManager.getInstance().getTextureRegion(textureType, stateTime);
 	}
 
