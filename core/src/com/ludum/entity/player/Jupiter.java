@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.physics.PhysicsDataStructure;
-import com.ludum.physics.PhysicsObjectType;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Dash;
@@ -113,6 +111,7 @@ public class Jupiter extends Player{
 	
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
+		super.EndContactHandler(struct, contact);
 		switch (struct.type) {
 		case PLAYER:
 			contactPlayers.remove((Player) struct.obj);
