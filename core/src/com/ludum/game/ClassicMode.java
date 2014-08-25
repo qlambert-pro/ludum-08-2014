@@ -68,7 +68,7 @@ public class ClassicMode extends ScreenAdapter {
 		worldBatch.setProjectionMatrix(cam.combined);
 		worldBatch.begin();
 		
-		Background.getInstance().render(worldBatch, cam.position.x, cam.position.y);
+		Background.getInstance().render(worldBatch, cam.position.x, cam.position.y, state);
 		worldBatch.end();
 		map.render(cam);
 		worldBatch.begin();
