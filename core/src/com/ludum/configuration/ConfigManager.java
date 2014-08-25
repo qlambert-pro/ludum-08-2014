@@ -7,8 +7,8 @@ public class ConfigManager {
 	
 	public static float moveSpeed = 10;
 	public static float accTime = 0.1f;
-	public static float jumpHeight = 5f;
-	public static float gravity = 120;
+	public static float jumpHeight = 4.8f;
+	public static float gravity = 60;
 	
 	public static float friction = 0.5f;
 	

@@ -8,6 +8,8 @@ import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
 
 public class Seal extends Player{
+	
+	private boolean levitate;
 
 	public Seal(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
@@ -32,5 +34,11 @@ public class Seal extends Player{
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 100);
 		}
+	}
+	
+	@Override
+	public void useSkill1() {
+		levitate = !levitate;
+		
 	}
 }

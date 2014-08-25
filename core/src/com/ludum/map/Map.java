@@ -48,8 +48,8 @@ public class Map {
 		darkEdges = new LinkedList<Edge>();
 
 		size = new Vector2(
-				getLayer(LIGHT_COLLISION_LAYER_NAME).getTileWidth()*ConfigManager.minBlockSize, getLayer(
-						LIGHT_COLLISION_LAYER_NAME).getTileHeight()*ConfigManager.minBlockSize);
+				getLayer(LIGHT_COLLISION_LAYER_NAME).getWidth()*ConfigManager.minBlockSize, getLayer(
+						LIGHT_COLLISION_LAYER_NAME).getHeight()*ConfigManager.minBlockSize);
 
 		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), WorldType.LIGHT);
 		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
