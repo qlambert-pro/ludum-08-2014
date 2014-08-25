@@ -12,6 +12,8 @@ public class Swan extends Player{
 	int nbJump = 0;
 	public Swan(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
+		height = ConfigManager.swanHeight;
+		physicsSize = ConfigManager.swanPhysicsSize;
 	}
 	
 	@Override

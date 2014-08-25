@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
 	protected Vector2 pos;
-	protected Vector2 size;
 	
 	public void setPosition(float posX, float posY){
 		this.pos.x = posX;

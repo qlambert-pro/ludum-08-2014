@@ -2,6 +2,7 @@ package com.ludum.entity.player;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
@@ -12,6 +13,8 @@ public class Jupiter extends Player{
 
 	public Jupiter(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
+		height = ConfigManager.jupiterHeight;
+		physicsSize = ConfigManager.jupiterPhysicsSize;
 		s1 = new SoloDash(body);
 		s2 = new FriendlyDash(body);
 	}
