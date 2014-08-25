@@ -18,6 +18,9 @@ public class Background {
 	private Texture back1t;
 	private Texture back2t;
 
+	
+	private float posY = -100;
+	
 	private Background() {
 		back = new Texture(Gdx.files.internal("back.png"));
 		back1 = new Texture(Gdx.files.internal("back1.png"));
@@ -40,13 +43,13 @@ public class Background {
 
 	public void render(Batch batch, float camPosX, float camPosY, WorldState state) {
 		if (state.getState() == WorldType.LIGHT) {
-			batch.draw(back, -10000, 0, back.getWidth() * 1000, back.getHeight(), 100, 1, 0, 0);
-			batch.draw(back2, camPosX * 0.5f - 10000, 0, back2.getWidth() * 1000, back2.getHeight(), 1000, 1, 0, 0);
-			batch.draw(back1, camPosX * 0.3f - 10000, 0, back1.getWidth() * 1000, back1.getHeight(), 1000, 1, 0, 0);
+			batch.draw(back, -10000, posY, back.getWidth() * 1000, back.getHeight(), 100, 1, 0, 0);
+			batch.draw(back2, camPosX * 0.5f - 10000,posY, back2.getWidth() * 1000, back2.getHeight(), 1000, 1, 0, 0);
+			batch.draw(back1, camPosX * 0.3f - 10000,posY, back1.getWidth() * 1000, back1.getHeight(), 1000, 1, 0, 0);
 		} else {
-			batch.draw(backt, -10000, 0, backt.getWidth() * 1000, backt.getHeight(), 100, 1, 0, 0);
-			batch.draw(back2t, camPosX * 0.5f - 10000, 0, back2t.getWidth() * 1000, back2t.getHeight(), 1000, 1, 0, 0);
-			batch.draw(back1t, camPosX * 0.3f - 10000, 0, back1t.getWidth() * 1000, back1t.getHeight(), 1000, 1, 0, 0);
+			batch.draw(backt, -10000, posY, backt.getWidth() * 1000, backt.getHeight(), 100, 1, 0, 0);
+			batch.draw(back2t, camPosX * 0.5f - 10000,posY, back2t.getWidth() * 1000, back2t.getHeight(), 1000, 1, 0, 0);
+			batch.draw(back1t, camPosX * 0.3f - 10000, posY, back1t.getWidth() * 1000, back1t.getHeight(), 1000, 1, 0, 0);
 		}
 	}
 }
