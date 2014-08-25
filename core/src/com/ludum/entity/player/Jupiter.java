@@ -55,7 +55,7 @@ public class Jupiter extends Player{
 		}
 		if(state == PlayerState.FALLING){
 			currentFrame = TextureManager.getInstance().getTextureRegion(
-					textureType, 100);
+					textureType, 1000);
 		}
 		
 		//dashTimer += dt*1000;
