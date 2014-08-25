@@ -2,6 +2,7 @@ package com.ludum.entity.player;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
@@ -9,7 +10,9 @@ import com.ludum.rendering.TextureType;
 
 public class Seal extends Player{
 	
-	private boolean levitate;
+	private float gravitySave;
+	private Vector2 savePos;
+	private PlayerState saveState;
 
 	public Seal(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
@@ -25,6 +28,8 @@ public class Seal extends Player{
 			textureType = TextureType.SealRun;
 		}else if(state == PlayerState.STANDING){
 			textureType = TextureType.SealIdle;
+		}else if(state == PlayerState.FREEZING){
+			textureType = TextureType.SealLevitation;
 		}
 		super.update(dt);
 		if(state == PlayerState.JUMPING){
@@ -38,7 +43,27 @@ public class Seal extends Player{
 	
 	@Override
 	public void useSkill1() {
-		levitate = !levitate;
 		
+		if(state != PlayerState.FREEZING){
+			saveState = state;
+			state = PlayerState.FREEZING;
+			body.setLinearVelocity(0, 0);
+			savePos = body.getPosition();
+			gravitySave = body.getGravityScale();
+			body.setGravityScale(0);
+			body.setType(BodyType.StaticBody);
+		}else{
+			state = saveState;
+			body.setGravityScale(gravitySave);
+			body.setType(BodyType.DynamicBody);
+		}
+	}
+	
+	@Override
+	public void updatePhysics(float dt){
+		if(state != PlayerState.FREEZING){
+			super.updatePhysics(dt);
+		}else{
+		}
 	}
 }
