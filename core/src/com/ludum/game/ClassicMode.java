@@ -69,14 +69,16 @@ public class ClassicMode extends ScreenAdapter {
 		worldBatch.begin();
 		
 		Background.getInstance().render(worldBatch, cam.position.x, cam.position.y);
-		
+		worldBatch.end();
+		map.render(cam);
+		worldBatch.begin();
 		for (Player p : characters) {
 			p.draw(worldBatch);
 		}
 		worldBatch.end();
 		
 		
-		map.render(cam);
+
 
 		drawUI();
 	}
