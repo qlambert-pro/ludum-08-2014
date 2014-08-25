@@ -102,6 +102,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		body.setTransform((spawn.x) * PhysicsManager.WORLD_TO_BOX, (spawn.y)
 				* PhysicsManager.WORLD_TO_BOX, body.getAngle());
 		body.setLinearVelocity(0, 0);
+		body.setGravityScale(1);
 		state = PlayerState.FALLING;
 		isDead = false;
 	}
@@ -150,7 +151,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		Vector2 speed = body.getLinearVelocity();
 
 		if (state == PlayerState.DASHING)
-			updateDashing(dashLeft, dashRight, speed.x, dt);
+			updateDashing(dashLeft, dashRight);
 		else
 			updateRunning(speed.x, dt);
 
@@ -160,14 +161,14 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		checkDeath();
 	}
 
-	protected void updateDashing(Skill s1, Skill s2, float horizontalSpeed,
-			float dt) {
+	protected void updateDashing(Skill d1, Skill d2) {
 
-		if (((Dash) s1).isDashing() && dashTimer < ConfigManager.dashLengthMS) {
-			s1.use();
-		} else if (((Dash) s2).isDashing()
-				&& dashTimer < ConfigManager.dashLengthMS) {
-			s2.use();
+		if (((Dash) d1).isDashing() &&
+			 dashTimer < ConfigManager.dashLengthMS) {
+			d1.use();
+		} else if (((Dash) d2).isDashing() &&
+				    dashTimer < ConfigManager.dashLengthMS) {
+			d2.use();
 		}
 	}
 
@@ -215,6 +216,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		float impulseX = body.getMass() * speedChangeX;
 		body.applyLinearImpulse(new Vector2(impulseX, 0),
 				body.getWorldCenter(), true);
+
 	}
 
 	protected void updateJumping(Vector2 speed, float dt) {
@@ -236,7 +238,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected void updateState() {
 		Vector2 speed = body.getLinearVelocity();
-		if (state != PlayerState.DASHING)
+		if(state != PlayerState.DASHING) {
 			if (speed.y > 0) {
 				state = PlayerState.JUMPING;
 			} else if (speed.y < 0) {
@@ -246,13 +248,16 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			} else {
 				state = PlayerState.STANDING;
 			}
-		else if (dashTimer >= ConfigManager.dashSpeed) {
-			state = PlayerState.FALLING;
-			((Dash) dashLeft).endDash();
-			((Dash) dashRight).endDash();
-			body.setGravityScale(1);
+		}
+		else if (dashTimer >= ConfigManager.dashLengthMS) {
+
+				state = PlayerState.FALLING;
+				((Dash) dashLeft).endDash();
+				((Dash) dashRight).endDash();
+				body.setGravityScale(1);
 		}
 	}
+	
 
 	public void update(float dt) {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
@@ -260,8 +265,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
-
-		dashTimer += dt * 1000;
+		if (state == PlayerState.DASHING)
+			dashTimer += dt*1000;
 	}
 
 	public Vector2 getPosition() {

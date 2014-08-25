@@ -54,6 +54,7 @@ public class Seal extends Player {
 			gravitySave = body.getGravityScale();
 			body.setGravityScale(0);
 			body.setType(BodyType.StaticBody);
+			botContactList.clear();
 		} else {
 			state = saveState;
 			body.setGravityScale(gravitySave);

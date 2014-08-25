@@ -6,7 +6,6 @@ import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Dash;
-import com.ludum.skill.LeftDash;
 import com.ludum.sound.SoundManager;
 
 
@@ -69,6 +68,9 @@ public class Swan extends Player{
 				else
 					state = PlayerState.JUMPING;
 			} else if (botContactList.isEmpty()) {
+				if (state == PlayerState.RUNNING ||
+					state == PlayerState.STANDING)
+					nbJump = 1;
 				state = PlayerState.FALLING;
 			} else if (moveRight ^ moveLeft) {
 				state = PlayerState.RUNNING;

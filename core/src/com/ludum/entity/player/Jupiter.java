@@ -27,7 +27,7 @@ public class Jupiter extends Player{
 		Vector2 speed = body.getLinearVelocity();
 
 		if (state == PlayerState.DASHING)
-			updateDashing(s1, s2, speed.x, dt);
+			updateDashing(s1, s2);
 		else
 			updateRunning(speed.x, dt);
 		
@@ -55,10 +55,8 @@ public class Jupiter extends Player{
 		}
 		if(state == PlayerState.FALLING){
 			currentFrame = TextureManager.getInstance().getTextureRegion(
-					textureType, 100);
+					textureType, 1000);
 		}
-		
-		//dashTimer += dt*1000;
 	}
 	
 	@Override
@@ -118,6 +116,7 @@ public class Jupiter extends Player{
 				state = PlayerState.FALLING;
 			} else if (moveRight ^ moveLeft) {
 				state = PlayerState.RUNNING;
+				isUsed = false;
 			} else {
 				state = PlayerState.STANDING;
 				isUsed = false;
