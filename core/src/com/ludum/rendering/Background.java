@@ -27,7 +27,7 @@ public class Background {
 	}
 	
 	public void render(Batch batch, float camPosX, float camPosY){
-		batch.draw(back2, camPosX* 0.5f,0,512*100,512,100,1,0,0);
-		batch.draw(back1, camPosX * 0.3f, 0,512*100,512,100,1,0,0);
+		batch.draw(back2, camPosX * 0.5f,0,512*100,512,100,1,0,0);
+		batch.draw(back1, camPosX * 0.3f,0,512*100,512,100,1,0,0);
 	}
 }

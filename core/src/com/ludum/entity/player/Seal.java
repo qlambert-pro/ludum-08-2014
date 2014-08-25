@@ -2,6 +2,7 @@ package com.ludum.entity.player;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
@@ -10,6 +11,8 @@ import com.ludum.rendering.TextureType;
 public class Seal extends Player{
 	
 	private boolean levitate;
+	private float gravitySave;
+	private Vector2 savePos;
 
 	public Seal(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
@@ -39,6 +42,23 @@ public class Seal extends Player{
 	@Override
 	public void useSkill1() {
 		levitate = !levitate;
-		
+		if(levitate){
+			body.setLinearVelocity(0, 0);
+			savePos = body.getPosition();
+			gravitySave = body.getGravityScale();
+			body.setGravityScale(0);
+			body.setType(BodyType.StaticBody);
+		}else{
+			body.setGravityScale(gravitySave);
+			body.setType(BodyType.DynamicBody);
+		}
+	}
+	
+	@Override
+	public void updatePhysics(float dt){
+		if(!levitate){
+			super.updatePhysics(dt);
+		}else{
+		}
 	}
 }
