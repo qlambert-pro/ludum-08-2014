@@ -69,6 +69,9 @@ public class Swan extends Player{
 				else
 					state = PlayerState.JUMPING;
 			} else if (botContactList.isEmpty()) {
+				if (state == PlayerState.RUNNING ||
+					state == PlayerState.STANDING)
+					nbJump = 1;
 				state = PlayerState.FALLING;
 			} else if (moveRight ^ moveLeft) {
 				state = PlayerState.RUNNING;
