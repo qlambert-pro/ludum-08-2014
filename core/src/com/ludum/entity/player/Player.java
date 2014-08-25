@@ -50,7 +50,9 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected TextureRegion portrait;
 
-	protected int endContact;
+	protected int end1Contact;
+	protected int end2Contact;
+	protected int end3Contact;
 
 	protected TextureType textureType;
 
@@ -58,7 +60,9 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			WorldState s) {
 		portrait = port;
 		this.worldState = s;
-		endContact = 0;
+		end1Contact = 0;
+		end2Contact = 0;
+		end3Contact = 0;
 		pos = spawn.cpy();
 		this.spawn = spawn.cpy();
 		this.mapSize = mapSize.cpy();
@@ -207,10 +211,18 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		return pos;
 	}
 
-	public boolean isAtEnd() {
-		return endContact > 0;
+	public boolean isAtEnd1() {
+		return end1Contact > 0;
 	}
 
+	public boolean isAtEnd2() {
+		return end2Contact > 0;
+	}
+	
+	public boolean isAtEnd3() {
+		return end3Contact > 0;
+	}
+	
 	@Override
 	public void draw(Batch batch) {
 		float sizeX = height * currentFrame.getRegionWidth()
@@ -258,8 +270,14 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		case PLAYER:
 			checkBotContact(struct, contact);
 			break;
-		case END:
-			endContact++;
+		case END1:
+			end1Contact++;
+			break;
+		case END2:
+			end2Contact++;
+			break;
+		case END3:
+			end3Contact++;
 			break;
 		default:
 			break;
@@ -280,8 +298,14 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 				botContactList.remove(struct);
 			}
 			break;
-		case END:
-			endContact--;
+		case END1:
+			end1Contact--;
+			break;
+		case END2:
+			end2Contact--;
+			break;
+		case END3:
+			end3Contact--;
 			break;
 		default:
 			break;
