@@ -8,7 +8,7 @@ public class SoundManager {
 	private static SoundManager singleton;
 	
 	
-	private Music music;
+	private Sound music;
 	private Sound jump;
 	private float volume = 0.5f;
 	
@@ -20,9 +20,9 @@ public class SoundManager {
 	}
 	
 	private SoundManager() {
-		music = Gdx.audio.newMusic(Gdx.files.internal("sound/music.wav"));
-		music.setLooping(true);
-		music.setVolume(volume);
+		music = Gdx.audio.newSound(Gdx.files.internal("sound/music.wav"));
+		music.setLooping(0,true);
+		music.setVolume(0, volume);
 		jump = Gdx.audio.newSound(Gdx.files.internal("sound/jump.ogg"));
 		jump.setVolume(0, volume);
 	}
