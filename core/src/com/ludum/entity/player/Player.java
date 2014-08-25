@@ -230,7 +230,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected void updateState() {
 		Vector2 speed = body.getLinearVelocity();
-		if(state != PlayerState.DASHING)
+		if(state != PlayerState.DASHING) {
 			if (speed.y > 0) {
 				state = PlayerState.JUMPING;
 			} else if (speed.y < 0) {
@@ -240,6 +240,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			} else {
 				state = PlayerState.STANDING;
 			}
+		}
 		else if (dashTimer >= ConfigManager.dashSpeed) {
 			state = PlayerState.FALLING;
 			((Dash) dashLeft).endDash();
