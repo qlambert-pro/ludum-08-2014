@@ -44,7 +44,7 @@ public class Swan extends Player{
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
-					body.getWorldCenter(), true);			
+					body.getWorldCenter(), true);
 		} else if (jumpState == PlayerJumpState.STOPJUMP) {
 			if (speed.y > 0) {
 				body.setLinearVelocity(speed.x, 0);			

@@ -66,7 +66,7 @@ public class TextureManager {
         for (int i = 0; i < type.nbFrame(); i++) {
         	frames[type.ordinal()][i] = tmp[0][i];
         }
-        animation[type.ordinal()] = new Animation(0.1f, frames[type.ordinal()]);
+        animation[type.ordinal()] = new Animation(0.15f, frames[type.ordinal()]);
 	}
 	
 	public TextureRegion getTextureRegion(TextureType type, float stateTime){

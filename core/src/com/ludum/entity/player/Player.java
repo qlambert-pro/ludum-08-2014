@@ -218,7 +218,10 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void draw(Batch batch) {
-		batch.draw(currentFrame, pos.x, pos.y, ConfigManager.playerSizeX,
+		
+		float sizeX = ConfigManager.playerSizeY * currentFrame.getRegionWidth() / currentFrame.getRegionHeight();
+
+		batch.draw(currentFrame, pos.x, pos.y, sizeX,
 				ConfigManager.playerSizeY);
 	}
 
