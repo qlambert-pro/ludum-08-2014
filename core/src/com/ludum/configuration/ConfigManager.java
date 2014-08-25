@@ -37,7 +37,7 @@ public class ConfigManager {
 	public static float camHeight = 18;
 	
 	/*Jupiter Dash*/
-	public static float dashSpeed = 50;
-	public static int   dashLengthMS = 50;
+	public static float dashSpeed = 15;
+	public static int   dashLengthMS = 800;
 	
 }
