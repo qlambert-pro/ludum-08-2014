@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileSet" tilewidth="32" tileheight="32">
+  <image source="tileSet.png" width="256" height="256"/>
+ </tileset>
+ <layer name="darkWorld" width="50" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0zEKACAMBMHUKf3/Y+0D6YQozsB2114EAAAAAD9apdN7uF0OVb/UxXs2wOoCcQ==
+  </data>
+ </layer>
+ <layer name="lightWorld" width="50" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1EEJAAAIADEz2D+sCQR/omxwFS4CAAAAuCibAJjpProRPxRc4ALj
+  </data>
+ </layer>
+ <layer name="spawnJupiter" width="50" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Cd+FeMgf2EpFXQBAAAAAB+mesAQLE8UAAJ
+  </data>
+ </layer>
+ <layer name="spawnSeal" width="50" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Cd+FeMg72EpFXQBAAAAAB+mOsAQLE8kAAJ
+  </data>
+ </layer>
+ <layer name="spawnSwan" width="50" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztziEBAAAIA7BL+iemwh2ILcESAAAAAPhtrgMAhQU80AAJ
+  </data>
+ </layer>
+ <layer name="end1" width="50" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAIA6B1sX9HU0wfSEACAADApfkOAABQsXI3ACQ=
+  </data>
+ </layer>
+</map>

@@ -6,5 +6,8 @@ public enum PhysicsObjectType {
 	DARKEDGE,
 	END1,
 	END2,
-	END3
+	END3,
+	SPIKE,
+	LIGHTWATER,
+	DARKWATER
 }

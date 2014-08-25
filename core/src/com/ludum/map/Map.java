@@ -24,13 +24,15 @@ public class Map {
 	private static final String END1_LAYER_NAME = "end1";
 	private static final String END2_LAYER_NAME = "end2";
 	private static final String END3_LAYER_NAME = "end3";
+	private static final String SPIKE_LAYER_NAME = "spike";
+	private static final String LIGHTWATER_LAYER_NAME = "lightWater";
+	private static final String DARKWATER_LAYER_NAME = "darkWater";
 
 	private String mapName;
 	private WorldState state;
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
-	private Collection<Edge> brightEdges;
-	private Collection<Edge> darkEdges;
+	private Collection<Edge> edges;
 	private Vector2 spawnSwan;
 	private Vector2 spawnJupiter;
 	private Vector2 spawnSeal;
@@ -46,16 +48,16 @@ public class Map {
 	public void load() {
 		tiledMap = new TmxMapLoader().load(mapName);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-		brightEdges = new LinkedList<Edge>();
-		darkEdges = new LinkedList<Edge>();
+		edges = new LinkedList<Edge>();
+		;
 
 		size = new Vector2(getLayer(LIGHT_COLLISION_LAYER_NAME).getWidth()
 				* ConfigManager.minBlockSize, getLayer(
 				LIGHT_COLLISION_LAYER_NAME).getHeight()
 				* ConfigManager.minBlockSize);
 
-		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), WorldType.LIGHT);
-		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
+		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), PhysicsObjectType.LIGHTEDGE);
+		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), PhysicsObjectType.DARKEDGE);
 		TiledMapTileLayer layer;
 
 		layer = getLayer(END1_LAYER_NAME);
@@ -63,7 +65,7 @@ public class Map {
 			addTriggerZones(layer, PhysicsObjectType.END1);
 			endNumber++;
 		}
-		
+
 		layer = getLayer(END2_LAYER_NAME);
 		if (layer != null) {
 			addTriggerZones(layer, PhysicsObjectType.END2);
@@ -74,6 +76,21 @@ public class Map {
 		if (layer != null) {
 			addTriggerZones(layer, PhysicsObjectType.END3);
 			endNumber++;
+		}
+
+		layer = getLayer(SPIKE_LAYER_NAME);
+		if (layer != null) {
+			addTriggerZones(layer, PhysicsObjectType.SPIKE);
+		}
+
+		layer = getLayer(LIGHTWATER_LAYER_NAME);
+		if (layer != null) {
+			addCollisionEdges(layer, PhysicsObjectType.LIGHTWATER);
+		}
+		
+		layer = getLayer(DARKWATER_LAYER_NAME);
+		if (layer != null) {
+			addCollisionEdges(layer, PhysicsObjectType.DARKWATER);
 		}
 
 		spawnSwan = initSpawn(SPAWNSWAN_LAYER_NAME);
@@ -113,7 +130,7 @@ public class Map {
 	public Vector2 getSize() {
 		return size;
 	}
-	
+
 	public int getEndNumber() {
 		return endNumber;
 	}
@@ -150,7 +167,8 @@ public class Map {
 		}
 	}
 
-	private void addCollisionEdges(TiledMapTileLayer layer, WorldType type) {
+	private void addCollisionEdges(TiledMapTileLayer layer,
+			PhysicsObjectType type) {
 		int width = layer.getWidth();
 		int height = layer.getHeight();
 
@@ -163,7 +181,7 @@ public class Map {
 	}
 
 	private void extendCell(int x, int y, TiledMapTileLayer layer,
-			WorldType type) {
+			PhysicsObjectType type) {
 		// Left
 		if (shouldIAddEdge(x - 1, y, layer))
 			createEdge(x, y, x, y + 1, type);
@@ -181,16 +199,12 @@ public class Map {
 			createEdge(x, y, x + 1, y, type);
 	}
 
-	private void createEdge(int x1, int y1, int x2, int y2, WorldType type) {
+	private void createEdge(int x1, int y1, int x2, int y2,
+			PhysicsObjectType type) {
 		Vector2 beg = new Vector2(x1, y1);
 		Vector2 end = new Vector2(x2, y2);
-		if (type == WorldType.LIGHT) {
-			Edge edge = new Edge(beg, end, PhysicsObjectType.LIGHTEDGE);
-			brightEdges.add(edge);
-		} else {
-			Edge edge = new Edge(beg, end, PhysicsObjectType.DARKEDGE);
-			darkEdges.add(edge);
-		}
+		Edge edge = new Edge(beg, end, type);
+		edges.add(edge);
 	}
 
 	private void createTrigger(int x, int y, int i, int j,

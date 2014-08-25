@@ -6,11 +6,11 @@ public class ConfigManager {
 	public static int minBlockSize = 32;
 	
 	public static float moveSpeed = 10;
-	public static float accTime = 0.1f;
+	public static float accTime = 0.2f;
 	public static float jumpHeight = 4.8f;
 	public static float gravity = 60;
 	
-	public static float friction = 0.5f;
+	public static float friction = 0.6f;
 	
 	/* Player display size */
 	public static float swanHeight = 64;
