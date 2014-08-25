@@ -13,12 +13,12 @@
    eJxjYBgFo2AUDCfACsRsRGJ2Ms0nR98oGH4AAMa4AFU=
   </data>
  </layer>
- <layer name="spawn1" width="40" height="10">
+ <layer name="spawnSwan" width="40" height="10">
   <data encoding="base64" compression="zlib">
    eJxjYBgF9AAcA+2AUTAKRsEooDIAAC0AAAk=
   </data>
  </layer>
- <layer name="spawn2" width="40" height="10">
+ <layer name="spawnJupiter" width="40" height="10">
   <data encoding="base64" compression="zlib">
    eJxjYBgFtAAcA+2AUTAKRsEooDEAAC2AAAk=
   </data>

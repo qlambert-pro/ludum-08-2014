@@ -19,8 +19,8 @@ public class Jupiter extends Player{
 	
 	public Jupiter(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
-		s1 = new LeftDash(body);
-		s2 = new RightDash(body);
+		height = ConfigManager.jupiterHeight;
+		physicsSize = ConfigManager.jupiterPhysicsSize;
 	}
 	
 	@Override
@@ -39,15 +39,7 @@ public class Jupiter extends Player{
 	}
 	
 	protected void updateDashing(float horizontalSpeed, float dt) {
-		// if time up
-		//   -> not dashing
-		
-	/*	float nextSpeedX = ConfigManager.bumpFriction * horizontalSpeed;
-		
-		float speedChangeX = nextSpeedX - horizontalSpeed;
-		float impulseX = body.getMass() * speedChangeX;
-		body.applyLinearImpulse(new Vector2(impulseX, 0),
-				body.getWorldCenter(), true);*/
+
 		
 		if (((Dash) s1).isDashing() && dashTimer < ConfigManager.dashLengthMS) {
 			s1.use();
@@ -78,6 +70,12 @@ public class Jupiter extends Player{
 		dashTimer += dt*1000;
 	}
 	
+	@Override
+	public void init() {
+		super.init();
+		s1 = new LeftDash(body);
+		s2 = new RightDash(body);
+	}
 	@Override
 	public void useSkill1(){
 		if (!isUsed) {

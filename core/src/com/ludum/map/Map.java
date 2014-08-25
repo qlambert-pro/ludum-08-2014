@@ -20,8 +20,9 @@ public class Map {
 
 	private static final String LIGHT_COLLISION_LAYER_NAME = "lightWorld";
 	private static final String DARK_COLLISION_LAYER_NAME = "darkWorld";
-	private static final String SPAWN1_LAYER_NAME = "spawn1";
-	private static final String SPAWN2_LAYER_NAME = "spawn2";
+	private static final String SPAWNSWAN_LAYER_NAME = "spawnSwan";
+	private static final String SPAWNJUPITER_LAYER_NAME = "spawnJupiter";
+	private static final String SPAWNSEAL_LAYER_NAME = "spawnSeal";
 	private static final String END_LAYER_NAME = "end";
 
 	private String mapName;
@@ -30,7 +31,9 @@ public class Map {
 	private TiledMapRenderer tiledMapRenderer;
 	private Collection<Edge> brightEdges;
 	private Collection<Edge> darkEdges;
-	private List<Vector2> spawnList;
+	private Vector2 spawnSwan;
+	private Vector2 spawnJupiter;
+	private Vector2 spawnSeal;
 	private Vector2 size;
 
 	public Map(String file, WorldState s) {
@@ -52,9 +55,9 @@ public class Map {
 		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
 		addTriggerZones(getLayer(END_LAYER_NAME), PhysicsObjectType.END);
 
-		spawnList = new ArrayList<Vector2>();
-		initSpawn(SPAWN1_LAYER_NAME);
-		initSpawn(SPAWN2_LAYER_NAME);
+		spawnSwan = initSpawn(SPAWNSWAN_LAYER_NAME);
+		spawnJupiter = initSpawn(SPAWNJUPITER_LAYER_NAME);
+		spawnSeal = initSpawn(SPAWNSEAL_LAYER_NAME);
 		changeWorld();
 	}
 
@@ -72,19 +75,29 @@ public class Map {
 
 	private TiledMapTileLayer getLayer(String layerName) {
 		return (TiledMapTileLayer) tiledMap.getLayers().get(layerName);
-
 	}
 
-	public List<Vector2> getSpawns() {
-		return spawnList;
+	public Vector2 getSpawnSwan() {
+		return spawnSwan;
+	}
+	
+	public Vector2 getSpawnJupiter() {
+		return spawnJupiter;
+	}
+	
+	public Vector2 getSpawnSeal() {
+		return spawnSeal;
 	}
 
 	public Vector2 getSize() {
 		return size;
 	}
 	
-	private void initSpawn(String layerName) {
+	private Vector2 initSpawn(String layerName) {
 		TiledMapTileLayer layer = getLayer(layerName);
+		if(layer == null)
+			return null;
+		
 		int width = layer.getWidth();
 		int height = layer.getHeight();
 
@@ -93,10 +106,11 @@ public class Map {
 				if (layer.getCell(x, y) != null) {
 					Vector2 spawn = new Vector2(x * ConfigManager.minBlockSize,
 							y * ConfigManager.minBlockSize);
-					spawnList.add(spawn);
+					return spawn;
 				}
 			}
 		}
+		return null;
 	}
 
 	private void addTriggerZones(TiledMapTileLayer layer, PhysicsObjectType type) {

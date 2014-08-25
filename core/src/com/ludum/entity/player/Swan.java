@@ -12,6 +12,8 @@ public class Swan extends Player{
 	int nbJump = 0;
 	public Swan(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
+		height = ConfigManager.swanHeight;
+		physicsSize = ConfigManager.swanPhysicsSize;
 	}
 	
 	@Override
@@ -44,7 +46,7 @@ public class Swan extends Player{
 					* ConfigManager.jumpHeight) - speed.y);
 			float impulseY = body.getMass() * speedChangeY;
 			body.applyLinearImpulse(new Vector2(0, impulseY),
-					body.getWorldCenter(), true);			
+					body.getWorldCenter(), true);
 		} else if (jumpState == PlayerJumpState.STOPJUMP) {
 			if (speed.y > 0) {
 				body.setLinearVelocity(speed.x, 0);			

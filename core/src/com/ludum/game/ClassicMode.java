@@ -134,15 +134,32 @@ public class ClassicMode extends ScreenAdapter {
 
 		/* Load new map */
 		map = mapLoader.getNextMap(state);
-		List<Vector2> spawnList = map.getSpawns();
-
-		/* Spawn Player */
+		
 		PlayerFactory playerFactory = PlayerFactory.getFactory();
-		for (int i = 0; i < spawnList.size(); i++) {
-			Player p = playerFactory.getPlayer(spawnList.get(i), map.getSize(), state, i);
+		Vector2 spawn;
+		
+		/* Spawn Player */
+		spawn = map.getSpawnSwan();
+		if(spawn != null) {
+			Player p = playerFactory.getSwan(spawn, map.getSize(), state);
 			characters.add(p);
 			characterControllers.add(new PlayerControls(p, this));
 		}
+		
+		spawn = map.getSpawnJupiter();
+		if(spawn != null) {
+			Player p = playerFactory.getJupiter(spawn, map.getSize(), state);
+			characters.add(p);
+			characterControllers.add(new PlayerControls(p, this));
+		}
+
+		spawn = map.getSpawnSeal();
+		if(spawn != null) {
+			Player p = playerFactory.getSeal(spawn, map.getSize(), state);
+			characters.add(p);
+			characterControllers.add(new PlayerControls(p, this));
+		}
+
 		currentCharacterIndex = 0;
 
 		/* Settup input and camera */

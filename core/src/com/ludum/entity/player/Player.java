@@ -46,6 +46,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected ArrayList<PhysicsDataStructure> botContactList;
 	protected float stateTime = 0;
 	protected TextureRegion currentFrame;
+	protected float height;
 
 	protected TextureRegion portrait;
 
@@ -64,29 +65,23 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 		botContactList = new ArrayList<PhysicsDataStructure>();
 
-		size = new Vector2(ConfigManager.playerSizeX, ConfigManager.playerSizeY);
-		physicsSize = new Vector2(ConfigManager.playerPhysSizeX,
-				ConfigManager.playerPhysSizeY);
 		state = PlayerState.FALLING;
 		jumpState = PlayerJumpState.NONE;
 		moveRight = false;
 		moveLeft = false;
-		init(pos);
 	}
 
-	public void init(Vector2 p) {
+	public void init() {
 		PhysicsDataStructure s = new PhysicsDataStructure(this,
 				PhysicsObjectType.PLAYER);
 		this.body = PhysicsManager.getInstance().createDynamicRectangle(
-				p.cpy().mulAdd(size, 0.5f), physicsSize, s);
-		pos.set(p);
+				pos.cpy(), physicsSize, s);
 	}
 
 	public void respawn() {
 		pos.set(spawn);
-		body.setTransform((spawn.x + size.x / 2) * PhysicsManager.WORLD_TO_BOX,
-				(spawn.y + size.y / 2) * PhysicsManager.WORLD_TO_BOX,
-				body.getAngle());
+		body.setTransform((spawn.x) * PhysicsManager.WORLD_TO_BOX, (spawn.y)
+				* PhysicsManager.WORLD_TO_BOX, body.getAngle());
 		body.setLinearVelocity(0, 0);
 	}
 
@@ -136,7 +131,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		updateRunning(speed.x, dt);
 		updateJumping(speed, dt);
 		updateState();
-		
+
 		checkDeath();
 	}
 
@@ -202,7 +197,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	public void update(float dt) {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
-		pos.set(newPos.x - size.x / 2, newPos.y - size.y / 2);
+		pos.set(newPos.x, newPos.y);
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
@@ -218,8 +213,10 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void draw(Batch batch) {
-		batch.draw(currentFrame, pos.x, pos.y, ConfigManager.playerSizeX,
-				ConfigManager.playerSizeY);
+		float sizeX = height * currentFrame.getRegionWidth()
+				/ currentFrame.getRegionHeight();
+		batch.draw(currentFrame, pos.x - sizeX / 2, pos.y - height / 2, sizeX,
+				height);
 	}
 
 	public void drawUI(Batch spriteBatch, Vector2 pos, boolean isSelected) {

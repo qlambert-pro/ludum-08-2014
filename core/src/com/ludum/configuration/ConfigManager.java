@@ -1,5 +1,7 @@
 package com.ludum.configuration;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class ConfigManager {
 	public static int minBlockSize = 32;
 	
@@ -10,10 +12,15 @@ public class ConfigManager {
 	
 	public static float friction = 0.5f;
 	
-	public static float playerSizeX = 64;
-	public static float playerSizeY = 64;
-	public static float playerPhysSizeX = 64;
-	public static float playerPhysSizeY = 64;
+	/* Player display size */
+	public static float swanHeight = 64;
+	public static float jupiterHeight = 64;
+	public static float sealHeight = 48;
+
+	/* Player physics size */
+	public static Vector2 swanPhysicsSize = new Vector2(28,56);
+	public static Vector2 sealPhysicsSize = new Vector2(28,40);
+	public static Vector2 jupiterPhysicsSize = new Vector2(28,56);
 	
 	public static float portraitSizeX = 32;
 	public static float portraitSizeY = 32;

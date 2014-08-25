@@ -3,6 +3,7 @@ package com.ludum.entity.player;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
+import com.sun.org.apache.xml.internal.security.Init;
 
 
 public class PlayerFactory {
@@ -22,21 +23,21 @@ public class PlayerFactory {
 	public Player getSwan(Vector2 spawn, Vector2 mapSize, WorldState state) {
 		Player swan = new Swan(spawn, mapSize, TextureManager.getInstance()
 				.getSwanPortraitTextureRegion(), state);
+		swan.init();
 		return swan;
 	}
 
 	public Player getJupiter(Vector2 spawn, Vector2 mapSize, WorldState state) {
 		Player jupiter = new Jupiter(spawn, mapSize, TextureManager
 				.getInstance().getJupiterPortraitTextureRegion(), state);
+		jupiter.init();
 		return jupiter;
 	}
 	
-	public Player getPlayer(Vector2 spawn, Vector2 mapSize,  WorldState state, int id) {
-		if(id == 0) 
-			return getSwan(spawn, mapSize, state);
-		else if(id == 1)
-			return getJupiter(spawn, mapSize, state);
-		else
-			return null;
+	public Player getSeal(Vector2 spawn, Vector2 mapSize, WorldState state) {
+		Player seal = new Seal(spawn, mapSize, TextureManager
+				.getInstance().getJupiterPortraitTextureRegion(), state);
+		seal.init();
+		return seal;
 	}
 }
