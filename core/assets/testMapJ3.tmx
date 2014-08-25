@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileSet" tilewidth="32" tileheight="32">
+  <image source="tileSet.png" width="256" height="256"/>
+ </tileset>
+ <layer name="lightWorld" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1TsKwCAQQEHrvf+B04Z8NKIQcWdAsBAxD4OlAAAAAAAAAAAAAABwFn8fYEE9TVprM/aNyzzKewf97p6+OSqjd6/dzey3o1qLkSYZW7bMfEsy+nJXM/zLvR0yNGkZaaYfQE4HTMADSQ==
+  </data>
+ </layer>
+ <layer name="darkWorld" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1TsKwCAQQEHrvf+BU6TJZ9koFklwBmxEJTwMtgYAAAAAAAAAAAAAwFG8/QEfNNJEv7trk0jmsrVa7rIOUYxq34r0q1Utqn+151zOvCVzeu7q7L39g9EOKzR5MtNMP4A1bZZZAz8=
+  </data>
+ </layer>
+ <layer name="spawnSwan" width="80" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAGo+gAAB
+  </data>
+ </layer>
+ <layer name="spawnJupiter" width="80" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztziEBAAAIA7BL+icmwD2YLcESAAAAAAAAAAAAAACAe/MdAAAAoCyr4AAJ
+  </data>
+ </layer>
+ <layer name="spawnSeal" width="80" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2DENAAAIBLEf8a8YC2wQ0iq4+RIAAAAAAAAAvqjtAAAAAAAY8LEAAADuarAPABE=
+  </data>
+ </layer>
+ <layer name="end1" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt0DENAAAIBDG04F8kCwoexjY5A1cFAAAAAAAAAAAAAAC/eiPj341/AAAAuQHbfQDN
+  </data>
+ </layer>
+ <layer name="end2" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt0LEJAAAIwDBv8f8jXV1FcJAE+kAjAAAAAAAAAAAAAADgVraY82/Hvx3/AADgtwJDSgGZ
+  </data>
+ </layer>
+ <layer name="end3" width="80" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAGo+gAAB
+  </data>
+ </layer>
+ <layer name="spike" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt0KENAAAIBDEk+0+MfxwK0Sa3wFUBAAAAAAAAAAAAAJA64vbDu80TAAAAPhvUPABJ
+  </data>
+ </layer>
+ <layer name="darkWater" width="80" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAGo+gAAB
+  </data>
+ </layer>
+</map>
