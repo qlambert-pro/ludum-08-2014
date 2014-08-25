@@ -27,7 +27,7 @@ public class Jupiter extends Player{
 		Vector2 speed = body.getLinearVelocity();
 
 		if (state == PlayerState.DASHING)
-			updateDashing(s1, s2, speed.x, dt);
+			updateDashing(s1, s2);
 		else
 			updateRunning(speed.x, dt);
 		
@@ -57,8 +57,6 @@ public class Jupiter extends Player{
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 100);
 		}
-		
-		//dashTimer += dt*1000;
 	}
 	
 	@Override

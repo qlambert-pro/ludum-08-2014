@@ -6,7 +6,6 @@ import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
 import com.ludum.skill.Dash;
-import com.ludum.skill.LeftDash;
 import com.ludum.sound.SoundManager;
 
 
