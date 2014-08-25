@@ -160,7 +160,6 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	protected void updateDashing(Skill d1, Skill d2) {
-
 		if (((Dash) d1).isDashing() &&
 			 dashTimer < ConfigManager.dashLengthMS) {
 			d1.use();
@@ -171,6 +170,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	protected void dashLeft(){
+		body.setLinearVelocity(new Vector2(0, 0));
 		state = PlayerState.DASHING;
 		dashTimer = 0;
 		body.setGravityScale(0);
@@ -178,10 +178,21 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 	
 	protected void dashRight(){
+		body.setLinearVelocity(new Vector2(0, 0));
 		state = PlayerState.DASHING;
 		dashTimer = 0;
 		body.setGravityScale(0);
 		dashRight.use();
+	}
+	
+	protected void stopDash() {
+		if(dashLeft.isDashing())
+			dashLeft.endDash();
+		if(dashRight.isDashing())
+			dashRight.endDash();
+		state = PlayerState.FALLING;
+		body.setGravityScale(1);
+		body.setLinearVelocity(new Vector2(0, 0));
 	}
 	
 	public void checkDeath() {
@@ -245,11 +256,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			}
 		}
 		else if (dashTimer >= ConfigManager.dashLengthMS) {
-
-				state = PlayerState.FALLING;
-				((Dash) dashLeft).endDash();
-				((Dash) dashRight).endDash();
-				body.setGravityScale(1);
+			stopDash();
 		}
 	}
 	
