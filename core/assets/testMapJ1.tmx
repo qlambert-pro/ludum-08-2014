@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileSet" tilewidth="32" tileheight="32">
+  <image source="tileSet.png" width="256" height="256"/>
+ </tileset>
+ <layer name="lightWorld" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt100KgCAURlGLimhYO2j/iwxJQaRB+iWa3AOPJv3YrQYZAwAAAADtON0gD/009NOMbpBuDQbp6Kehn4Z+Gvpp6Kehn4Z+GvppavfbonnC/6Xm7/1qr7/29VXx+t98czni85a6Tq4hcf/ZbeN+9jyLmy+12s928Pe7m/v+pxfHhZ3COcosswv+WQ8m/X3t0QUyaQTM
+  </data>
+ </layer>
+ <layer name="darkWorld" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt19EKQEAQRmGExKU38P4PidqLbURr/yajzldzR63TrtqmAQAAAIA4tjSoQz8N/ep0adpsUO5sN2VDv3fop6Gfhn4a+mlsv+Xb5fwO/TT009BPo/abzXiJer/8y/6L3C+33jznvX67j+1+jtqvlF2/97m96+n5jyjRV7731M9DtH7DMWOat3eMSN8RHX2udgEuBYw=
+  </data>
+ </layer>
+ <layer name="spawnSwan" width="80" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzjEJAAAMA7Ce8694MgolUZAEAAAAAAAAgFXXDgDAuAdg4AAJ
+  </data>
+ </layer>
+ <layer name="spawnJupiter" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzjEJAAAMA7Ce8694MgolUZAEAAAAAABg17UDAADAtAeJIAAJ
+  </data>
+ </layer>
+ <layer name="spawnSeal" width="80" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Cd+FeMjCXQKmgCAAAAAAAAwBXTDgDAMwthYAAJ
+  </data>
+ </layer>
+ <layer name="end1" width="80" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt0DENAAAIwDC04F8kDwaAh6NNZmARAAAAf2THjn83/gEAAAAAMFX1RgDN
+  </data>
+ </layer>
+ <layer name="end2" width="80" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzrEJACAMAEHXECuxEvffz+xgEYJ38P23BgAAAAAAAPCvHo3sicJmtLInCtvRyZ4A4MkFmbcAzQ==
+  </data>
+ </layer>
+ <layer name="end3" width="80" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAB4DCWAAAE=
+  </data>
+ </layer>
+ <layer name="spike" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt07ENADAIA0FK9p+YNilCQ0fupF/AkiMAAAAAAAAA+EEeATv484z93rKJWwFDrwBh
+  </data>
+ </layer>
+</map>

@@ -13,15 +13,15 @@ public class ConfigManager {
 	public static float friction = 0.6f;
 	
 	/* Player display size */
-	public static float swanHeight = 64;
-	public static float jupiterHeight = 64;
-	public static float sealHeight = 48;
-	public static float sealLevitHeight = 74;
+	public static float swanHeight = minBlockSize * 2;
+	public static float jupiterHeight = minBlockSize *2;
+	public static float sealHeight = minBlockSize * 1.5f;
+	public static float sealLevitHeight = minBlockSize * 2.3f;
 
 	/* Player physics size */
-	public static Vector2 swanPhysicsSize = new Vector2(28,56);
-	public static Vector2 sealPhysicsSize = new Vector2(28,40);
-	public static Vector2 jupiterPhysicsSize = new Vector2(28,56);
+	public static Vector2 swanPhysicsSize = new Vector2(minBlockSize * 0.875f,minBlockSize * 1.75f);
+	public static Vector2 sealPhysicsSize = new Vector2(minBlockSize * 0.875f,minBlockSize * 1.25f);
+	public static Vector2 jupiterPhysicsSize = new Vector2(minBlockSize * 0.875f,minBlockSize * 1.75f);
 	
 	public static float portraitSizeX = 100;
 	public static float portraitSizeY = 100;
@@ -37,7 +37,7 @@ public class ConfigManager {
 	public static float camHeight = 18;
 	
 	/*Jupiter Dash*/
-	public static float dashSpeed = 50;
-	public static int   dashLengthMS = 50;
+	public static float dashSpeed = 15;
+	public static int   dashLengthMS = 800;
 	
 }
