@@ -19,6 +19,9 @@ import com.ludum.physics.PhysicsObject;
 import com.ludum.physics.PhysicsObjectType;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
+import com.ludum.skill.Dash;
+import com.ludum.skill.LeftDash;
+import com.ludum.skill.RightDash;
 import com.ludum.skill.Skill;
 import com.ludum.sound.SoundManager;
 
@@ -55,6 +58,12 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected int end3Contact;
 
 	protected TextureType textureType;
+	
+	protected long dashTimer = 0;
+	protected Dash dashLeft  = null;
+	protected Dash dashRight = null;
+	
+
 
 	public Player(Vector2 spawn, Vector2 mapSize, TextureRegion port,
 			WorldState s) {
@@ -73,6 +82,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		jumpState = PlayerJumpState.NONE;
 		moveRight = false;
 		moveLeft = false;
+		
 	}
 
 	public void init() {
@@ -80,6 +90,9 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 				PhysicsObjectType.PLAYER);
 		this.body = PhysicsManager.getInstance().createDynamicRectangle(
 				pos.cpy(), physicsSize, s);
+		
+		dashLeft  = new LeftDash(body);
+		dashRight = new RightDash(body);		
 	}
 
 	public void respawn() {
@@ -87,6 +100,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		body.setTransform((spawn.x) * PhysicsManager.WORLD_TO_BOX, (spawn.y)
 				* PhysicsManager.WORLD_TO_BOX, body.getAngle());
 		body.setLinearVelocity(0, 0);
+		state = PlayerState.FALLING;
 	}
 
 	public void stop() {
@@ -132,13 +146,42 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	public void updatePhysics(float dt) {
 		Vector2 speed = body.getLinearVelocity();
 
-		updateRunning(speed.x, dt);
+		if (state == PlayerState.DASHING)
+			updateDashing(dashLeft, dashRight, speed.x, dt);
+		else
+			updateRunning(speed.x, dt);
+
 		updateJumping(speed, dt);
 		updateState();
 
 		checkDeath();
 	}
 
+	protected void updateDashing(Skill s1, Skill s2, float horizontalSpeed,
+			float dt) {
+
+		if (((Dash) s1).isDashing() && dashTimer < ConfigManager.dashLengthMS) {
+			s1.use();
+		} else if (((Dash) s2).isDashing()
+				&& dashTimer < ConfigManager.dashLengthMS) {
+			s2.use();
+		}
+	}
+
+	protected void dashLeft(){
+		state = PlayerState.DASHING;
+		dashTimer = 0;
+		body.setGravityScale(0);
+		dashLeft.use();
+	}
+	
+	protected void dashRight(){
+		state = PlayerState.DASHING;
+		dashTimer = 0;
+		body.setGravityScale(0);
+		dashRight.use();
+	}
+	
 	public void checkDeath() {
 		/* check if the player is outside limit */
 		if ((pos.x < -ConfigManager.outsideLimit * ConfigManager.minBlockSize)
@@ -187,15 +230,21 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected void updateState() {
 		Vector2 speed = body.getLinearVelocity();
-
-		if (speed.y > 0) {
-			state = PlayerState.JUMPING;
-		} else if (speed.y < 0) {
+		if(state != PlayerState.DASHING)
+			if (speed.y > 0) {
+				state = PlayerState.JUMPING;
+			} else if (speed.y < 0) {
+				state = PlayerState.FALLING;
+			} else if (moveRight ^ moveLeft) {
+				state = PlayerState.RUNNING;
+			} else {
+				state = PlayerState.STANDING;
+			}
+		else if (dashTimer >= ConfigManager.dashSpeed) {
 			state = PlayerState.FALLING;
-		} else if (moveRight ^ moveLeft) {
-			state = PlayerState.RUNNING;
-		} else {
-			state = PlayerState.STANDING;
+			((Dash) dashLeft).endDash();
+			((Dash) dashRight).endDash();
+			body.setGravityScale(1);
 		}
 	}
 
@@ -205,6 +254,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
+		
+		dashTimer += dt*1000;		
 	}
 
 	public Vector2 getPosition() {

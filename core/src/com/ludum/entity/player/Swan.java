@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
+import com.ludum.skill.Dash;
+import com.ludum.skill.LeftDash;
 import com.ludum.sound.SoundManager;
 
 
@@ -33,7 +35,7 @@ public class Swan extends Player{
 		}else if(state == PlayerState.ATTACKING){
 			textureType = TextureType.SwanHightJump;		
 		}
-		super.update(dt);
+		super.update(dt);		
 	}
 	
 	@Override
@@ -60,20 +62,26 @@ public class Swan extends Player{
 	@Override
 	protected void updateState() {
 		Vector2 speed = body.getLinearVelocity();
-		
-		if (speed.y > 0) {
-			if(nbJump == 2)
-				state = PlayerState.DOUBLEJUMPING;
-			else
-				state = PlayerState.JUMPING;
-		} else if (botContactList.isEmpty()) {
+		if(state != PlayerState.DASHING)
+			if (speed.y > 0) {
+				if(nbJump == 2)
+					state = PlayerState.DOUBLEJUMPING;
+				else
+					state = PlayerState.JUMPING;
+			} else if (botContactList.isEmpty()) {
+				state = PlayerState.FALLING;
+			} else if (moveRight ^ moveLeft) {
+				state = PlayerState.RUNNING;
+				nbJump = 0;
+			} else {
+				state = PlayerState.STANDING;
+				nbJump = 0;
+			}
+		else if (dashTimer >= ConfigManager.dashSpeed) {
 			state = PlayerState.FALLING;
-		} else if (moveRight ^ moveLeft) {
-			state = PlayerState.RUNNING;
-			nbJump = 0;
-		} else {
-			state = PlayerState.STANDING;
-			nbJump = 0;
+			((Dash) dashLeft).endDash();
+			((Dash) dashRight).endDash();
+			body.setGravityScale(1);
 		}
 	}
 }

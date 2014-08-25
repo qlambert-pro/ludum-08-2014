@@ -15,7 +15,6 @@ import com.ludum.skill.RightDash;
 
 public class Jupiter extends Player{
 	private boolean isUsed = false;
-	private long dashTimer = 0;
 	
 	public Jupiter(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
@@ -28,7 +27,7 @@ public class Jupiter extends Player{
 		Vector2 speed = body.getLinearVelocity();
 
 		if (state == PlayerState.DASHING)
-			updateDashing(speed.x, dt);
+			updateDashing(s1, s2, speed.x, dt);
 		else
 			updateRunning(speed.x, dt);
 		
@@ -38,15 +37,7 @@ public class Jupiter extends Player{
 		checkDeath();
 	}
 	
-	protected void updateDashing(float horizontalSpeed, float dt) {
-
-		
-		if (((Dash) s1).isDashing() && dashTimer < ConfigManager.dashLengthMS) {
-			s1.use();
-		} else if (((Dash) s2).isDashing() && dashTimer < ConfigManager.dashLengthMS) {
-			s2.use();
-		}
-	}
+	
 	
 	@Override
 	public void update(float dt){
@@ -67,7 +58,7 @@ public class Jupiter extends Player{
 					textureType, 100);
 		}
 		
-		dashTimer += dt*1000;
+		//dashTimer += dt*1000;
 	}
 	
 	@Override
@@ -83,7 +74,7 @@ public class Jupiter extends Player{
 			isUsed = true;
 			state = PlayerState.DASHING;
 			dashTimer = 0;
-			body.setLinearDamping(0);
+			body.setGravityScale(0);
 		}
 	}
 	
@@ -94,7 +85,7 @@ public class Jupiter extends Player{
 			isUsed = true;			
 			state = PlayerState.DASHING;
 			dashTimer = 0;
-			body.setLinearDamping(0);
+			body.setGravityScale(0);
 		}
 	}
 	
@@ -106,21 +97,18 @@ public class Jupiter extends Player{
 		case PLAYER:
 			if (((Dash) s1).isDashing()) {
 				((Dash) s1).endDash();
-				/*TODO transfer dash*/
-				((Player) struct.obj).body.applyLinearImpulse(new Vector2(-ConfigManager.bumpX,
-					  	ConfigManager.bumpY),
-						body.getWorldCenter(), true);
+				((Player) struct.obj).dashLeft();
+				body.setLinearVelocity(new Vector2(0, 0));
 			} else if (((Dash) s2).isDashing()) {
 				((Dash) s2).endDash();
-				/*TODO transfer dash*/
-				((Player) struct.obj).body.applyLinearImpulse(new Vector2(ConfigManager.bumpX,
-																		  	ConfigManager.bumpY),
-																			body.getWorldCenter(), true);
+				((Player) struct.obj).dashRight();
+				body.setLinearVelocity(new Vector2(0, 0));
 			}
 		default:;				
 		}		
 	}
 	
+	@Override
 	protected void updateState() {
 		Vector2 speed = body.getLinearVelocity();
 		if(state != PlayerState.DASHING)			

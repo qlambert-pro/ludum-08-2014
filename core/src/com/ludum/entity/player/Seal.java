@@ -35,12 +35,11 @@ public class Seal extends Player {
 		super.update(dt);
 		if (state == PlayerState.JUMPING) {
 			currentFrame = TextureManager.getInstance().getTextureRegion(
-					textureType, 0);
-		}
-		if (state == PlayerState.FALLING) {
+				textureType, 0);
+		} else if(state == PlayerState.FALLING){
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 100);
-		}
+		}		
 	}
 
 	@Override
