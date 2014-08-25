@@ -19,6 +19,7 @@ public class Seal extends Player {
 		super(spawn, mapSize, port, s);
 		height = ConfigManager.sealHeight;
 		physicsSize = ConfigManager.sealPhysicsSize;
+		canWalkOnWater = true;
 	}
 
 	@Override

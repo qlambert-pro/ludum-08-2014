@@ -58,12 +58,13 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected int end3Contact;
 
 	protected TextureType textureType;
-	
-	protected long dashTimer = 0;
-	protected Dash dashLeft  = null;
-	protected Dash dashRight = null;
-	
 
+	protected long dashTimer = 0;
+	protected Dash dashLeft = null;
+	protected Dash dashRight = null;
+
+	protected boolean isDead;
+	protected boolean canWalkOnWater = false;
 
 	public Player(Vector2 spawn, Vector2 mapSize, TextureRegion port,
 			WorldState s) {
@@ -82,7 +83,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		jumpState = PlayerJumpState.NONE;
 		moveRight = false;
 		moveLeft = false;
-		
+		isDead = false;
+
 	}
 
 	public void init() {
@@ -90,9 +92,9 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 				PhysicsObjectType.PLAYER);
 		this.body = PhysicsManager.getInstance().createDynamicRectangle(
 				pos.cpy(), physicsSize, s);
-		
-		dashLeft  = new LeftDash(body);
-		dashRight = new RightDash(body);		
+
+		dashLeft = new LeftDash(body);
+		dashRight = new RightDash(body);
 	}
 
 	public void respawn() {
@@ -101,6 +103,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 				* PhysicsManager.WORLD_TO_BOX, body.getAngle());
 		body.setLinearVelocity(0, 0);
 		state = PlayerState.FALLING;
+		isDead = false;
 	}
 
 	public void stop() {
@@ -168,21 +171,24 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		}
 	}
 
-	protected void dashLeft(){
+	protected void dashLeft() {
 		state = PlayerState.DASHING;
 		dashTimer = 0;
 		body.setGravityScale(0);
 		dashLeft.use();
 	}
-	
-	protected void dashRight(){
+
+	protected void dashRight() {
 		state = PlayerState.DASHING;
 		dashTimer = 0;
 		body.setGravityScale(0);
 		dashRight.use();
 	}
-	
+
 	public void checkDeath() {
+		if (isDead)
+			respawn();
+
 		/* check if the player is outside limit */
 		if ((pos.x < -ConfigManager.outsideLimit * ConfigManager.minBlockSize)
 				|| (pos.y < -ConfigManager.outsideLimit
@@ -230,7 +236,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected void updateState() {
 		Vector2 speed = body.getLinearVelocity();
-		if(state != PlayerState.DASHING)
+		if (state != PlayerState.DASHING)
 			if (speed.y > 0) {
 				state = PlayerState.JUMPING;
 			} else if (speed.y < 0) {
@@ -254,8 +260,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
-		
-		dashTimer += dt*1000;		
+
+		dashTimer += dt * 1000;
 	}
 
 	public Vector2 getPosition() {
@@ -269,11 +275,11 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	public boolean isAtEnd2() {
 		return end2Contact > 0;
 	}
-	
+
 	public boolean isAtEnd3() {
 		return end3Contact > 0;
 	}
-	
+
 	@Override
 	public void draw(Batch batch) {
 		float sizeX = height * currentFrame.getRegionWidth()
@@ -330,6 +336,27 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		case END3:
 			end3Contact++;
 			break;
+		case SPIKE:
+			isDead = true;
+			break;
+		case LIGHTWATER:
+			if (worldState.getState() == WorldType.LIGHT) {
+				if (canWalkOnWater) {
+					checkBotContact(struct, contact);
+				} else {
+					isDead = true;
+				}
+			}
+			break;
+		case DARKWATER:
+			if (worldState.getState() == WorldType.DARK) {
+				if (canWalkOnWater) {
+					checkBotContact(struct, contact);
+				} else {
+					isDead = true;
+				}
+			}
+			break;
 		default:
 			break;
 		}
@@ -338,6 +365,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
+		case LIGHTWATER:
+		case DARKWATER:
 		case LIGHTEDGE:
 		case DARKEDGE:
 			if (botContactList.contains(struct)) {
@@ -373,6 +402,16 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		case DARKEDGE:
 			if (worldState.getState() == WorldType.LIGHT)
 				contact.setEnabled(false);
+			break;
+		case LIGHTWATER:
+			if (worldState.getState() == WorldType.DARK) {
+					contact.setEnabled(false);
+			}
+			break;
+		case DARKWATER:
+			if (worldState.getState() == WorldType.LIGHT) {
+					contact.setEnabled(false);
+			}
 			break;
 		default:
 			break;
