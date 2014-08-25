@@ -18,6 +18,7 @@ import com.ludum.controls.PlayerControls;
 import com.ludum.entity.player.Player;
 import com.ludum.entity.player.PlayerFactory;
 import com.ludum.physics.PhysicsManager;
+import com.ludum.rendering.Background;
 import com.ludum.rendering.CharacterCenteredCamera;
 import com.ludum.sound.SoundManager;
 
@@ -45,7 +46,6 @@ public class ClassicMode extends ScreenAdapter {
 		uiBatch = new SpriteBatch();
 		state = new WorldState();
 
-
 		mapLoader = MapLoader.getLoader();
 		loadLevel();
 		SoundManager.getInstance().startBackGroundMusic();
@@ -64,15 +64,19 @@ public class ClassicMode extends ScreenAdapter {
 		/* Render part */
 		Gdx.gl.glClearColor(0.3f, 0.5f, 0.8f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		map.render(cam);
-
+		
 		worldBatch.setProjectionMatrix(cam.combined);
-
 		worldBatch.begin();
+		
+		Background.getInstance().render(worldBatch, cam.position.x, cam.position.y);
+		
 		for (Player p : characters) {
 			p.draw(worldBatch);
 		}
 		worldBatch.end();
+		
+		
+		map.render(cam);
 
 		drawUI();
 	}
