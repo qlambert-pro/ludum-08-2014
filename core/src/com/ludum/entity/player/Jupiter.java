@@ -2,6 +2,7 @@ package com.ludum.entity.player;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -17,8 +18,8 @@ public class Jupiter extends Player{
 	private boolean isUsed = false;
 	private ArrayList<Player> contactPlayers = new ArrayList<Player>();
 	
-	public Jupiter(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
-		super(spawn, mapSize, port, s);
+	public Jupiter(Vector2 spawn, Vector2 mapSize, Texture port, Texture port2, WorldState s) {
+		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.jupiterHeight;
 		physicsSize = ConfigManager.jupiterPhysicsSize;
 	}

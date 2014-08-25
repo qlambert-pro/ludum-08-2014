@@ -22,21 +22,24 @@ public class PlayerFactory {
 
 	public Player getSwan(Vector2 spawn, Vector2 mapSize, WorldState state) {
 		Player swan = new Swan(spawn, mapSize, TextureManager.getInstance()
-				.getSwanPortraitTextureRegion(), state);
+				.getSwanPortrait(),TextureManager.getInstance()
+				.getSwanPortraitSelected(), state);
 		swan.init();
 		return swan;
 	}
 
 	public Player getJupiter(Vector2 spawn, Vector2 mapSize, WorldState state) {
 		Player jupiter = new Jupiter(spawn, mapSize, TextureManager
-				.getInstance().getJupiterPortraitTextureRegion(), state);
+				.getInstance().getJupiterPortrait(),TextureManager
+				.getInstance().getJupiterPortraitSelected(), state);
 		jupiter.init();
 		return jupiter;
 	}
 	
 	public Player getSeal(Vector2 spawn, Vector2 mapSize, WorldState state) {
 		Player seal = new Seal(spawn, mapSize, TextureManager
-				.getInstance().getJupiterPortraitTextureRegion(), state);
+				.getInstance().getDeathPortrait(),TextureManager
+				.getInstance().getDeathPortraitSelected(), state);
 		seal.init();
 		return seal;
 	}

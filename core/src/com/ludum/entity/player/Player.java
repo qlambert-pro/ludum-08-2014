@@ -2,6 +2,7 @@ package com.ludum.entity.player;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -51,7 +52,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected TextureRegion currentFrame;
 	protected float height;
 
-	protected TextureRegion portrait;
+	protected Texture portrait;
+	protected Texture portraitSelected;
 
 	protected int end1Contact;
 	protected int end2Contact;
@@ -66,9 +68,10 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected boolean isDead;
 	protected boolean canWalkOnWater = false;
 
-	public Player(Vector2 spawn, Vector2 mapSize, TextureRegion port,
+	public Player(Vector2 spawn, Vector2 mapSize, Texture port, Texture portSelect,
 			WorldState s) {
 		portrait = port;
+		portraitSelected = portSelect;
 		this.worldState = s;
 		end1Contact = 0;
 		end2Contact = 0;
@@ -302,12 +305,13 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	public void drawUI(Batch spriteBatch, Vector2 pos, boolean isSelected) {
 		spriteBatch.begin();
-		spriteBatch.draw(portrait, pos.x, pos.y, ConfigManager.portraitSizeX,
-				ConfigManager.portraitSizeY);
+		
 		if (isSelected)
-			spriteBatch.draw(portrait, pos.x + ConfigManager.portraitSizeX / 2
-					- 5, pos.y + ConfigManager.portraitSizeY, 5, 5);
-
+			spriteBatch.draw(portraitSelected, pos.x, pos.y, ConfigManager.portraitSizeX,
+					ConfigManager.portraitSizeY);
+		else
+			spriteBatch.draw(portrait, pos.x, pos.y, ConfigManager.portraitSizeX,
+					ConfigManager.portraitSizeY);
 		spriteBatch.end();
 	}
 
