@@ -10,9 +10,9 @@ import com.ludum.rendering.TextureType;
 
 public class Seal extends Player{
 	
-	private boolean levitate;
 	private float gravitySave;
 	private Vector2 savePos;
+	private PlayerState saveState;
 
 	public Seal(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
 		super(spawn, mapSize, port, s);
@@ -28,6 +28,8 @@ public class Seal extends Player{
 			textureType = TextureType.SealRun;
 		}else if(state == PlayerState.STANDING){
 			textureType = TextureType.SealIdle;
+		}else if(state == PlayerState.FREEZING){
+			textureType = TextureType.SealLevitation;
 		}
 		super.update(dt);
 		if(state == PlayerState.JUMPING){
@@ -41,14 +43,17 @@ public class Seal extends Player{
 	
 	@Override
 	public void useSkill1() {
-		levitate = !levitate;
-		if(levitate){
+		
+		if(state != PlayerState.FREEZING){
+			saveState = state;
+			state = PlayerState.FREEZING;
 			body.setLinearVelocity(0, 0);
 			savePos = body.getPosition();
 			gravitySave = body.getGravityScale();
 			body.setGravityScale(0);
 			body.setType(BodyType.StaticBody);
 		}else{
+			state = saveState;
 			body.setGravityScale(gravitySave);
 			body.setType(BodyType.DynamicBody);
 		}
@@ -56,7 +61,7 @@ public class Seal extends Player{
 	
 	@Override
 	public void updatePhysics(float dt){
-		if(!levitate){
+		if(state != PlayerState.FREEZING){
 			super.updatePhysics(dt);
 		}else{
 		}
