@@ -31,12 +31,9 @@ public class PlayerFactory {
 		return jupiter;
 	}
 	
-	public Player getPlayer(Vector2 spawn, Vector2 mapSize,  WorldState state, int id) {
-		if(id == 0) 
-			return getSwan(spawn, mapSize, state);
-		else if(id == 1)
-			return getJupiter(spawn, mapSize, state);
-		else
-			return null;
+	public Player getSeal(Vector2 spawn, Vector2 mapSize, WorldState state) {
+		Player seal = new Seal(spawn, mapSize, TextureManager
+				.getInstance().getJupiterPortraitTextureRegion(), state);
+		return seal;
 	}
 }

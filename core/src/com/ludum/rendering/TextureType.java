@@ -11,6 +11,10 @@ public enum TextureType {
 	JupiterJumpFall(2, "sprite_jump_fall_jupiter.png"),
 	JupiterIdle(6, "sprite_idle_jupiter.png"),
 	JupiterRun(8, "sprite_walk_jupiter.png"),
+	SealJump(1, "sprite_jump_seal.png"),
+	SealIdle(4, "sprite_idle_seal.png"),
+	SealRun(4, "sprite_walk_seal.png"),
+	SealLevitation(8, "sprite_levitation_seal.png"),
 	Portraits(2, "playerPortraits.png");
 
 	private int nbFrame;

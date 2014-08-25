@@ -32,6 +32,12 @@ public class TextureManager {
 		init(TextureType.JupiterIdle, walkSheet, frames, animation);
 		init(TextureType.JupiterJumpFall, walkSheet, frames, animation);
 		init(TextureType.JupiterRun, walkSheet, frames, animation);
+		
+		init(TextureType.SealIdle, walkSheet, frames, animation);
+		init(TextureType.SealJump, walkSheet, frames, animation);
+		init(TextureType.SealRun, walkSheet, frames, animation);
+		init(TextureType.SealLevitation, walkSheet, frames, animation);
+		
 		initPortraits(TextureType.Portraits, portraitSheet, portraits);
 		
 		portraitSheet = new Texture(TextureType.Portraits.getFileName());
