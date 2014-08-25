@@ -23,9 +23,14 @@
    eJxjYBgFtAAcA+2AUTAKRsEooDEAAC2AAAk=
   </data>
  </layer>
- <layer name="end" width="40" height="10">
+ <layer name="end1" width="40" height="10">
   <data encoding="base64" compression="zlib">
    eJxjYBgFQx1IArEUEEsPtENwAEUgVgJi5YF2CA4w2N2nCcRaQKw90A4ZBaMADQAAeisBmQ==
+  </data>
+ </layer>
+ <layer name="end2" width="40" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4B8IAnE0gPtCDxAEYiVB9oReIAmEGsPtCNGwSggEwAAoToAzQ==
   </data>
  </layer>
 </map>

@@ -1,9 +1,7 @@
 package com.ludum.map;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -23,7 +21,9 @@ public class Map {
 	private static final String SPAWNSWAN_LAYER_NAME = "spawnSwan";
 	private static final String SPAWNJUPITER_LAYER_NAME = "spawnJupiter";
 	private static final String SPAWNSEAL_LAYER_NAME = "spawnSeal";
-	private static final String END_LAYER_NAME = "end";
+	private static final String END1_LAYER_NAME = "end1";
+	private static final String END2_LAYER_NAME = "end2";
+	private static final String END3_LAYER_NAME = "end3";
 
 	private String mapName;
 	private WorldState state;
@@ -35,10 +35,12 @@ public class Map {
 	private Vector2 spawnJupiter;
 	private Vector2 spawnSeal;
 	private Vector2 size;
+	private int endNumber;
 
 	public Map(String file, WorldState s) {
 		mapName = file;
 		state = s;
+		endNumber = 0;
 	}
 
 	public void load() {
@@ -47,13 +49,32 @@ public class Map {
 		brightEdges = new LinkedList<Edge>();
 		darkEdges = new LinkedList<Edge>();
 
-		size = new Vector2(
-				getLayer(LIGHT_COLLISION_LAYER_NAME).getWidth()*ConfigManager.minBlockSize, getLayer(
-						LIGHT_COLLISION_LAYER_NAME).getHeight()*ConfigManager.minBlockSize);
+		size = new Vector2(getLayer(LIGHT_COLLISION_LAYER_NAME).getWidth()
+				* ConfigManager.minBlockSize, getLayer(
+				LIGHT_COLLISION_LAYER_NAME).getHeight()
+				* ConfigManager.minBlockSize);
 
 		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), WorldType.LIGHT);
 		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), WorldType.DARK);
-		addTriggerZones(getLayer(END_LAYER_NAME), PhysicsObjectType.END);
+		TiledMapTileLayer layer;
+
+		layer = getLayer(END1_LAYER_NAME);
+		if (layer != null) {
+			addTriggerZones(layer, PhysicsObjectType.END1);
+			endNumber++;
+		}
+		
+		layer = getLayer(END2_LAYER_NAME);
+		if (layer != null) {
+			addTriggerZones(layer, PhysicsObjectType.END2);
+			endNumber++;
+		}
+
+		layer = getLayer(END3_LAYER_NAME);
+		if (layer != null) {
+			addTriggerZones(layer, PhysicsObjectType.END3);
+			endNumber++;
+		}
 
 		spawnSwan = initSpawn(SPAWNSWAN_LAYER_NAME);
 		spawnJupiter = initSpawn(SPAWNJUPITER_LAYER_NAME);
@@ -80,11 +101,11 @@ public class Map {
 	public Vector2 getSpawnSwan() {
 		return spawnSwan;
 	}
-	
+
 	public Vector2 getSpawnJupiter() {
 		return spawnJupiter;
 	}
-	
+
 	public Vector2 getSpawnSeal() {
 		return spawnSeal;
 	}
@@ -93,11 +114,15 @@ public class Map {
 		return size;
 	}
 	
+	public int getEndNumber() {
+		return endNumber;
+	}
+
 	private Vector2 initSpawn(String layerName) {
 		TiledMapTileLayer layer = getLayer(layerName);
-		if(layer == null)
+		if (layer == null)
 			return null;
-		
+
 		int width = layer.getWidth();
 		int height = layer.getHeight();
 

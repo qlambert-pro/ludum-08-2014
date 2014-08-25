@@ -4,5 +4,7 @@ public enum PhysicsObjectType {
 	PLAYER,
 	LIGHTEDGE,
 	DARKEDGE,
-	END
+	END1,
+	END2,
+	END3
 }

@@ -96,12 +96,29 @@ public class ClassicMode extends ScreenAdapter {
 		draw(dt);
 
 		/* Check end condition */
-		boolean end = true;
+		int end = 0;
 		for (Player p : characters) {
-			if (!p.isAtEnd())
-				end = false;
+			if (p.isAtEnd1()) {
+				end ++;
+				break;
+			}
 		}
-		if (end) {
+		
+		for (Player p : characters) {
+			if (p.isAtEnd2()) {
+				end ++;
+				break;
+			}
+		}
+		
+		for (Player p : characters) {
+			if (p.isAtEnd3()) {
+				end ++;
+				break;
+			}
+		}
+
+		if (end == map.getEndNumber()) {
 			if (mapLoader.isLastMap())
 				game.startCreditMode();
 			else {
