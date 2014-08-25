@@ -10,7 +10,7 @@ public class SoundManager {
 	
 	private Sound music;
 	private Sound jump;
-	private float volume = 0.5f;
+	private float volume = 0.1f;
 	
 	
 	public static SoundManager getInstance(){
