@@ -254,8 +254,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
-		
-		dashTimer += dt*1000;		
+		if (state == PlayerState.DASHING)
+			dashTimer += dt*1000;		
 	}
 
 	public Vector2 getPosition() {

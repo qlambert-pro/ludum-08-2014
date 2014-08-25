@@ -118,6 +118,7 @@ public class Jupiter extends Player{
 				state = PlayerState.FALLING;
 			} else if (moveRight ^ moveLeft) {
 				state = PlayerState.RUNNING;
+				isUsed = false;
 			} else {
 				state = PlayerState.STANDING;
 				isUsed = false;
