@@ -56,8 +56,10 @@ public class Map {
 				LIGHT_COLLISION_LAYER_NAME).getHeight()
 				* ConfigManager.minBlockSize);
 
-		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME), PhysicsObjectType.LIGHTEDGE);
-		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME), PhysicsObjectType.DARKEDGE);
+		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME),
+				PhysicsObjectType.LIGHTEDGE);
+		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME),
+				PhysicsObjectType.DARKEDGE);
 		TiledMapTileLayer layer;
 
 		layer = getLayer(END1_LAYER_NAME);
@@ -87,7 +89,7 @@ public class Map {
 		if (layer != null) {
 			addCollisionEdges(layer, PhysicsObjectType.LIGHTWATER);
 		}
-		
+
 		layer = getLayer(DARKWATER_LAYER_NAME);
 		if (layer != null) {
 			addCollisionEdges(layer, PhysicsObjectType.DARKWATER);
@@ -109,6 +111,12 @@ public class Map {
 				state.getState() == WorldType.LIGHT);
 		getLayer(DARK_COLLISION_LAYER_NAME).setVisible(
 				state.getState() == WorldType.DARK);
+		if (getLayer(LIGHTWATER_LAYER_NAME) != null)
+			getLayer(LIGHTWATER_LAYER_NAME).setVisible(
+					state.getState() == WorldType.LIGHT);
+		if (getLayer(DARKWATER_LAYER_NAME) != null)
+			getLayer(DARKWATER_LAYER_NAME).setVisible(
+					state.getState() == WorldType.DARK);
 	}
 
 	private TiledMapTileLayer getLayer(String layerName) {
