@@ -16,6 +16,7 @@ public class ConfigManager {
 	public static float swanHeight = 64;
 	public static float jupiterHeight = 64;
 	public static float sealHeight = 48;
+	public static float sealLevitHeight = 74;
 
 	/* Player physics size */
 	public static Vector2 swanPhysicsSize = new Vector2(28,56);
