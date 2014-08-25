@@ -1,5 +1,6 @@
 package com.ludum.entity.player;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
@@ -11,8 +12,8 @@ import com.ludum.sound.SoundManager;
 
 public class Swan extends Player{
 	int nbJump = 0;
-	public Swan(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
-		super(spawn, mapSize, port, s);
+	public Swan(Vector2 spawn, Vector2 mapSize, Texture port, Texture port2, WorldState s) {
+		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.swanHeight;
 		physicsSize = ConfigManager.swanPhysicsSize;
 	}

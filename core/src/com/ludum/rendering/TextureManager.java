@@ -1,5 +1,6 @@
 package com.ludum.rendering;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +10,14 @@ public class TextureManager {
 	private static int PORTRAITS_ROWS = 1;
 	private Animation animation[] = new Animation[TextureType.values().length];
 	private Texture walkSheet;
-	private Texture portraitSheet;
+	
+	private static Texture swan;
+	private static Texture swanSelect;
+	private static Texture death;
+	private static Texture deathSelect;
+	private static Texture jupiter;
+	private static Texture jupiterSelect;
+	
 	private TextureRegion[][] frames = new TextureRegion[TextureType.values().length][];
 	private TextureRegion[] portraits;
 	private static TextureManager singleton;
@@ -38,25 +46,16 @@ public class TextureManager {
 		init(TextureType.SealRun, walkSheet, frames, animation);
 		init(TextureType.SealLevitation, walkSheet, frames, animation);
 		
-		initPortraits(TextureType.Portraits, portraitSheet, portraits);
-		
-		portraitSheet = new Texture(TextureType.Portraits.getFileName());
-		TextureRegion[][] tmp = TextureRegion.split(portraitSheet,
-				portraitSheet.getWidth()/PORTRAITS_COLS,
-				portraitSheet.getHeight()/PORTRAITS_ROWS);
-        portraits = new TextureRegion[PORTRAITS_COLS * PORTRAITS_ROWS];
-        int index = 0;
-        for (int i = 0; i < PORTRAITS_ROWS; i++) {
-            for (int j = 0; j < PORTRAITS_COLS; j++) {
-                portraits[index++] = tmp[i][j];
-            }
-        }
+		initPortraits();
 	}
 	
-	private static final void initPortraits(TextureType type,
-											Texture portraitSheet,
-											TextureRegion[] portraits) {
-
+	private static final void initPortraits() {
+		swan  = new Texture(Gdx.files.internal("jumper.png"));
+		swanSelect = new Texture(Gdx.files.internal("jumper-select.gif"));
+		death = new Texture(Gdx.files.internal("death.png"));
+		deathSelect = new Texture(Gdx.files.internal("death-select.gif"));
+		jupiter = new Texture(Gdx.files.internal("jupiter.png"));
+		jupiterSelect = new Texture(Gdx.files.internal("jupiter-select.gif"));
 	}
 	
 	private static final void init(TextureType type, Texture walkSheet, TextureRegion[][] frames, Animation animation[]){
@@ -74,12 +73,27 @@ public class TextureManager {
 	}
 	
 	
-	public TextureRegion getSwanPortraitTextureRegion() {
-		return portraits[0];
+	public Texture getSwanPortrait() {
+		return swan;
 	}
 
-	public TextureRegion getJupiterPortraitTextureRegion() {
-		return portraits[1];
+	public Texture getSwanPortraitSelected() {
+		return swanSelect;
+	}
+	
+	public Texture getDeathPortrait() {
+		return death;
+	}
+
+	public Texture getDeathPortraitSelected() {
+		return deathSelect;
+	}
+	public Texture getJupiterPortrait() {
+		return jupiter;
+	}
+
+	public Texture getJupiterPortraitSelected() {
+		return jupiterSelect;
 	}
 	
 	public TextureRegion getEnd() {

@@ -1,5 +1,6 @@
 package com.ludum.entity.player;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -15,8 +16,8 @@ public class Seal extends Player {
 	private Vector2 savePos;
 	private PlayerState saveState;
 
-	public Seal(Vector2 spawn, Vector2 mapSize, TextureRegion port, WorldState s) {
-		super(spawn, mapSize, port, s);
+	public Seal(Vector2 spawn, Vector2 mapSize, Texture port, Texture port2, WorldState s) {
+		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.sealHeight;
 		physicsSize = ConfigManager.sealPhysicsSize;
 		canWalkOnWater = true;

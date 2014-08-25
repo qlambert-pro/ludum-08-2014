@@ -23,8 +23,8 @@ public class ConfigManager {
 	public static Vector2 sealPhysicsSize = new Vector2(28,40);
 	public static Vector2 jupiterPhysicsSize = new Vector2(28,56);
 	
-	public static float portraitSizeX = 32;
-	public static float portraitSizeY = 32;
+	public static float portraitSizeX = 100;
+	public static float portraitSizeY = 100;
 
 	public static float physicsStepSize = 1f/60f;
 	
