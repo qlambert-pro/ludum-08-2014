@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="50" tilewidth="630" tileheight="630">
+ <tileset firstgid="1" name="HD" tilewidth="630" tileheight="630">
+  <image source="tileSetHD.png" width="5040" height="5040"/>
+ </tileset>
+ <layer name="darkWorld" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAHg0FeAAAQ==
+  </data>
+ </layer>
+ <layer name="lightWorld" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1MEKQEAURmHR2BHFQkl5AUsLef/nci1sJtdMuVKcv85KzdcsTJIw9v05KY/IaoVURoSHh4eH96wXev+tvTbyPDy8P3iDUi01F9/9//LuDk/b214aWabUSb00SaNnuRNvNmqVqsDd9haj8PDw8PDw8HRvAzxWZc4=
+  </data>
+ </layer>
+ <layer name="lightWater" width="28" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzbEJACAMAMHsopXauP9ypswCIsIdfP0RAAAA/G5nrdQv/0Y2S8vPz8/Pz8/vye8A5LkP3Q==
+  </data>
+ </layer>
+ <layer name="spike" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt0LEJACAMRcFMI5ZO4P5j2dsEIaDCPfhFqoNESKpu8ng8Hu8JryWr7vd/8XjSSWO7O4/H4/F4vCveAj+0DDk=
+  </data>
+ </layer>
+ <layer name="end1" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzSEBAAAIAzAKIZH0r0WLG7YCqwIAAAAAkjr8Tfjb8PfZATaTAKA=
+  </data>
+ </layer>
+ <layer name="end2" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzUEJAAAIBDAL+fRp/1q2OBC2Aqviiw5/E/42/AEAAADAdwdWUACg
+  </data>
+ </layer>
+</map>
