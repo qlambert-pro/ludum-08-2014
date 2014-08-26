@@ -24,7 +24,7 @@
    eJztzjEJAAAMA7Ce8694MgolUZAEAAAAAAAAgFXXDgDAuAdg4AAJ
   </data>
  </layer>
- <layer name="spawnJupiter" width="80" height="30">
+ <layer name="spawnJupiter" width="80" height="30" visible="0">
   <data encoding="base64" compression="zlib">
    eJztzjEJAAAMA7Ce8694MgolUZAEAAAAAABg17UDAADAtAeJIAAJ
   </data>
