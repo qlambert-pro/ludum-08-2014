@@ -3,17 +3,20 @@
  <tileset firstgid="1" name="HD" tilewidth="630" tileheight="630">
   <image source="tileSetHD.png" width="5040" height="5040"/>
  </tileset>
- <layer name="darkWorld" width="28" height="50">
-  <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAHg0FeAAAQ==
-  </data>
- </layer>
+ <tileset firstgid="65" name="dark" tilewidth="630" tileheight="630">
+  <image source="tilesetHD_noir.png" width="5040" height="5040"/>
+ </tileset>
  <layer name="lightWorld" width="28" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt1MEKQEAURmHR2BHFQkl5AUsLef/nci1sJtdMuVKcv85KzdcsTJIw9v05KY/IaoVURoSHh4eH96wXev+tvTbyPDy8P3iDUi01F9/9//LuDk/b214aWabUSb00SaNnuRNvNmqVqsDd9haj8PDw8PDw8HRvAzxWZc4=
+   eJzt1TsKgDAQRVF/sRMVtBBEcAOWFuL+1+VYpBmMGcxIQN+DWwkeUhiTBMO+P0OVgrRWUbUgePCeeimVs4oXvZDBgxfT893/2l4vfB88eH/wJkct1d08599l6KznWmwvE8b/+7aBGqmFmpllLrxVqZ1qPGc725SCBw8ePHjw4Lm9A5k3Zyg=
   </data>
  </layer>
- <layer name="lightWater" width="28" height="50" visible="0">
+ <layer name="darkWorld" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1rsKgDAMheG+mpe6iQqKCF18/5cwDi4hkhTSwXoO/FvxW7QYAobVv0gNhrw2UpMhbQ3VCvWFPOvgwYP3Xe++V7qX+N3i4eXO29PufW9vMz4PHrw/eAu1Zpx/xr/L2j3pX0/qoJJy5mRWFLzdsZl50jsGDx48ePDgwSvvXQVz/ZY=
+  </data>
+ </layer>
+ <layer name="lightWater" width="28" height="50">
   <data encoding="base64" compression="zlib">
    eJztzbEJACAMAMHsopXauP9ypswCIsIdfP0RAAAA/G5nrdQv/0Y2S8vPz8/Pz8/vye8A5LkP3Q==
   </data>
@@ -31,6 +34,16 @@
  <layer name="end2" width="28" height="50">
   <data encoding="base64" compression="zlib">
    eJztzUEJAAAIBDAL+fRp/1q2OBC2Aqviiw5/E/42/AEAAADAdwdWUACg
+  </data>
+ </layer>
+ <layer name="spawnSwan" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztziEBAAAIA7A3pr+jww2CLcESAACAzlwHAACeWzuMAHA=
+  </data>
+ </layer>
+ <layer name="spawnSeal" width="28" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzqEBAAAIA6B97P/NtmyzwAUkAAAAd/MdAACgFkDAAHA=
   </data>
  </layer>
 </map>

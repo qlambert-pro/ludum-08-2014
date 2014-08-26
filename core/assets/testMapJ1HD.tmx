@@ -1,57 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="80" height="30" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="tileSet" tilewidth="32" tileheight="32">
-  <image source="tileSet.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="65" name="HD" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="60" height="30" tilewidth="630" tileheight="630">
+ <tileset firstgid="1" name="hd" tilewidth="630" tileheight="630">
   <image source="tileSetHD.png" width="5040" height="5040"/>
  </tileset>
- <tileset firstgid="24714" name="new HD" tilewidth="630" tileheight="630">
-  <image source="tileSetHD.png" width="5040" height="5040"/>
+ <tileset firstgid="65" name="dark" tilewidth="630" tileheight="630">
+  <image source="tilesetHD_noir.png" width="5040" height="5040"/>
  </tileset>
- <layer name="lightWorld" width="80" height="30">
+ <layer name="lightWorld" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt170OQDAUhuESRIzsBvd/kSLapGkMTj9NkfdJTix+6sXAOQAAAAB4j80P8tBPQz9N6wd2YzSws/ZbC67li3j/NPTT0E9DPw39NPTT0E9Tu9+UzBX+LzVf71d7/bWvr0rXf+eby5Get9R1cjXG/Xu/Tfsd5xn8POmt/Y4O4X5nd95/d+O4uFM8S5ll/kJ41o2zv69/tANbpwTq
+   eJztl8sKgCAQRS2KaiG1qyD6/89shIJB7KHVKHIPnIUbvddxo1IAAAAAAAD8T002ZBs7iBCa7MkpdhAh0Ddv0Ddv0Ddv0FeWgix3K4HzYveVZmXGgs+YKzHvJ9j53ubqyNHhotz34PJP7HzDx/uFaGNm4jOHszdmnFWafXnmfvdY3/3/fDKk0vdqH1dGfj/2DHPsqwPPQl/5vhtLmxO1
   </data>
  </layer>
- <layer name="darkWorld" width="80" height="30">
+ <layer name="darkWorld" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt19EKQEAQRmGExKU38P4PidqLbURr/yajzldzR63TrtqmAQAAAIA4tjSoQz8N/ep0adpsUO5sN2VDv3fop6Gfhn4a+mlsv+Xb5fwO/TT009BPo/abzXiJer/8y/6L3C+33jznvX67j+1+jtqvlF2/97m96+n5jyjRV7731M9DtH7DMWOat3eMSN8RHX2udgEuBYw=
+   eJztlssKgCAQRefXiopa2GMZ9P/fkS6ESbQYUjS7B86igpjbVYkIAAAAAACAtPTagTnmHSc5Sjsz17zjJAd56wZ56wZ549JoW2YX+f1S0K+Mr/2v/LFfTq687j4vZb9bYp9DE13XmfUg/3fwmZJNuzDfrotQXokuphNJD6E1ZtypzLx8ZnvfXj+dpW6Hd5aSd7t57pvR7bH2vEqQEXnz5j0Bo8pbIw==
   </data>
  </layer>
- <layer name="spawnSwan" width="80" height="30" visible="0">
+ <layer name="spike" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjEJAAAMA7Ce8694MgolUZAEAAAAAAAAgFXXDgDAuAdg4AAJ
+   eJztz7ENwCAMRUGPlQr23ypNCjoKJIg+d5LlxoVfFQAAwJr27efoF/vozaY3m95serP1YSBVm59Eua0X/uQFTgsFYA==
   </data>
  </layer>
- <layer name="spawnJupiter" width="80" height="30" visible="0">
+ <layer name="end1" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjEJAAAMA7Ce8694MgolUZAEAAAAAABg17UDAADAtAeJIAAJ
+   eJztzjERADAIBDAMdeyIf1u44HvXREGqAICXnXRg2U0HlnU6AAAAAMB3BizQAKA=
   </data>
  </layer>
- <layer name="spawnSeal" width="80" height="30" visible="0">
+ <layer name="end2" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7Cd+FeMjCXQKmgCAAAAAAAAwBXTDgDAMwthYAAJ
+   eJztzkENADAIBDAM8eQ5/7bmgktIq6BVAAAAAAA3dDqwbNKBZS8dADjiA+8NAKA=
   </data>
  </layer>
- <layer name="end1" width="80" height="30" visible="0">
+ <layer name="end3" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0DENAAAIwDC04F8kDwaAh6NNZmARAAAAf2THjn83/gEAAAAAMFX1RgDN
+   eJztziEBAEAIBDAKv0TS/QugObMlWBUAAAAAkPLSgWOdDhybdAAAFh9sJgFg
   </data>
  </layer>
- <layer name="end2" width="80" height="30" visible="0">
+ <layer name="spawnSeal" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzrEJACAMAEHXECuxEvffz+xgEYJ38P23BgAAAAAAAPCvHo3sicJmtLInCtvRyZ4A4MkFmbcAzQ==
+   eJztzjEBAAAMAiAbr/+3GB5CAhIAAAAAgJ5rBwBgzANbEQBw
   </data>
  </layer>
- <layer name="end3" width="80" height="30" visible="0">
+ <layer name="spawnJupiter" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAB4DCWAAAE=
+   eJztzjENAAAIA7A5xv+HjJHQKmgCAAAAAHDDtAMA8MACVd0AcA==
   </data>
  </layer>
- <layer name="spike" width="80" height="30">
+ <layer name="spawnSwan" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt07ENADAIA0FK9p+YNilCQ0fupF/AkiMAAAAAAAAA+EEeATv484z93rKJWwFDrwBh
+   eJztzjENAAAIA7A5xv+HjBHSKmgCAAAAAHDPtAMA8NQCUKkAcA==
   </data>
  </layer>
 </map>
