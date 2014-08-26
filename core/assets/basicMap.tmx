@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="40" height="15" tilewidth="630" tileheight="630">
+<map version="1.0" orientation="orthogonal" width="50" height="25" tilewidth="630" tileheight="630">
  <tileset firstgid="1" name="tileSetHD" tilewidth="630" tileheight="630">
   <image source="tileSetHD.png" width="5040" height="5040"/>
  </tileset>
  <tileset firstgid="65" name="tilesetHD_noir" tilewidth="630" tileheight="630">
   <image source="tilesetHD_noir.png" width="5040" height="5040"/>
  </tileset>
- <layer name="lightWorld" width="40" height="15">
+ <layer name="lightWorld" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFAwkYgZgZilkG2C3YgCAQcwExNxDzDLBbsAGQ+4SAWJhh1H3kgFH3UQZG3UcZGHUfJmDCg5nRsCSS+2SwyCNjPQJYkUj3mZGIraCYVH3I2AaIBYh0n9UAYFzuAwAyRhG4
+   eJztl8EKwjAMhmPrRd1hUw8OvOwFdvQge//nWgoVi7RhS9kaS374TiVpPughBdBsmQNiPcfCs+TkhJyRC9IUniUnzuOK3EA9JEQ9ZEU9ZKUD9ZAUSR5utzCetbuFJA83C3e3kObBnUU90uG+c2ke4Tu/7zTLVh6fnurBv3NtrUnQBz2f8P1vWqLGRupGgt+e1J0hQ8Tj7XlFoM4ouHVLaiekJTz+hZo8HpV5zFo+Mkg=
   </data>
  </layer>
- <layer name="darkWorld" width="40" height="15">
+ <layer name="darkWorld" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwWAATkDsjETD2MjYGQt2QtOLzkbXiy6eSKT7ygYA1wBxAJHuq6YzrsLjPgC3miUO
+   eJztkksKgDAMBXs1qxs/C38bwY2XcCEe3hQqBAkqrdBW3sAglATzSJQCAAAAAACpkJHaWgSexYeOrMiaHAPP4oPJ0ZOD+k+OJvAsBtc7L1Vc+3C989juynUevo8Y7urcRyo5NDNn34nNM7P3q9deqU8L9dI/9UPN6SLkWG/crHc1X/a9cSdbIceWmMgRlzzHASCScbw=
   </data>
  </layer>
- <layer name="end1" width="40" height="15">
+ <layer name="spawnSwan" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApwA92BdgABYDrQDiAAbAfaAaNgQAAAm9cAoA==
+   eJztzjENAAAIA7A5wr87zkkgIa2CJgAAAFBzHQB4agEQNwAw
   </data>
  </layer>
- <layer name="spawnSwan" width="40" height="15">
+ <layer name="end1" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAqoB/QH2gGjYBQMAgAAl9gAMA==
+   eJztzrERACAIBDAWprR0d5fg/IJkglQBAACwRacDQ046MOSmA8BXD4UmAWA=
   </data>
  </layer>
 </map>

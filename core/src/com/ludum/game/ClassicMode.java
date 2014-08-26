@@ -3,6 +3,7 @@ package com.ludum.game;
 import com.ludum.map.Map;
 import com.ludum.map.MapLoader;
 import com.ludum.map.WorldState;
+import com.ludum.map.WorldType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +63,18 @@ public class ClassicMode extends ScreenAdapter {
 
 	private void draw(float dt) {
 		/* Render part */
-		Gdx.gl.glClearColor(0.3f, 0.5f, 0.8f, 1);
+		if (state.getState() == WorldType.DARK)
+			Gdx.gl.glClearColor(0.16f, 0.16f, 0.16f, 1);
+		else
+			Gdx.gl.glClearColor(0.18f, 0.19f, 0.25f, 1);
+
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		worldBatch.setProjectionMatrix(cam.combined);
 		worldBatch.begin();
-		
-		Background.getInstance().render(worldBatch, cam.position.x, cam.position.y, state);
+
+		Background.getInstance().render(worldBatch, cam.position.x,
+				cam.position.y, state);
 		worldBatch.end();
 		map.render(cam);
 		worldBatch.begin();
@@ -76,9 +82,6 @@ public class ClassicMode extends ScreenAdapter {
 			p.draw(worldBatch);
 		}
 		worldBatch.end();
-		
-		
-
 
 		drawUI();
 	}
@@ -101,21 +104,21 @@ public class ClassicMode extends ScreenAdapter {
 		int end = 0;
 		for (Player p : characters) {
 			if (p.isAtEnd1()) {
-				end ++;
+				end++;
 				break;
 			}
 		}
-		
+
 		for (Player p : characters) {
 			if (p.isAtEnd2()) {
-				end ++;
+				end++;
 				break;
 			}
 		}
-		
+
 		for (Player p : characters) {
 			if (p.isAtEnd3()) {
-				end ++;
+				end++;
 				break;
 			}
 		}
@@ -131,7 +134,7 @@ public class ClassicMode extends ScreenAdapter {
 
 	public void nextCharacter() {
 		characters.get(currentCharacterIndex).stop();
-		
+
 		game.removeInputProcessor(characterControllers
 				.get(currentCharacterIndex));
 
@@ -157,27 +160,27 @@ public class ClassicMode extends ScreenAdapter {
 
 		/* Load new map */
 		map = mapLoader.getNextMap(state);
-		
+
 		PlayerFactory playerFactory = PlayerFactory.getFactory();
 		Vector2 spawn;
-		
+
 		/* Spawn Player */
 		spawn = map.getSpawnSwan();
-		if(spawn != null) {
+		if (spawn != null) {
 			Player p = playerFactory.getSwan(spawn, map.getSize(), state);
 			characters.add(p);
 			characterControllers.add(new PlayerControls(p, this));
 		}
-		
+
 		spawn = map.getSpawnJupiter();
-		if(spawn != null) {
+		if (spawn != null) {
 			Player p = playerFactory.getJupiter(spawn, map.getSize(), state);
 			characters.add(p);
 			characterControllers.add(new PlayerControls(p, this));
 		}
 
 		spawn = map.getSpawnSeal();
-		if(spawn != null) {
+		if (spawn != null) {
 			Player p = playerFactory.getSeal(spawn, map.getSize(), state);
 			characters.add(p);
 			characterControllers.add(new PlayerControls(p, this));
