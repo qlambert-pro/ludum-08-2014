@@ -19,8 +19,8 @@ public class MapLoader {
 	
 	private MapLoader() {
 		mapNameList = new ArrayList<String>();
-		mapNameList.add("testMap.tmx");
-		mapNameList.add("testMap2.tmx");
+		mapNameList.add("basicMap.tmx");
+		//mapNameList.add("testMap2.tmx");
 		
 		currentMapIndex = 0;
 	}

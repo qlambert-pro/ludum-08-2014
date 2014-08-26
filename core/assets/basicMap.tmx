@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="15" tilewidth="630" tileheight="630">
+ <tileset firstgid="1" name="tileSetHD" tilewidth="630" tileheight="630">
+  <image source="tileSetHD.png" width="5040" height="5040"/>
+ </tileset>
+ <tileset firstgid="65" name="tilesetHD_noir" tilewidth="630" tileheight="630">
+  <image source="tilesetHD_noir.png" width="5040" height="5040"/>
+ </tileset>
+ <layer name="lightWorld" width="40" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFAwkYgZgZilkG2C3YgCAQcwExNxDzDLBbsAGQ+4SAWJhh1H3kgFH3UQZG3UcZGHUfJmDCg5nRsCSS+2SwyCNjPQJYkUj3mZGIraCYVH3I2AaIBYh0n9UAYFzuAwAyRhG4
+  </data>
+ </layer>
+ <layer name="darkWorld" width="40" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwWAATkDsjETD2MjYGQt2QtOLzkbXiy6eSKT7ygYA1wBxAJHuq6YzrsLjPgC3miUO
+  </data>
+ </layer>
+ <layer name="end1" width="40" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApwA92BdgABYDrQDiAAbAfaAaNgQAAAm9cAoA==
+  </data>
+ </layer>
+ <layer name="spawnSwan" width="40" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAqoB/QH2gGjYBQMAgAAl9gAMA==
+  </data>
+ </layer>
+</map>
