@@ -22,24 +22,7 @@ public class Jupiter extends Player{
 		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.jupiterHeight;
 		physicsSize = ConfigManager.jupiterPhysicsSize;
-	}
-	
-	@Override
-	public void updatePhysics(float dt) {
-		Vector2 speed = body.getLinearVelocity();
-
-		if (state == PlayerState.DASHING)
-			updateDashing(s1, s2);
-		else
-			updateRunning(speed.x, dt);
-		
-		updateJumping(speed, dt);
-		updateState();
-		
-		checkDeath();
-	}
-	
-	
+	}	
 	
 	@Override
 	public void update(float dt){
@@ -64,39 +47,42 @@ public class Jupiter extends Player{
 	@Override
 	public void init() {
 		super.init();
-		s1 = dashLeft;//new LeftDash(body);
-		s2 = dashRight;//new RightDash(body);
+		s1 = dashLeft;
+		s2 = dashRight;
 	}
 
 	@Override
 	public void useSkill1(){
-		if (!isUsed) {
-			super.useSkill1();
-			startDash();
+		if (isUsed) {
+			return;
+		}
+		
+		if(contactPlayers.isEmpty()) {
+			super.useSkill1();			
+		} else if (!contactPlayers.isEmpty()) {
+			for (Player p: contactPlayers) {
+				p.dashLeft();
+				//TODO transferLeftDashIfNecessary(p);
+				// bug if contact
+			}
 		}
 	}
 	
 	@Override
 	public void useSkill2(){
-		if (!isUsed) {
-			super.useSkill2();
-			startDash();
+		if (isUsed) {
+			return;
 		}
-	}
-	
-	protected void startDash() {
-		/* If in contact with player, don't ! */
-		isUsed = true;			
-		state = PlayerState.DASHING;
-		dashTimer = 0;
-		body.setGravityScale(0);
-		boolean found = false;
-		for (Player p: contactPlayers) {
-			giveMyDashToThatGuyIfNecessary(p);
-			found = true;
+		
+		if (contactPlayers.isEmpty()) {
+			super.useSkill2();			
+		} else if (!contactPlayers.isEmpty()) {
+			for (Player p: contactPlayers) {
+				p.dashRight();
+				//TODO transferRightDashIfNecessary(p);
+				// bug if contact
+			}
 		}
-		if (found)
-			stopDash();
 	}
 	
 	@Override
@@ -121,20 +107,21 @@ public class Jupiter extends Player{
 	}
 	
 	private void giveMyDashToThatGuyIfNecessary(Player p) {
-		if (((Dash) s1).isDashing()) {
-			stopDash();
+		//TODO test contact sidewise
+		if (s1.isActive()) {
+			dashLeft.endDash();
 			p.dashLeft();
-		} else if (((Dash) s2).isDashing()) {
-			stopDash();
+		} else if (s2.isActive()) {
+			dashRight.endDash();
 			p.dashRight();
 		}		
 	}
 	
 	@Override
 	protected void updateState() {
-		Vector2 speed = body.getLinearVelocity();
-		if(state != PlayerState.DASHING && speed.y == 0)
-				isUsed = false;
 		super.updateState();
+		if (state == PlayerState.RUNNING ||
+			state == PlayerState.STANDING)
+			isUsed = false;
 	}	
 }

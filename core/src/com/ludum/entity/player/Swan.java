@@ -39,7 +39,8 @@ public class Swan extends Player{
 	}
 	
 	@Override
-	protected void updateJumping(Vector2 speed, float dt) {
+	protected void updateJumping(float dt) {
+		Vector2 speed = body.getLinearVelocity();
 		//if (!botContactList.isEmpty())
 		if (jumpState == PlayerJumpState.JUMP && nbJump < 2) {
 			SoundManager.getInstance().jump();
@@ -61,8 +62,13 @@ public class Swan extends Player{
 	
 	@Override
 	protected void updateState() {
-		Vector2 speed = body.getLinearVelocity();
-		if(state != PlayerState.DASHING)
+		if ((s1 == null || !s1.isActive()) &&
+			(s2 == null || !s2.isActive()) &&
+			(dashLeft  == null || !dashLeft.isActive()) &&
+			(dashRight == null || !dashRight.isActive())) {
+			
+			Vector2 speed = body.getLinearVelocity();
+
 			if (speed.y > 0) {
 				if(nbJump == 2)
 					state = PlayerState.DOUBLEJUMPING;
@@ -80,11 +86,6 @@ public class Swan extends Player{
 				state = PlayerState.STANDING;
 				nbJump = 0;
 			}
-		else if (dashTimer >= ConfigManager.dashSpeed) {
-			state = PlayerState.FALLING;
-			((Dash) dashLeft).endDash();
-			((Dash) dashRight).endDash();
-			body.setGravityScale(1);
 		}
 	}
 }

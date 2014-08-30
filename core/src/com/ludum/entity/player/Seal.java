@@ -12,10 +12,6 @@ import com.ludum.rendering.TextureType;
 
 public class Seal extends Player {
 
-	private float gravitySave;
-	private Vector2 savePos;
-	private PlayerState saveState;
-
 	public Seal(Vector2 spawn, Vector2 mapSize, Texture port, Texture port2, WorldState s) {
 		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.sealHeight;
@@ -37,30 +33,28 @@ public class Seal extends Player {
 		super.update(dt);
 		if (state == PlayerState.JUMPING) {
 			currentFrame = TextureManager.getInstance().getTextureRegion(
-				textureType, 0);
+				textureType, 0);			
 		} else if(state == PlayerState.FALLING){
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 100);
-		}		
+		}
 	}
 
 	@Override
 	public void useSkill1() {
 
 		if (state != PlayerState.FREEZING) {
-			saveState = state;
 			state = PlayerState.FREEZING;
 			body.setLinearVelocity(0, 0);
-			savePos = body.getPosition();
-			gravitySave = body.getGravityScale();
 			body.setGravityScale(0);
 			body.setType(BodyType.StaticBody);
 			botContactList.clear();
 			dashTimer=ConfigManager.dashLengthMS;
 		} else {
-			state = saveState;
-			body.setGravityScale(gravitySave);
+			state = PlayerState.FALLING;
+			body.setGravityScale(1);
 			body.setType(BodyType.DynamicBody);
+			body.setLinearVelocity(new Vector2(0, 0));
 		}
 	}
 
@@ -68,10 +62,21 @@ public class Seal extends Player {
 	public void updatePhysics(float dt) {
 		if (state != PlayerState.FREEZING) {
 			super.updatePhysics(dt);
-		} else {
 		}
 	}
 
+	@Override
+	public void dashLeft() {
+		if (state != PlayerState.FREEZING)
+			super.dashLeft();
+	}
+	
+	@Override
+	public void dashRight() {
+		if (state != PlayerState.FREEZING)
+			super.dashRight();
+	}
+	
 	@Override
 	public void draw(Batch batch) {
 		if (state != PlayerState.FREEZING) {

@@ -68,8 +68,11 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected boolean isDead;
 	protected boolean canWalkOnWater = false;
 
-	public Player(Vector2 spawn, Vector2 mapSize, Texture port, Texture portSelect,
-			WorldState s) {
+	private boolean flipH = false;
+	private boolean flipV = false;
+
+	public Player(Vector2 spawn, Vector2 mapSize, Texture port,
+			Texture portSelect, WorldState s) {
 		portrait = port;
 		portraitSelected = portSelect;
 		this.worldState = s;
@@ -142,64 +145,54 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	public void useSkill1() {
 		if (s1 != null)
-			s1.use();
+			state = s1.use();
 	}
 
 	public void useSkill2() {
 		if (s2 != null)
-			s2.use();
+			state = s2.use();
 	}
 
 	public void updatePhysics(float dt) {
-		Vector2 speed = body.getLinearVelocity();
 
-		if (state == PlayerState.DASHING)
-			updateDashing(dashLeft, dashRight);
-		else
-			updateRunning(speed.x, dt);
+		if (s1 != null && s1.isActive())
+			s1.update(dt);
+		else if (s2 != null && s2.isActive())
+			s2.update(dt);
+		else if (dashLeft != null && dashLeft.isActive())
+			dashLeft.update(dt);
+		else if (dashRight != null && dashRight.isActive())
+			dashRight.update(dt);
+		else {
+			updateRunning(dt);
+			updateJumping(dt);
+		}
 
-		updateJumping(speed, dt);
 		updateState();
 
 		checkDeath();
 	}
 
-	protected void updateDashing(Skill d1, Skill d2) {
-		if (((Dash) d1).isDashing() &&
-			 dashTimer < ConfigManager.dashLengthMS) {
-			d1.use();
-		} else if (((Dash) d2).isDashing() &&
-				    dashTimer < ConfigManager.dashLengthMS) {
-			d2.use();
-		}
+	protected void dashLeft() {
+		if (dashLeft == null)
+			return;
+		
+		if ((s1 == null || !s1.isActive()) &&
+			(s2 == null || !s2.isActive()) &&
+			(dashRight == null || !dashRight.isActive()))
+			state = dashLeft.use();		
 	}
 
-	protected void dashLeft(){
-		body.setLinearVelocity(new Vector2(0, 0));
-		state = PlayerState.DASHING;
-		dashTimer = 0;
-		body.setGravityScale(0);
-		dashLeft.use();
+	protected void dashRight() {
+		if (dashRight == null)
+			return;
+		
+		if ((s1 == null || !s1.isActive()) &&
+			(s2 == null || !s2.isActive()) &&
+			(dashLeft == null || !dashLeft.isActive()))
+			state = dashRight.use();
 	}
 
-	protected void dashRight(){
-		body.setLinearVelocity(new Vector2(0, 0));
-		state = PlayerState.DASHING;
-		dashTimer = 0;
-		body.setGravityScale(0);
-		dashRight.use();
-	}
-	
-	protected void stopDash() {
-		if(dashLeft.isDashing())
-			dashLeft.endDash();
-		if(dashRight.isDashing())
-			dashRight.endDash();
-		state = PlayerState.FALLING;
-		body.setGravityScale(1);
-		body.setLinearVelocity(new Vector2(0, 0));
-	}
-	
 	public void checkDeath() {
 		if (isDead)
 			respawn();
@@ -215,25 +208,27 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			respawn();
 	}
 
-	protected void updateRunning(float horizontalSpeed, float dt) {
+	protected void updateRunning(float dt) {
+		Vector2 speed = body.getLinearVelocity();
 		float nextSpeedX;
 		if (moveRight && !moveLeft) {
-			nextSpeedX = Math.min(horizontalSpeed + ConfigManager.moveSpeed
-					* dt / ConfigManager.accTime, ConfigManager.moveSpeed);
+			nextSpeedX = Math.min(speed.x + ConfigManager.moveSpeed * dt
+					/ ConfigManager.accTime, ConfigManager.moveSpeed);
 		} else if (!moveRight && moveLeft) {
-			nextSpeedX = Math.max(horizontalSpeed - ConfigManager.moveSpeed
-					* dt / ConfigManager.accTime, -ConfigManager.moveSpeed);
+			nextSpeedX = Math.max(speed.x - ConfigManager.moveSpeed * dt
+					/ ConfigManager.accTime, -ConfigManager.moveSpeed);
 		} else {
-			nextSpeedX = ConfigManager.friction * horizontalSpeed;
+			nextSpeedX = ConfigManager.friction * speed.x;
 		}
-		float speedChangeX = nextSpeedX - horizontalSpeed;
+		float speedChangeX = nextSpeedX - speed.x;
 		float impulseX = body.getMass() * speedChangeX;
 		body.applyLinearImpulse(new Vector2(impulseX, 0),
 				body.getWorldCenter(), true);
 
 	}
 
-	protected void updateJumping(Vector2 speed, float dt) {
+	protected void updateJumping(float dt) {
+		Vector2 speed = body.getLinearVelocity();
 		if (jumpState == PlayerJumpState.JUMP && !botContactList.isEmpty()) {
 			SoundManager.getInstance().jump();
 			float speedChangeY = (float) (Math.sqrt(2 * ConfigManager.gravity
@@ -251,11 +246,15 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	protected void updateState() {
-		Vector2 speed = body.getLinearVelocity();
-		if(state != PlayerState.DASHING) {
+		if ((s1 == null || !s1.isActive()) && (s2 == null || !s2.isActive())
+				&& (dashLeft == null || !dashLeft.isActive())
+				&& (dashRight == null || !dashRight.isActive())) {
+
+			Vector2 speed = body.getLinearVelocity();
+
 			if (speed.y > 0) {
 				state = PlayerState.JUMPING;
-			} else if (speed.y < 0) {
+			} else if (speed.y < 0 || botContactList.isEmpty()) {
 				state = PlayerState.FALLING;
 			} else if (moveRight ^ moveLeft) {
 				state = PlayerState.RUNNING;
@@ -263,11 +262,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 				state = PlayerState.STANDING;
 			}
 		}
-		else if (dashTimer >= ConfigManager.dashLengthMS) {
-			stopDash();
-		}
 	}
-	
 
 	public void update(float dt) {
 		Vector2 newPos = body.getPosition().scl(PhysicsManager.BOX_TO_WORLD);
@@ -275,8 +270,6 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
-		if (state == PlayerState.DASHING)
-			dashTimer += dt*1000;
 	}
 
 	public Vector2 getPosition() {
@@ -305,13 +298,13 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	public void drawUI(Batch spriteBatch, Vector2 pos, boolean isSelected) {
 		spriteBatch.begin();
-		
+
 		if (isSelected)
-			spriteBatch.draw(portraitSelected, pos.x, pos.y, ConfigManager.portraitSizeX,
-					ConfigManager.portraitSizeY);
+			spriteBatch.draw(portraitSelected, pos.x, pos.y,
+					ConfigManager.portraitSizeX, ConfigManager.portraitSizeY);
 		else
-			spriteBatch.draw(portrait, pos.x, pos.y, ConfigManager.portraitSizeX,
-					ConfigManager.portraitSizeY);
+			spriteBatch.draw(portrait, pos.x, pos.y,
+					ConfigManager.portraitSizeX, ConfigManager.portraitSizeY);
 		spriteBatch.end();
 	}
 
@@ -421,12 +414,12 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			break;
 		case LIGHTWATER:
 			if (worldState.getState() == WorldType.DARK) {
-					contact.setEnabled(false);
+				contact.setEnabled(false);
 			}
 			break;
 		case DARKWATER:
 			if (worldState.getState() == WorldType.LIGHT) {
-					contact.setEnabled(false);
+				contact.setEnabled(false);
 			}
 			break;
 		default:
