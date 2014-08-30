@@ -7,12 +7,11 @@ import com.ludum.entity.player.PlayerState;
 
 
 public abstract class Dash extends Skill {
-	protected Body body;
 	private boolean isDashing = false;
 	private float dashTimer = 0;
 	
 	public Dash(Body b) {
-		body = b; 
+		super(b);
 	}
 	
 	@Override

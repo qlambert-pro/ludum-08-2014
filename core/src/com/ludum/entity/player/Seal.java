@@ -2,13 +2,12 @@ package com.ludum.entity.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
+import com.ludum.skill.Levitate;
 
 public class Seal extends Player {
 
@@ -16,9 +15,15 @@ public class Seal extends Player {
 		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.sealHeight;
 		physicsSize = ConfigManager.sealPhysicsSize;
-		canWalkOnWater = true;
+		canWalkOnWater = true;		
 	}
-
+	@Override
+	public void init() {
+		super.init();
+		
+		s1 = new Levitate(body);
+	}
+	
 	@Override
 	public void update(float dt) {
 		if (state == PlayerState.JUMPING || state == PlayerState.FALLING) {
@@ -40,42 +45,6 @@ public class Seal extends Player {
 		}
 	}
 
-	@Override
-	public void useSkill1() {
-
-		if (state != PlayerState.FREEZING) {
-			state = PlayerState.FREEZING;
-			body.setLinearVelocity(0, 0);
-			body.setGravityScale(0);
-			body.setType(BodyType.StaticBody);
-			botContactList.clear();
-			dashTimer=ConfigManager.dashLengthMS;
-		} else {
-			state = PlayerState.FALLING;
-			body.setGravityScale(1);
-			body.setType(BodyType.DynamicBody);
-			body.setLinearVelocity(new Vector2(0, 0));
-		}
-	}
-
-	@Override
-	public void updatePhysics(float dt) {
-		if (state != PlayerState.FREEZING) {
-			super.updatePhysics(dt);
-		}
-	}
-
-	@Override
-	public void dashLeft() {
-		if (state != PlayerState.FREEZING)
-			super.dashLeft();
-	}
-	
-	@Override
-	public void dashRight() {
-		if (state != PlayerState.FREEZING)
-			super.dashRight();
-	}
 	
 	@Override
 	public void draw(Batch batch) {

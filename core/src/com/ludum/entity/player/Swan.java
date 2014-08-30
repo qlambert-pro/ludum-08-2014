@@ -1,12 +1,10 @@
 package com.ludum.entity.player;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
-import com.ludum.skill.Dash;
 import com.ludum.sound.SoundManager;
 
 

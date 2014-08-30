@@ -61,7 +61,6 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	protected TextureType textureType;
 
-	protected long dashTimer = 0;
 	protected Dash dashLeft = null;
 	protected Dash dashRight = null;
 
@@ -144,13 +143,17 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void useSkill1() {
-		if (s1 != null)
+		if (s1 != null) {
 			state = s1.use();
+			botContactList.clear();
+		}
 	}
 
 	public void useSkill2() {
-		if (s2 != null)
+		if (s2 != null) {
 			state = s2.use();
+			botContactList.clear();
+		}
 	}
 
 	public void updatePhysics(float dt) {
