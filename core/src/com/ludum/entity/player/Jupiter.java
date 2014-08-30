@@ -3,7 +3,6 @@ package com.ludum.entity.player;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.ludum.configuration.ConfigManager;
@@ -11,7 +10,6 @@ import com.ludum.map.WorldState;
 import com.ludum.physics.PhysicsDataStructure;
 import com.ludum.rendering.TextureManager;
 import com.ludum.rendering.TextureType;
-import com.ludum.skill.Dash;
 
 
 public class Jupiter extends Player{
@@ -57,6 +55,7 @@ public class Jupiter extends Player{
 			return;
 		}
 		
+		isUsed = true;
 		if(contactPlayers.isEmpty()) {
 			super.useSkill1();			
 		} else if (!contactPlayers.isEmpty()) {
@@ -74,6 +73,7 @@ public class Jupiter extends Player{
 			return;
 		}
 		
+		isUsed = true;
 		if (contactPlayers.isEmpty()) {
 			super.useSkill2();			
 		} else if (!contactPlayers.isEmpty()) {
