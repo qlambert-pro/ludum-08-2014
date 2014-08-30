@@ -43,6 +43,8 @@ public class Seal extends Player {
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 100);
 		}
+		if (currentFrame.isFlipX() != flipX)
+			currentFrame.flip(true, flipY);		
 	}
 
 	

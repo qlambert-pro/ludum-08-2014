@@ -67,8 +67,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected boolean isDead;
 	protected boolean canWalkOnWater = false;
 
-	private boolean flipH = false;
-	private boolean flipV = false;
+	protected boolean flipX = false;
+	protected boolean flipY = false;
 
 	public Player(Vector2 spawn, Vector2 mapSize, Texture port,
 			Texture portSelect, WorldState s) {
@@ -119,7 +119,10 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void moveRight() {
-		moveRight = true;
+		if (moveRight == false)
+			flipX = false;
+		
+		moveRight = true;		
 	}
 
 	public void stopRight() {
@@ -127,7 +130,11 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	}
 
 	public void moveLeft() {
+		if (moveLeft == false)
+			flipX = true;
+		
 		moveLeft = true;
+		
 	}
 
 	public void stopLeft() {
@@ -273,6 +280,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		stateTime += dt;
 		currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, stateTime);
+		if (currentFrame.isFlipX() != flipX)
+			currentFrame.flip(true, flipY);
 	}
 
 	public Vector2 getPosition() {

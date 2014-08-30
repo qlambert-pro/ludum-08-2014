@@ -40,6 +40,8 @@ public class Jupiter extends Player{
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 1000);
 		}
+		if (currentFrame.isFlipX() != flipX)
+			currentFrame.flip(true, flipY);	
 	}
 	
 	@Override
@@ -54,7 +56,7 @@ public class Jupiter extends Player{
 		if (isUsed) {
 			return;
 		}
-		
+		flipX = true;
 		isUsed = true;
 		if(contactPlayers.isEmpty()) {
 			super.useSkill1();			
@@ -72,7 +74,7 @@ public class Jupiter extends Player{
 		if (isUsed) {
 			return;
 		}
-		
+		flipX = false;
 		isUsed = true;
 		if (contactPlayers.isEmpty()) {
 			super.useSkill2();			
