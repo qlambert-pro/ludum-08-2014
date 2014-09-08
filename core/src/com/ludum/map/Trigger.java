@@ -12,8 +12,8 @@ public class Trigger implements PhysicsObject {
 
 	private Body body;
 	
-	public Trigger(Vector2 pos, Vector2 size, PhysicsObjectType type) {
-		PhysicsDataStructure pds = new PhysicsDataStructure(this, type);
+	public Trigger(Vector2 pos, Vector2 size, PhysicsObjectType type, TileWorldType world) {
+		PhysicsDataStructure pds = new PhysicsDataStructure(this, type, world);
 		body = PhysicsManager.getInstance().createTrigger(pos, size, pds);
 	}
 

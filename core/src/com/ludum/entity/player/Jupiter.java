@@ -32,11 +32,16 @@ public class Jupiter extends Player{
 			textureType = TextureType.JupiterIdle;
 		}
 		super.update(dt);
+		//TODO clean
 		if(state == PlayerState.JUMPING){
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, 0);
 		}
 		if(state == PlayerState.FALLING){
+			currentFrame = TextureManager.getInstance().getTextureRegion(
+					textureType, 1000);
+		}
+		if(state == PlayerState.DASHING){
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 					textureType, 1000);
 		}
@@ -112,7 +117,7 @@ public class Jupiter extends Player{
 		//TODO test contact sidewise
 		if (s1.isActive()) {
 			dashLeft.endDash();
-			p.dashLeft();
+			p.dashLeft();			
 		} else if (s2.isActive()) {
 			dashRight.endDash();
 			p.dashRight();

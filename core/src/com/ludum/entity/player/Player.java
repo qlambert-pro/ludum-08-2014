@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.ludum.configuration.ConfigManager;
 import com.ludum.entity.Drawable;
 import com.ludum.entity.Entity;
+import com.ludum.map.TileWorldType;
 import com.ludum.map.WorldState;
 import com.ludum.map.WorldType;
 import com.ludum.physics.PhysicsDataStructure;
@@ -94,7 +95,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	public void init() {
 		PhysicsDataStructure s = new PhysicsDataStructure(this,
-				PhysicsObjectType.PLAYER);
+				PhysicsObjectType.PLAYER, null);
 		this.body = PhysicsManager.getInstance().createDynamicRectangle(
 				pos.cpy(), physicsSize, s);
 
@@ -337,12 +338,14 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case LIGHTEDGE:
-			if (worldState.getState() == WorldType.LIGHT)
+		case SOLID:
+			if (struct.world == TileWorldType.BOTH)
 				checkBotContact(struct, contact);
-			break;
-		case DARKEDGE:
-			if (worldState.getState() == WorldType.DARK)
+			else if (struct.world == TileWorldType.DARK &&
+					 worldState.getState() == WorldType.DARK)
+				checkBotContact(struct, contact);
+			else if (struct.world == TileWorldType.LIGHT &&
+					 worldState.getState() == WorldType.LIGHT)
 				checkBotContact(struct, contact);
 			break;
 		case PLAYER:
@@ -358,25 +361,36 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			end3Contact++;
 			break;
 		case SPIKE:
-			isDead = true;
+			if (struct.world == TileWorldType.BOTH)
+				isDead = true;
+			else if (struct.world == TileWorldType.DARK &&
+					 worldState.getState() == WorldType.DARK)
+				isDead = true;
+			else if (struct.world == TileWorldType.LIGHT &&
+					 worldState.getState() == WorldType.LIGHT)
+				isDead = true;
 			break;
-		case LIGHTWATER:
-			if (worldState.getState() == WorldType.LIGHT) {
+		case WATER:
+			if (struct.world == TileWorldType.BOTH)
 				if (canWalkOnWater) {
 					checkBotContact(struct, contact);
 				} else {
 					isDead = true;
 				}
-			}
-			break;
-		case DARKWATER:
-			if (worldState.getState() == WorldType.DARK) {
+			else if (struct.world == TileWorldType.DARK &&
+					worldState.getState() == WorldType.DARK)
 				if (canWalkOnWater) {
 					checkBotContact(struct, contact);
 				} else {
 					isDead = true;
 				}
-			}
+			else if (struct.world == TileWorldType.LIGHT &&
+					 worldState.getState() == WorldType.LIGHT)
+				if (canWalkOnWater) {
+					checkBotContact(struct, contact);
+				} else {
+					isDead = true;
+				}
 			break;
 		default:
 			break;
@@ -386,10 +400,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
 		switch (struct.type) {
-		case LIGHTWATER:
-		case DARKWATER:
-		case LIGHTEDGE:
-		case DARKEDGE:
+		case WATER:
+		case SOLID:		
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
@@ -415,27 +427,16 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void PreContactHandler(PhysicsDataStructure struct, Contact contact) {
-		switch (struct.type) {
-		case LIGHTEDGE:
-			if (worldState.getState() == WorldType.DARK)
-				contact.setEnabled(false);
-			break;
-		case DARKEDGE:
+		switch (struct.world) {		
+		case DARK:
 			if (worldState.getState() == WorldType.LIGHT)
 				contact.setEnabled(false);
 			break;
-		case LIGHTWATER:
-			if (worldState.getState() == WorldType.DARK) {
+		case LIGHT:
+			if (worldState.getState() == WorldType.DARK)
 				contact.setEnabled(false);
-			}
 			break;
-		case DARKWATER:
-			if (worldState.getState() == WorldType.LIGHT) {
-				contact.setEnabled(false);
-			}
-			break;
-		default:
-			break;
+			default:;
 		}
 	}
 }

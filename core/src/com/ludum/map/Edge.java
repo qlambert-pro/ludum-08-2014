@@ -11,9 +11,9 @@ import com.ludum.physics.PhysicsObjectType;
 public class Edge implements PhysicsObject {
 
 	private Body body;
-
-	public Edge(Vector2 beg, Vector2 end, PhysicsObjectType type) {
-		PhysicsDataStructure pds = new PhysicsDataStructure(this, type);
+	
+	public Edge(Vector2 beg, Vector2 end, PhysicsObjectType type, TileWorldType world) {
+		PhysicsDataStructure pds = new PhysicsDataStructure(this, type, world);
 		body = PhysicsManager.getInstance().createEdge(beg, end, pds);
 	}
 

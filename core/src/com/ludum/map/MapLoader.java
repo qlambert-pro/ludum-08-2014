@@ -2,8 +2,6 @@ package com.ludum.map;
 
 import java.util.ArrayList;
 
-import com.ludum.physics.PhysicsManager;
-
 public class MapLoader {
 	private static MapLoader singleton;
 	
@@ -20,8 +18,8 @@ public class MapLoader {
 	private MapLoader() {
 		mapNameList = new ArrayList<String>();
 		mapNameList.add("basicMap.tmx");
-		mapNameList.add("testMapJ2HD.tmx");
-		mapNameList.add("testMapJ1HD.tmx");
+//		mapNameList.add("testMapJ2HD.tmx");
+//		mapNameList.add("testMapJ1HD.tmx");
 
 		
 		currentMapIndex = 0;

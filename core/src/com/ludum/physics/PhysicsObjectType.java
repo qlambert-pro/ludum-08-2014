@@ -2,12 +2,10 @@ package com.ludum.physics;
 
 public enum PhysicsObjectType {
 	PLAYER,
-	LIGHTEDGE,
-	DARKEDGE,
+	SOLID,
 	END1,
 	END2,
 	END3,
 	SPIKE,
-	LIGHTWATER,
-	DARKWATER
+	WATER
 }

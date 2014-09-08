@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -16,17 +17,9 @@ import com.ludum.physics.PhysicsObjectType;
 
 public class Map {
 
-	private static final String LIGHT_COLLISION_LAYER_NAME = "lightWorld";
-	private static final String DARK_COLLISION_LAYER_NAME = "darkWorld";
-	private static final String SPAWNSWAN_LAYER_NAME = "spawnSwan";
-	private static final String SPAWNJUPITER_LAYER_NAME = "spawnJupiter";
-	private static final String SPAWNSEAL_LAYER_NAME = "spawnSeal";
-	private static final String END1_LAYER_NAME = "end1";
-	private static final String END2_LAYER_NAME = "end2";
-	private static final String END3_LAYER_NAME = "end3";
-	private static final String SPIKE_LAYER_NAME = "spike";
-	private static final String LIGHTWATER_LAYER_NAME = "lightWater";
-	private static final String DARKWATER_LAYER_NAME = "darkWater";
+	private static final String LIGHT_LAYER_NAME = "lightWorld";
+	private static final String DARK_LAYER_NAME = "darkWorld";
+
 
 	private String mapName;
 	private WorldState state;
@@ -49,56 +42,87 @@ public class Map {
 		tiledMap = new TmxMapLoader().load(mapName);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		edges = new LinkedList<Edge>();
-		;
+		
 
-		size = new Vector2(getLayer(LIGHT_COLLISION_LAYER_NAME).getWidth()
+		size = new Vector2(getLayer(LIGHT_LAYER_NAME).getWidth()
 				* ConfigManager.minBlockSize, getLayer(
-				LIGHT_COLLISION_LAYER_NAME).getHeight()
+				LIGHT_LAYER_NAME).getHeight()
 				* ConfigManager.minBlockSize);
 
-		addCollisionEdges(getLayer(LIGHT_COLLISION_LAYER_NAME),
-				PhysicsObjectType.LIGHTEDGE);
-		addCollisionEdges(getLayer(DARK_COLLISION_LAYER_NAME),
-				PhysicsObjectType.DARKEDGE);
-		TiledMapTileLayer layer;
+		TiledMapTileLayer darkLayer  = getLayer(DARK_LAYER_NAME);
+		TiledMapTileLayer lightLayer = getLayer(LIGHT_LAYER_NAME);
+		
+		for (int x = 0; x < darkLayer.getWidth(); x++) {
+			for (int y = 0; y < darkLayer.getHeight(); y++) {
+				Cell darkCell  = darkLayer.getCell(x, y);
+				Cell lightCell = lightLayer.getCell(x, y);
+						
+				String darkType = null;
+				String lightType = null;
+				
+				MapProperties darkProperties= null; 
+				if (darkCell != null) {
+					darkProperties  = darkCell.getTile().getProperties();
+					if (darkProperties != null)
+						darkType = (String) darkProperties.get(TilePropertieConstants.PROPERTY_NAME_TYPE);
+				}
+				
+				MapProperties lightProperties = null;
+				if (lightCell != null) {
+					lightProperties = lightCell.getTile().getProperties();
+					if (lightProperties != null)
+						lightType = (String) lightProperties.get(TilePropertieConstants.PROPERTY_NAME_TYPE);
+				}
 
-		layer = getLayer(END1_LAYER_NAME);
-		if (layer != null) {
-			addTriggerZones(layer, PhysicsObjectType.END1);
-			endNumber++;
+				
+				if (darkType != null || lightType != null) {
+					if (darkType != null && darkType.equals(lightType))						
+						addTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.BOTH, darkProperties);
+					else {
+						if (darkType != null)
+							addTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.DARK, darkProperties);
+						
+						if (lightType != null)
+							addTile(x, y, getTypeFromString(lightType), lightLayer, TileWorldType.LIGHT, lightProperties);
+					}
+				}
+			}
 		}
-
-		layer = getLayer(END2_LAYER_NAME);
-		if (layer != null) {
-			addTriggerZones(layer, PhysicsObjectType.END2);
-			endNumber++;
-		}
-
-		layer = getLayer(END3_LAYER_NAME);
-		if (layer != null) {
-			addTriggerZones(layer, PhysicsObjectType.END3);
-			endNumber++;
-		}
-
-		layer = getLayer(SPIKE_LAYER_NAME);
-		if (layer != null) {
-			addTriggerZones(layer, PhysicsObjectType.SPIKE);
-		}
-
-		layer = getLayer(LIGHTWATER_LAYER_NAME);
-		if (layer != null) {
-			addCollisionEdges(layer, PhysicsObjectType.LIGHTWATER);
-		}
-
-		layer = getLayer(DARKWATER_LAYER_NAME);
-		if (layer != null) {
-			addCollisionEdges(layer, PhysicsObjectType.DARKWATER);
-		}
-
-		spawnSwan = initSpawn(SPAWNSWAN_LAYER_NAME);
-		spawnJupiter = initSpawn(SPAWNJUPITER_LAYER_NAME);
-		spawnSeal = initSpawn(SPAWNSEAL_LAYER_NAME);
+		
 		changeWorld();
+	}
+	
+	private void addTile(int x, int y, TileType type, TiledMapTileLayer layer, TileWorldType world, MapProperties properties) {
+		switch (type) {
+		case SOLID:
+			createTrigger(x, y, 1, 1, type, world);
+			extendCell(x, y, layer, type, world);
+			break;
+		case END:
+			endNumber++;
+			createTrigger(x, y, 1, 1, type, world);
+			break;
+		case SPIKE:
+			createTrigger(x, y, 1, 1, type, world);
+			break;
+		case WATER:
+			createTrigger(x, y, 1, 1, type, world);
+			extendCell(x, y, layer, type, world);
+			break;
+		case SPAWN:
+			Vector2 spawn = new Vector2(x * ConfigManager.minBlockSize, y * ConfigManager.minBlockSize);
+			String character = (String) properties.get(TilePropertieConstants.PROPERTY_NAME_CHARACTER);
+			if (character != null && character.equals(TilePropertieConstants.PROPERTY_VALUE_CHARACTER_JUPITER))
+				spawnJupiter = spawn;
+			else if (character != null && character.equals(TilePropertieConstants.PROPERTY_VALUE_CHARACTER_SEAL))
+				spawnSeal = spawn;
+			else if (character != null && character.equals(TilePropertieConstants.PROPERTY_VALUE_CHARACTER_SWAN))
+				spawnSwan = spawn;
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 	public void render(OrthographicCamera cam) {
@@ -107,16 +131,10 @@ public class Map {
 	}
 
 	public void changeWorld() {
-		getLayer(LIGHT_COLLISION_LAYER_NAME).setVisible(
+		getLayer(LIGHT_LAYER_NAME).setVisible(
 				state.getState() == WorldType.LIGHT);
-		getLayer(DARK_COLLISION_LAYER_NAME).setVisible(
+		getLayer(DARK_LAYER_NAME).setVisible(
 				state.getState() == WorldType.DARK);
-		if (getLayer(LIGHTWATER_LAYER_NAME) != null)
-			getLayer(LIGHTWATER_LAYER_NAME).setVisible(
-					state.getState() == WorldType.LIGHT);
-		if (getLayer(DARKWATER_LAYER_NAME) != null)
-			getLayer(DARKWATER_LAYER_NAME).setVisible(
-					state.getState() == WorldType.DARK);
 	}
 
 	private TiledMapTileLayer getLayer(String layerName) {
@@ -143,92 +161,105 @@ public class Map {
 		return endNumber;
 	}
 
-	private Vector2 initSpawn(String layerName) {
-		TiledMapTileLayer layer = getLayer(layerName);
-		if (layer == null)
-			return null;
-
-		int width = layer.getWidth();
-		int height = layer.getHeight();
-
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				if (layer.getCell(x, y) != null) {
-					Vector2 spawn = new Vector2(x * ConfigManager.minBlockSize,
-							y * ConfigManager.minBlockSize);
-					return spawn;
-				}
-			}
-		}
-		return null;
-	}
-
-	private void addTriggerZones(TiledMapTileLayer layer, PhysicsObjectType type) {
-		int width = layer.getWidth();
-		int height = layer.getHeight();
-
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				if (layer.getCell(x, y) != null)
-					createTrigger(x, y, 1, 1, type);
-			}
-		}
-	}
-
-	private void addCollisionEdges(TiledMapTileLayer layer,
-			PhysicsObjectType type) {
-		int width = layer.getWidth();
-		int height = layer.getHeight();
-
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				if (layer.getCell(x, y) != null)
-					extendCell(x, y, layer, type);
-			}
-		}
-	}
-
 	private void extendCell(int x, int y, TiledMapTileLayer layer,
-			PhysicsObjectType type) {
+			TileType type, TileWorldType world) {
 		// Left
-		if (shouldIAddEdge(x - 1, y, layer))
-			createEdge(x, y, x, y + 1, type);
+		if (shouldIAddEdge(x - 1, y, type, layer))
+			createEdge(x, y, x, y + 1, type, world);
 
 		// Right
-		if (shouldIAddEdge(x + 1, y, layer))
-			createEdge(x + 1, y, x + 1, y + 1, type);
+		if (shouldIAddEdge(x + 1, y, type, layer))
+			createEdge(x + 1, y, x + 1, y + 1, type, world);
 
 		// Top
-		if (shouldIAddEdge(x, y + 1, layer))
-			createEdge(x, y + 1, x + 1, y + 1, type);
+		if (shouldIAddEdge(x, y + 1, type, layer))
+			createEdge(x, y + 1, x + 1, y + 1, type, world);
 
 		// Bottom
-		if (shouldIAddEdge(x, y - 1, layer))
-			createEdge(x, y, x + 1, y, type);
+		if (shouldIAddEdge(x, y - 1, type, layer))
+			createEdge(x, y, x + 1, y, type, world);
 	}
 
 	private void createEdge(int x1, int y1, int x2, int y2,
-			PhysicsObjectType type) {
+			TileType type, TileWorldType world) {
 		Vector2 beg = new Vector2(x1, y1);
 		Vector2 end = new Vector2(x2, y2);
-		Edge edge = new Edge(beg, end, type);
+		Edge edge = new Edge(beg, end, getPhysicTypeFromTileType(type), world);
 		edges.add(edge);
 	}
 
 	private void createTrigger(int x, int y, int i, int j,
-			PhysicsObjectType type) {
+			TileType type, TileWorldType world) {
 		Vector2 pos = new Vector2(x, y);
 		Vector2 size = new Vector2(i, j);
-		Trigger trigger = new Trigger(pos, size, type);
+		new Trigger(pos, size, getPhysicTypeFromTileType(type), world);
 	}
 
-	private boolean shouldIAddEdge(int x, int y, TiledMapTileLayer layer) {
+	private boolean shouldIAddEdge(int x, int y, TileType type, TiledMapTileLayer layer) {
 		Cell otherCell;
 		if (x < 0 || x >= layer.getWidth() || y < 0 || y >= layer.getHeight()) {
 			return true;
 		}
-		otherCell = layer.getCell(x, y);
-		return otherCell == null;
-
+		otherCell = layer.getCell(x, y);		
+				
+		String otherType = null;
+		
+		if (otherCell != null) {
+			MapProperties otherProperties  = otherCell.getTile().getProperties();
+			if (otherProperties != null)
+				otherType = (String) otherProperties.get(TilePropertieConstants.PROPERTY_NAME_TYPE);
+		}						
+		
+		return type != getTypeFromString(otherType);
+	}
+	
+	private TileType getTypeFromString(String s) {
+		if (s == null)
+			return null;
+		
+		TileType type = null;
+		
+		if (s.equals(TilePropertieConstants.PROPERTY_VALUE_TYPE_SPIKES))
+			type = TileType.SPIKE;
+		else if (s.equals(TilePropertieConstants.PROPERTY_VALUE_TYPE_WATER))
+			type = TileType.WATER;
+		else if (s.equals(TilePropertieConstants.PROPERTY_VALUE_TYPE_SOLID))
+			type = TileType.SOLID;
+		else if (s.equals(TilePropertieConstants.PROPERTY_VALUE_TYPE_END))
+			type = TileType.END;
+		else if (s.equals(TilePropertieConstants.PROPERTY_VALUE_TYPE_SPAWN))
+			type = TileType.SPAWN;
+		else if (s.equals(TilePropertieConstants.PROPERTY_VALUE_TYPE_NONE))
+			type = TileType.NONE;
+		
+		return type;
+	}
+	
+	private PhysicsObjectType getPhysicTypeFromTileType(TileType t){
+		PhysicsObjectType type = null;
+		
+		switch(t) {
+		case SOLID:
+			type = PhysicsObjectType.SOLID;
+			break;
+		case END:
+			if (endNumber == 1)
+				type = PhysicsObjectType.END1;
+			else if (endNumber == 2)
+				type = PhysicsObjectType.END2;
+			else if (endNumber == 3)
+				type = PhysicsObjectType.END3;
+			break;
+		case SPIKE:
+			type = PhysicsObjectType.SPIKE;
+			break;
+		case WATER:
+			type = PhysicsObjectType.WATER;
+			break;
+		default:
+			break;
+		}
+		
+		return type;
 	}
 }

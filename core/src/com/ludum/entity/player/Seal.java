@@ -36,6 +36,7 @@ public class Seal extends Player {
 			textureType = TextureType.SealLevitation;
 		}
 		super.update(dt);
+		//TODO clean
 		if (state == PlayerState.JUMPING) {
 			currentFrame = TextureManager.getInstance().getTextureRegion(
 				textureType, 0);			
