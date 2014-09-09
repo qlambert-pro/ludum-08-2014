@@ -3,15 +3,12 @@ package com.ludum.controls;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Input.Keys;
 import com.ludum.entity.player.Player;
-import com.ludum.game.ClassicMode;
 
 public class PlayerControls extends InputAdapter {
-	private Player player;
-	private ClassicMode mode;
+	private Player player;	
 
-	public PlayerControls(Player p, ClassicMode m) {
-		player = p;
-		mode = m;
+	public PlayerControls(Player p) {
+		player = p;		
 	}
 
 	@Override
@@ -27,14 +24,6 @@ public class PlayerControls extends InputAdapter {
 
 		case Keys.UP:
 			player.jump();
-			return true;
-
-		case Keys.SPACE:
-			mode.nextCharacter();
-			return true;
-			
-		case Keys.S:
-			mode.swapWorld();
 			return true;
 
 		case Keys.D:

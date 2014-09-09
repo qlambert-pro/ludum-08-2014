@@ -22,7 +22,6 @@ public class Map {
 
 
 	private String mapName;
-	private WorldState state;
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	private Collection<Edge> edges;
@@ -32,9 +31,8 @@ public class Map {
 	private Vector2 size;
 	private int endNumber;
 
-	public Map(String file, WorldState s) {
+	public Map(String file) {
 		mapName = file;
-		state = s;
 		endNumber = 0;
 	}
 
@@ -89,7 +87,7 @@ public class Map {
 			}
 		}
 		
-		changeWorld();
+		setLightWorld();
 	}
 	
 	private void addTile(int x, int y, TileType type, TiledMapTileLayer layer, TileWorldType world, MapProperties properties) {
@@ -130,11 +128,14 @@ public class Map {
 		tiledMapRenderer.render();
 	}
 
-	public void changeWorld() {
-		getLayer(LIGHT_LAYER_NAME).setVisible(
-				state.getState() == WorldType.LIGHT);
-		getLayer(DARK_LAYER_NAME).setVisible(
-				state.getState() == WorldType.DARK);
+	public void setLightWorld() {
+		getLayer(LIGHT_LAYER_NAME).setVisible(true);
+		getLayer(DARK_LAYER_NAME).setVisible(false);
+	}
+	
+	public void setDarkWorld() {
+		getLayer(LIGHT_LAYER_NAME).setVisible(false);
+		getLayer(DARK_LAYER_NAME).setVisible(true);
 	}
 
 	private TiledMapTileLayer getLayer(String layerName) {

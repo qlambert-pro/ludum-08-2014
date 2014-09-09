@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 
 public class LudumGame extends Game {
 	private StartMode startMode = null;
@@ -15,8 +16,8 @@ public class LudumGame extends Game {
 	private CreditMode creditMode = null;
 
 	private InputProcessor inGameControl;
-	private InputMultiplexer inputs = new InputMultiplexer();
-
+	private InputMultiplexer inputs = new InputMultiplexer();	
+	
 	@Override
 	public void create() {
 
@@ -25,9 +26,17 @@ public class LudumGame extends Game {
 
 		inGameControl = new InputAdapter() {
 			@Override
-			public boolean keyDown(int keycode) {
-				switch (keycode) {
+			public boolean keyDown(int keycode) {				
+				switch (keycode) {				
+				case Keys.SPACE:
+					classicMode.nextCharacter();
+					return true;
+					
+				case Keys.S:
+					classicMode.swapWorld();
+					return true;
 				}
+				
 				return false;
 			}
 		};

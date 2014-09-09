@@ -2,20 +2,42 @@ package com.ludum.map;
 
 public class WorldState {
 	private WorldType state;
-
+	private Map map;
+	
+	private boolean isSwapped;
+	private boolean canSwap = true;
+	
 	public WorldState() {
-		state = WorldType.LIGHT;
-	}
-
-	public WorldState(WorldType type) {
-		state = type;
+		state = WorldType.LIGHT;		
+	}	
+	
+	public void setMap(Map m) {
+		map = m;
 	}
 
 	public void swapWorld() {
-		if (state == WorldType.LIGHT)
-			state = WorldType.DARK;
-		else
-			state = WorldType.LIGHT;
+		if (canSwap) {
+			isSwapped = false;				
+			if (state == WorldType.LIGHT) {
+				state = WorldType.DARK;
+				map.setDarkWorld();
+			} else {
+				state = WorldType.LIGHT;
+				map.setLightWorld();
+			}
+		}
+	}
+	
+	public void canSwap(boolean b) {
+		canSwap = b;
+	}
+	
+	public boolean isSwapped() {
+		return isSwapped;
+	}
+	
+	public void hasSwapped() {
+		isSwapped = true;
 	}
 	
 	public WorldType getState() {

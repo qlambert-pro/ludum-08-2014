@@ -33,6 +33,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		NONE, JUMP, STOPJUMP
 	}
 
+	protected boolean canSwap = true;
+	
 	protected Vector2 spawn;
 	protected Vector2 mapSize;
 
@@ -111,6 +113,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		body.setGravityScale(1);
 		state = PlayerState.FALLING;
 		isDead = false;
+		canSwap = true;
 	}
 
 	public void stop() {
@@ -283,6 +286,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 				textureType, stateTime);
 		if (currentFrame.isFlipX() != flipX)
 			currentFrame.flip(true, flipY);
+		
+		worldState.canSwap(canSwap);
 	}
 
 	public Vector2 getPosition() {
@@ -347,6 +352,8 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			else if (struct.world == TileWorldType.LIGHT &&
 					 worldState.getState() == WorldType.LIGHT)
 				checkBotContact(struct, contact);
+			else
+				canSwap = false;
 			break;
 		case PLAYER:
 			checkBotContact(struct, contact);
@@ -405,6 +412,18 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
+			
+			switch (struct.world) {		
+			case DARK:
+				if (worldState.getState() == WorldType.LIGHT)
+					canSwap = true;
+				break;
+			case LIGHT:
+				if (worldState.getState() == WorldType.DARK)
+					canSwap = true;
+				break;
+				default:;
+			}
 			break;
 		case PLAYER:
 			if (botContactList.contains(struct)) {
@@ -427,6 +446,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	@Override
 	public void PreContactHandler(PhysicsDataStructure struct, Contact contact) {
+		
 		switch (struct.world) {		
 		case DARK:
 			if (worldState.getState() == WorldType.LIGHT)
@@ -438,5 +458,25 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			break;
 			default:;
 		}
+
+		checkAbleToSwapWorld(struct);		
+	}
+	
+	private void checkAbleToSwapWorld(PhysicsDataStructure struct) {
+		if(!worldState.isSwapped())
+			switch (struct.world) {		
+			case LIGHT:
+				if (worldState.getState() == WorldType.LIGHT) {
+					worldState.swapWorld();
+					worldState.hasSwapped();
+				}
+				break;
+			case DARK:
+				if (worldState.getState() == WorldType.DARK)
+					worldState.swapWorld();
+					worldState.hasSwapped();
+				break;
+				default:;
+			}				
 	}
 }

@@ -576,12 +576,12 @@
  </tileset>
  <layer name="lightWorld" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFtASMQMwMxSwD7BZKACcQcwExNxDzDLBbKAEgfwgBsTDDqD8GAxj1x+ACo/4YXECQYdQfgwkMJn+A2hZMUExq22Iw+QPkFnLbFoPNH+S6ZdQfEKCPRYzcdD7Y4gM5nYvQyS349OqSaBY2MweDP0xJNAubmYPBH7YE9DLhwJJIZsowIPqbzHj0MGPRp4cHo5uJz05krIjFH1ZQbIYF45PDh8nVR4xeGyAWwOOPoYKHkz8khpk/AIs+MxY=
+   eJztl7sOwjAMRU3DwmPgNYDE0g8AJhgQSPz/V+GISPVgXJIKeql8pbM0suujZnCJPN/MiAmJcc+zdMmEmTIzZt7zLF0SPVbMmtwDIe6BFffAypLcAylIHnG3qBK5uwWSR5yldLdA8yidxT1eOSnPSu852veQ93zzo1ms2kNmL60ngsc5s5fWE8Hj3lJbvWEneu6p+d8MRk1Q6o4KD4Hsab1TUise18RFwTqzKK37pPbGLAyPf2FIHtuBeTwB04Uzdw==
   </data>
  </layer>
  <layer name="darkWorld" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwSgYBUMFOAKxExS7DLBbKAGBQOwFxN5AHDLAbqEEgPwRBMTBDMPHHz50tlsfixi56dyTYXDFB7npnFbpSpdMfeS6Bzk+qJmuTMnUB4uPweIPWwLyTkjYGYmORHJPDJI4OkbXi02fExb12Ox0IqAGhhOx+KMMD66CYnxqqKmPGFwDxAFY/FE1xPCoPwYXRvYHAFGScoo=
+   eJxjYBgFo2AUjIJRMApGwSgYBUMFOAKxExS7DLBbKAGBQOwFxN5AHDLAbqEEgPwRBMTBDMPHHz50tlsfixi56dyTYXDFB7npnFbpSpdMfeS6Bzk+qJmuTMnUB4uPweIPWwLyTkjYGYmORHJPDJI4OkbXi02fE5p6ByTszIBptxMDdnfBcCIWf5ThwVVQjE8NNfURg2uAOACLP6qGGB71x+DCyP4AAD06coQ=
   </data>
  </layer>
 </map>

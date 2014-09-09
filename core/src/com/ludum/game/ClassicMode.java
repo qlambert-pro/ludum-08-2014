@@ -44,11 +44,12 @@ public class ClassicMode extends ScreenAdapter {
 		game = g;
 		currentCharacterIndex = -1;
 		worldBatch = new SpriteBatch();
-		uiBatch = new SpriteBatch();
-		state = new WorldState();
+		uiBatch = new SpriteBatch();		
 
 		mapLoader = MapLoader.getLoader();
+		state = new WorldState();
 		loadLevel();
+		
 		SoundManager.getInstance().startBackGroundMusic();
 	}
 
@@ -56,6 +57,10 @@ public class ClassicMode extends ScreenAdapter {
 		for (Player p : characters)
 			p.updatePhysics(dt);
 		PhysicsManager.getInstance().update(dt);
+		
+		if (!state.isSwapped())
+			state.hasSwapped();
+		
 		for (Player p : characters)
 			p.update(dt);
 		cam.follow();
@@ -146,7 +151,6 @@ public class ClassicMode extends ScreenAdapter {
 
 	public void swapWorld() {
 		state.swapWorld();
-		map.changeWorld();
 	}
 
 	public void loadLevel() {
@@ -169,21 +173,21 @@ public class ClassicMode extends ScreenAdapter {
 		if (spawn != null) {
 			Player p = playerFactory.getSwan(spawn, map.getSize(), state);
 			characters.add(p);
-			characterControllers.add(new PlayerControls(p, this));
+			characterControllers.add(new PlayerControls(p));
 		}
 
 		spawn = map.getSpawnJupiter();
 		if (spawn != null) {
 			Player p = playerFactory.getJupiter(spawn, map.getSize(), state);
 			characters.add(p);
-			characterControllers.add(new PlayerControls(p, this));
+			characterControllers.add(new PlayerControls(p));
 		}
 
 		spawn = map.getSpawnSeal();
 		if (spawn != null) {
 			Player p = playerFactory.getSeal(spawn, map.getSize(), state);
 			characters.add(p);
-			characterControllers.add(new PlayerControls(p, this));
+			characterControllers.add(new PlayerControls(p));
 		}
 
 		currentCharacterIndex = 0;

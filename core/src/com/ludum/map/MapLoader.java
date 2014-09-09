@@ -36,9 +36,11 @@ public class MapLoader {
 
 		
 		/* Load new map */
-		Map map = new Map(mapNameList.get(currentMapIndex), state);
+		Map map = new Map(mapNameList.get(currentMapIndex));
 		map.load();
 		currentMapIndex++;
+		state.setMap(map);
+		
 		return map;
 	}
 }
