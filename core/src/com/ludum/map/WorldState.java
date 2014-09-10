@@ -1,5 +1,7 @@
 package com.ludum.map;
 
+import com.ludum.sound.SoundManager;
+
 public class WorldState {
 	private WorldType state;
 	private Map map;
@@ -26,6 +28,8 @@ public class WorldState {
 				map.setLightWorld();
 			}
 		}
+		else 
+			SoundManager.getInstance().nope();
 	}
 	
 	public void canSwap(boolean b) {

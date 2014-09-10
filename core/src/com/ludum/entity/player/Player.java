@@ -458,25 +458,5 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			break;
 			default:;
 		}
-
-		checkAbleToSwapWorld(struct);		
-	}
-	
-	private void checkAbleToSwapWorld(PhysicsDataStructure struct) {
-		if(!worldState.isSwapped())
-			switch (struct.world) {		
-			case LIGHT:
-				if (worldState.getState() == WorldType.LIGHT) {
-					worldState.swapWorld();
-					worldState.hasSwapped();
-				}
-				break;
-			case DARK:
-				if (worldState.getState() == WorldType.DARK)
-					worldState.swapWorld();
-					worldState.hasSwapped();
-				break;
-				default:;
-			}				
 	}
 }

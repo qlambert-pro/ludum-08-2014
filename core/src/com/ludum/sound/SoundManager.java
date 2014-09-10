@@ -10,6 +10,7 @@ public class SoundManager {
 	
 	private Sound music;
 	private Sound jump;
+	private Sound nope;
 	private float volume = 0.1f;
 	
 	
@@ -25,6 +26,8 @@ public class SoundManager {
 		music.setVolume(0, volume);
 		jump = Gdx.audio.newSound(Gdx.files.internal("sound/jump.ogg"));
 		jump.setVolume(0, volume);
+		nope = Gdx.audio.newSound(Gdx.files.internal("sound/nope.wav"));
+		nope.setVolume(0, volume);
 	}
 	
 	public void startBackGroundMusic(){
@@ -33,6 +36,10 @@ public class SoundManager {
 	
 	public void jump(){
 		jump.play();
+	}
+	
+	public void nope(){
+		nope.play();
 	}
 	
 }
