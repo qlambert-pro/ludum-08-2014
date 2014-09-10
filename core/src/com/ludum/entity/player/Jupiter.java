@@ -14,7 +14,6 @@ import com.ludum.rendering.TextureType;
 
 public class Jupiter extends Player{
 	private boolean isUsed = false;
-	private ArrayList<Player> contactPlayers = new ArrayList<Player>();
 	
 	public Jupiter(Vector2 spawn, Vector2 mapSize, Texture port, Texture port2, WorldState s) {
 		super(spawn, mapSize, port,port2, s);
@@ -96,22 +95,21 @@ public class Jupiter extends Player{
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		super.BeginContactHandler(struct, contact);
 		switch (struct.type) {
-		case PLAYER:
-			contactPlayers.add((Player) struct.obj);
+		case PLAYER:			
 			giveMyDashToThatGuyIfNecessary((Player) struct.obj); 
 		default:;				
 		}
 	}
 	
-	@Override
+	/*@Override
 	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
 		super.EndContactHandler(struct, contact);
 		switch (struct.type) {
 		case PLAYER:
-			contactPlayers.remove((Player) struct.obj);
+			
 		default:;
 		}
-	}
+	}*/
 	
 	private void giveMyDashToThatGuyIfNecessary(Player p) {
 		//TODO test contact sidewise

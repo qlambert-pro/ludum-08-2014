@@ -50,6 +50,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 	protected boolean moveLeft;
 	protected PlayerJumpState jumpState;
 
+	protected ArrayList<Player> contactPlayers = new ArrayList<Player>();
 	protected ArrayList<PhysicsDataStructure> botContactList;
 	protected float stateTime = 0;
 	protected TextureRegion currentFrame;
@@ -97,7 +98,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 	public void init() {
 		PhysicsDataStructure s = new PhysicsDataStructure(this,
-				PhysicsObjectType.PLAYER, null);
+				PhysicsObjectType.PLAYER, TileWorldType.BOTH);
 		this.body = PhysicsManager.getInstance().createDynamicRectangle(
 				pos.cpy(), physicsSize, s);
 
@@ -114,8 +115,15 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		state = PlayerState.FALLING;
 		isDead = false;
 		canSwap = true;
+		
+		for (Player p : contactPlayers)
+			p.removeContactPlayer(this);
 	}
 
+	private void removeContactPlayer(Player p) {
+		contactPlayers.remove(p);
+	}
+	
 	public void stop() {
 		moveRight = false;
 		moveLeft = false;
@@ -357,6 +365,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			break;
 		case PLAYER:
 			checkBotContact(struct, contact);
+			contactPlayers.add((Player) struct.obj);
 			break;
 		case END1:
 			end1Contact++;
@@ -429,6 +438,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			if (botContactList.contains(struct)) {
 				botContactList.remove(struct);
 			}
+			contactPlayers.remove((Player) struct.obj);
 			break;
 		case END1:
 			end1Contact--;
