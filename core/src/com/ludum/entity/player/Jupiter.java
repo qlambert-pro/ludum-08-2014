@@ -1,7 +1,5 @@
 package com.ludum.entity.player;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -99,17 +97,7 @@ public class Jupiter extends Player{
 			giveMyDashToThatGuyIfNecessary((Player) struct.obj); 
 		default:;				
 		}
-	}
-	
-	/*@Override
-	public void EndContactHandler(PhysicsDataStructure struct, Contact contact) {
-		super.EndContactHandler(struct, contact);
-		switch (struct.type) {
-		case PLAYER:
-			
-		default:;
-		}
-	}*/
+	}	
 	
 	private void giveMyDashToThatGuyIfNecessary(Player p) {
 		//TODO test contact sidewise

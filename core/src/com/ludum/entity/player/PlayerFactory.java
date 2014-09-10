@@ -3,7 +3,6 @@ package com.ludum.entity.player;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureManager;
-import com.sun.org.apache.xml.internal.security.Init;
 
 
 public class PlayerFactory {

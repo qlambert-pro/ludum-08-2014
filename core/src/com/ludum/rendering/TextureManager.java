@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TextureManager {
-	private static int PORTRAITS_COLS = 2;
-	private static int PORTRAITS_ROWS = 1;
 	private Animation animation[] = new Animation[TextureType.values().length];
 	private Texture walkSheet;
 	

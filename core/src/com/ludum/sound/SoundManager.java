@@ -1,7 +1,6 @@
 package com.ludum.sound;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public class SoundManager {
