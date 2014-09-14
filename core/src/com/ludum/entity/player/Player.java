@@ -33,7 +33,9 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		NONE, JUMP, STOPJUMP
 	}
 
-	protected boolean canSwap = true;
+/*	protected boolean canSwap = true;
+	protected boolean tempCanSwap = true;*/
+	protected ArrayList<PhysicsDataStructure> otherWorldList = new ArrayList<>();
 	
 	protected Vector2 spawn;
 	protected Vector2 mapSize;
@@ -114,7 +116,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		body.setGravityScale(1);
 		state = PlayerState.FALLING;
 		isDead = false;
-		canSwap = true;
+		otherWorldList.clear();
 		
 		for (Player p : contactPlayers)
 			p.removeContactPlayer(this);
@@ -295,7 +297,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 		if (currentFrame.isFlipX() != flipX)
 			currentFrame.flip(true, flipY);
 		
-		worldState.canSwap(canSwap);
+		worldState.canSwap(otherWorldList.isEmpty());
 	}
 
 	public Vector2 getPosition() {
@@ -361,7 +363,7 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 					 worldState.getState() == WorldType.LIGHT)
 				checkBotContact(struct, contact);
 			else
-				canSwap = false;
+				otherWorldList.add(struct);
 			break;
 		case PLAYER:
 			checkBotContact(struct, contact);
@@ -425,11 +427,11 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 			switch (struct.world) {		
 			case DARK:
 				if (worldState.getState() == WorldType.LIGHT)
-					canSwap = true;
+					otherWorldList.remove(struct);
 				break;
 			case LIGHT:
 				if (worldState.getState() == WorldType.DARK)
-					canSwap = true;
+					otherWorldList.remove(struct);					
 				break;
 				default:;
 			}
