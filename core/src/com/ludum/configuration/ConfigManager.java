@@ -3,7 +3,7 @@ package com.ludum.configuration;
 import com.badlogic.gdx.math.Vector2;
 
 public class ConfigManager {
-	public static int minBlockSize = 630;
+	public static int minBlockSize = 60;
 	
 	public static float moveSpeed = 10;
 	public static float accTime = 0.2f;

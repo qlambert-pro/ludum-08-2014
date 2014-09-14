@@ -18,9 +18,9 @@ public class Background {
 	private Texture back1t;
 	private Texture back2t;
 
-	private float factor = 15;
+	private float factor = 1;
 	
-	private float posY = -100;
+	private float posY = 0;
 	
 	private Background() {
 		back = new Texture(Gdx.files.internal("back.png"));
