@@ -10,7 +10,7 @@ public class SoundManager {
 	private Sound music;
 	private Sound jump;
 	private Sound nope;
-	private float volume = 0.1f;
+	private float volume = 1f;
 	
 	
 	public static SoundManager getInstance(){
@@ -20,25 +20,25 @@ public class SoundManager {
 	}
 	
 	private SoundManager() {
-		music = Gdx.audio.newSound(Gdx.files.internal("sound/music.wav"));
-		music.setLooping(0,true);
-		music.setVolume(0, volume);
-		jump = Gdx.audio.newSound(Gdx.files.internal("sound/jump.ogg"));
-		jump.setVolume(0, volume);
-		nope = Gdx.audio.newSound(Gdx.files.internal("sound/nope.wav"));
-		nope.setVolume(0, volume);
+		music = Gdx.audio.newSound(Gdx.files.internal("sound/music.wav"));				
+		jump = Gdx.audio.newSound(Gdx.files.internal("sound/jump.ogg"));	
+		nope = Gdx.audio.newSound(Gdx.files.internal("sound/nope.wav"));		
 	}
 	
 	public void startBackGroundMusic(){
-		music.play();
+		long id = music.play();
+		music.setLooping(id,true);
+		music.setVolume(id, volume);
 	}
 	
 	public void jump(){
-		jump.play();
+		long id = jump.play();
+		jump.setVolume(id, volume);
 	}
 	
 	public void nope(){
-		nope.play();
+		long id = nope.play();
+		nope.setVolume(id, volume);
 	}
 	
 }
