@@ -276,9 +276,9 @@ public abstract class Player extends Entity implements Drawable, PhysicsObject {
 
 			Vector2 speed = body.getLinearVelocity();
 
-			if (speed.y > 0) {
+			if (speed.y > 0 && jumpState == PlayerJumpState.JUMP) {
 				state = PlayerState.JUMPING;
-			} else if (speed.y < 0 || botContactList.isEmpty()) {
+			} else if (botContactList.isEmpty()) {
 				state = PlayerState.FALLING;
 			} else if (moveRight ^ moveLeft) {
 				state = PlayerState.RUNNING;

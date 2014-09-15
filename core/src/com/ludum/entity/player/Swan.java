@@ -3,6 +3,7 @@ package com.ludum.entity.player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.ludum.configuration.ConfigManager;
+import com.ludum.entity.player.Player.PlayerJumpState;
 import com.ludum.map.WorldState;
 import com.ludum.rendering.TextureType;
 import com.ludum.sound.SoundManager;
@@ -10,6 +11,7 @@ import com.ludum.sound.SoundManager;
 
 public class Swan extends Player{
 	int nbJump = 0;
+	private int pock;
 	public Swan(Vector2 spawn, Vector2 mapSize, Texture port, Texture port2, WorldState s) {
 		super(spawn, mapSize, port,port2, s);
 		height = ConfigManager.swanHeight;
@@ -67,20 +69,21 @@ public class Swan extends Player{
 			
 			Vector2 speed = body.getLinearVelocity();
 
-			if (speed.y > 0) {
+			if (speed.y > 0 && jumpState == PlayerJumpState.JUMP) {
 				if(nbJump == 2)
 					state = PlayerState.DOUBLEJUMPING;
-				else
+				else					
 					state = PlayerState.JUMPING;
+				System.out.println("jump" + speed.y);
 			} else if (botContactList.isEmpty()) {
 				if (state == PlayerState.RUNNING ||
 					state == PlayerState.STANDING)
-					nbJump = 1;
+					nbJump = 1;				
 				state = PlayerState.FALLING;
-			} else if (moveRight ^ moveLeft) {
+			} else if (moveRight ^ moveLeft) {				
 				state = PlayerState.RUNNING;
 				nbJump = 0;
-			} else {
+			} else {				
 				state = PlayerState.STANDING;
 				nbJump = 0;
 			}
