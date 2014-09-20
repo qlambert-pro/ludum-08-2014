@@ -74,8 +74,11 @@ public class Map {
 
 				
 				if (darkType != null || lightType != null) {
-					if (darkType != null && darkType.equals(lightType))						
+					if (darkType != null && darkType.equals(lightType)){
+						//TODO find a cleaner fix -> a cell exists in both world != adjacent cells exist in both worlds
 						addTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.BOTH, darkProperties);
+						addTile(x, y, getTypeFromString(darkType), lightLayer, TileWorldType.BOTH, darkProperties);
+					}
 					else {
 						if (darkType != null)
 							addTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.DARK, darkProperties);

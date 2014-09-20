@@ -20,7 +20,7 @@ public class Background {
 
 	private float factor = 1;
 	
-	private float posY = 0;
+	private float posY = 100;
 	
 	private Background() {
 		back = new Texture(Gdx.files.internal("back.png"));
