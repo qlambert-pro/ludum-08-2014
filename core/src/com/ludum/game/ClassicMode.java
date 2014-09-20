@@ -194,6 +194,6 @@ public class ClassicMode extends ScreenAdapter {
 
 		/* Settup input and camera */
 		game.addInputProcessor(characterControllers.get(currentCharacterIndex));
-		cam = new CharacterCenteredCamera(characters.get(currentCharacterIndex));
+		cam = new CharacterCenteredCamera(map, characters.get(currentCharacterIndex));
 	}
 }

@@ -135,10 +135,10 @@ public class Map {
 			createTrigger(x, y, 1, 1, type, world);
 			extendCell(x, y, layer, type, world);
 			break;
-		case END:
-			endNumber++;
-			createTrigger(x, y, 1, 1, type, world);
-			break;
+//		case END:
+//			endNumber++;
+//			createTrigger(x, y, 1, 1, type, world);
+//			break;
 		case SPIKE:
 			createTrigger(x, y, 1, 1, type, world);
 			break;
