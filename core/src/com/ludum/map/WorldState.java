@@ -15,6 +15,11 @@ public class WorldState {
 	
 	public void setMap(Map m) {
 		map = m;
+		if (state == WorldType.LIGHT)
+			map.setLightWorld();	
+		else
+			map.setDarkWorld();
+
 	}
 
 	public void swapWorld() {

@@ -76,15 +76,14 @@ public class Map {
 				if (darkType != null || lightType != null) {
 					if (darkType != null && darkType.equals(lightType)){
 						//TODO find a cleaner fix -> a cell exists in both world != adjacent cells exist in both worlds
-						addTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.BOTH, darkProperties);
-						addTile(x, y, getTypeFromString(darkType), lightLayer, TileWorldType.BOTH, darkProperties);
+						addBothWorldTile(x, y, getTypeFromString(darkType), darkLayer, lightLayer, TileWorldType.BOTH, darkProperties);						
 					}
 					else {
 						if (darkType != null)
-							addTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.DARK, darkProperties);
+							addSingleWorldTile(x, y, getTypeFromString(darkType), darkLayer, TileWorldType.DARK, darkProperties);
 						
 						if (lightType != null)
-							addTile(x, y, getTypeFromString(lightType), lightLayer, TileWorldType.LIGHT, lightProperties);
+							addSingleWorldTile(x, y, getTypeFromString(lightType), lightLayer, TileWorldType.LIGHT, lightProperties);
 					}
 				}
 			}
@@ -92,8 +91,45 @@ public class Map {
 		
 		setLightWorld();
 	}
+
 	
-	private void addTile(int x, int y, TileType type, TiledMapTileLayer layer, TileWorldType world, MapProperties properties) {
+	private void addBothWorldTile(int x, int y, TileType type, TiledMapTileLayer layer, TiledMapTileLayer layer2, TileWorldType world, MapProperties properties) {
+		switch (type) {
+		case SOLID:
+			createTrigger(x, y, 1, 1, type, world);
+			extendCell(x, y, layer, type, world);
+			extendCell(x, y, layer2, type, world);
+			break;
+		case END:
+			endNumber++;
+			createTrigger(x, y, 1, 1, type, world);
+			break;
+		case SPIKE:
+			createTrigger(x, y, 1, 1, type, world);
+			break;
+		case WATER:
+			createTrigger(x, y, 1, 1, type, world);
+			extendCell(x, y, layer, type, world);
+			extendCell(x, y, layer2, type, world);
+			break;
+		case SPAWN:
+			Vector2 spawn = new Vector2(x * ConfigManager.minBlockSize, y * ConfigManager.minBlockSize);
+			String character = (String) properties.get(TilePropertieConstants.PROPERTY_NAME_CHARACTER);
+			if (character != null && character.equals(TilePropertieConstants.PROPERTY_VALUE_CHARACTER_JUPITER))
+				spawnJupiter = spawn;
+			else if (character != null && character.equals(TilePropertieConstants.PROPERTY_VALUE_CHARACTER_SEAL))
+				spawnSeal = spawn;
+			else if (character != null && character.equals(TilePropertieConstants.PROPERTY_VALUE_CHARACTER_SWAN))
+				spawnSwan = spawn;
+			break;
+		default:
+			break;
+		}
+		
+	}
+
+	
+	private void addSingleWorldTile(int x, int y, TileType type, TiledMapTileLayer layer, TileWorldType world, MapProperties properties) {
 		switch (type) {
 		case SOLID:
 			createTrigger(x, y, 1, 1, type, world);
