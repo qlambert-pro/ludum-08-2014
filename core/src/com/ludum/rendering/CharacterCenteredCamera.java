@@ -15,7 +15,7 @@ public class CharacterCenteredCamera extends OrthographicCamera{
 			  ConfigManager.camHeight * ConfigManager.minBlockSize);
 		this.player = p;
 		this.map = m;
-		//position.set(player.getPosition(), 5);
+		
 		computeCameraPosition();
 		update();
 	}
